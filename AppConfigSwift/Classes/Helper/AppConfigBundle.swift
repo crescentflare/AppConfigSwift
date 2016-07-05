@@ -23,8 +23,8 @@ public class AppConfigBundle {
         return UIImage.init(named: image, inBundle: AppConfigBundle.podBundle(), compatibleWithTraitCollection: nil)
     }
     
-    public static func loadNibNamed(name: String!, owner: AnyObject!, options: [NSObject: AnyObject]!) -> AnyObject! {
-        return AppConfigBundle.podBundle()?.loadNibNamed(name, owner: owner, options: options)
+    public static func loadNibNamed(name: String!, owner: AnyObject!, options: [NSObject: AnyObject]!) -> UINib! {
+        return UINib(nibName: name, bundle: AppConfigBundle.podBundle())
     }
 
     public static func localizedString(key: String) -> String {

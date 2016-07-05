@@ -8,13 +8,13 @@
 
 import UIKit
 
-public class AppConfigLoadingCellView : UIView {
+@IBDesignable public class AppConfigLoadingCellView : UIView {
     
     // --
     // MARK: Members
     // --
     
-    @IBOutlet private var _contentView: UIView! = nil
+    private var _contentView: UIView! = nil
     @IBOutlet private var _label: UILabel! = nil
     @IBOutlet private var _spinner: UIActivityIndicatorView! = nil
 
@@ -52,10 +52,16 @@ public class AppConfigLoadingCellView : UIView {
     }
     
     public func loadFromNib() {
-        AppConfigBundle.loadNibNamed("LoadingCell", owner: self, options: nil)
+        //Inflate nib
+        let nib = AppConfigBundle.loadNibNamed("LoadingCell", owner: self, options: nil)
+        _contentView = nib.instantiateWithOwner(self, options: nil)[0] as! UIView
+        _contentView.frame = bounds
+        _contentView.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight];
+        self.addSubview(_contentView)
+        
+        //Empty state
         _label.text = ""
         _spinner.startAnimating()
-        self.addSubview(_contentView)
     }
 
     
@@ -68,8 +74,4 @@ public class AppConfigLoadingCellView : UIView {
         return CGSizeMake(size.width, result.height)
     }
     
-    public override func layoutSubviews() {
-        let fittingSize: CGSize = sizeThatFits(frame.size)
-        _contentView.frame = CGRectMake(0, 0, fittingSize.width, fittingSize.height)
-    }
 }
