@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0478CB261D3901C700602382 /* AppConfigViewUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0478CB251D3901C700602382 /* AppConfigViewUtility.swift */; };
 		04D0112E1D15636F00FF13FC /* AppConfigModelMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D0112D1D15636F00FF13FC /* AppConfigModelMapper.swift */; };
 		04EB15561D0DAA8200D5E380 /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EEA50C1D3271164CC8F6C7F1C9CD4591 /* en.lproj */; };
 		04EB15571D0DAA8800D5E380 /* ItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C384D0F14956D8D85C518245BB4C712 /* ItemCell.xib */; };
@@ -61,6 +62,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0478CB251D3901C700602382 /* AppConfigViewUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfigViewUtility.swift; sourceTree = "<group>"; };
 		04D0112D1D15636F00FF13FC /* AppConfigModelMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfigModelMapper.swift; sourceTree = "<group>"; };
 		0CFAE4C541315839234C36D0FDEFF4B4 /* Pods-AppConfigSwift_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AppConfigSwift_Example-resources.sh"; sourceTree = "<group>"; };
 		125C1F763D3B4E1EEA297B2B86E1BABB /* AppConfigManageTableValue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigManageTableValue.swift; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 			children = (
 				7E641AEFD22F9F8BF1FE3A3B7529560D /* AppConfigBundle.swift */,
 				C69327D30955E51961F58E31C399CDF1 /* AppConfigOrderedDictionary.swift */,
+				0478CB251D3901C700602382 /* AppConfigViewUtility.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -586,6 +589,7 @@
 				BD942BD8B50B19DC23E31567896B8028 /* AppConfigManageTableValue.swift in Sources */,
 				11D9CD96481538FF855738A8D9A6DA6D /* AppConfigManageViewController.swift in Sources */,
 				41BDC601F121740719A12DB69A352067 /* AppConfigOrderedDictionary.swift in Sources */,
+				0478CB261D3901C700602382 /* AppConfigViewUtility.swift in Sources */,
 				091BA4CB06FB24E7DDC30E1EA5C6D940 /* AppConfigSectionCellView.swift in Sources */,
 				DC0239334F2BE466185D76CF6797D5B2 /* AppConfigStorage.swift in Sources */,
 				D9E1C6A69C4A12314C09444557B4B089 /* AppConfigSwift-dummy.m in Sources */,

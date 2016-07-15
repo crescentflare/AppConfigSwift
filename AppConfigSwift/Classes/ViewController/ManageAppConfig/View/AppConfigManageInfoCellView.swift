@@ -42,23 +42,16 @@ import UIKit
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        loadFromNib()
+        setupView()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        loadFromNib()
+        setupView()
     }
     
-    public func loadFromNib() {
-        //Inflate nib
-        let nib = AppConfigBundle.loadNibNamed("ManageInfoCell", owner: self, options: nil)
-        _contentView = nib.instantiateWithOwner(self, options: nil)[0] as! UIView
-        _contentView.frame = bounds
-        _contentView.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight];
-        self.addSubview(_contentView)
-        
-        //Empty state
+    public func setupView() {
+        _contentView = AppConfigViewUtility.loadNib("ManageInfoCell", parentView: self)
         _label.text = ""
     }
 

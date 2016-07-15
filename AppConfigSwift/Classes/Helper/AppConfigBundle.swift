@@ -1,5 +1,5 @@
 //
-//  AppConfigOrderedDictionary.swift
+//  AppConfigBundle.swift
 //  AppConfigSwift Pod
 //
 //  Library helper: bundle access utility
