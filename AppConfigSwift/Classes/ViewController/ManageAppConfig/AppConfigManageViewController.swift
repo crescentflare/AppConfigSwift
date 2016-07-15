@@ -38,17 +38,17 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
             let highlightColor: UIColor = UIColor.init(red: red, green: green, blue: blue, alpha: 0.25)
             
             //Create button
-            var cancelButton: UIButton = UIButton()
+            let cancelButton: UIButton = UIButton()
             cancelButton.titleLabel?.font = UIFont.systemFontOfSize(15)
             cancelButton.setTitle(AppConfigBundle.localizedString("CFLAC_SHARED_CANCEL"), forState: UIControlState.Normal)
             cancelButton.setTitleColor(tintColor, forState: UIControlState.Normal)
             cancelButton.setTitleColor(highlightColor, forState: UIControlState.Highlighted)
             let size: CGSize = cancelButton.sizeThatFits(CGSizeZero)
             cancelButton.frame = CGRectMake(0, 0, size.width, size.height)
-            cancelButton.addTarget(self, action: "cancelButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            cancelButton.addTarget(self, action: #selector(cancelButtonPressed), forControlEvents: UIControlEvents.TouchUpInside)
             
             //Wrap in bar button item
-            var cancelButtonWrapper: UIBarButtonItem = UIBarButtonItem.init(customView: cancelButton)
+            let cancelButtonWrapper: UIBarButtonItem = UIBarButtonItem.init(customView: cancelButton)
             navigationItem.leftBarButtonItem = cancelButtonWrapper
         }
         

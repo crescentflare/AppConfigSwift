@@ -84,7 +84,7 @@ public class AppConfigModelMapper {
     //Map between key and value: an enum containing a raw value (preferably string)
     public func map<T: RawRepresentable>(key: String, inout value: T, fallback: T, category: String = "") {
         if mode == .ToDictionary {
-            dictionary[key] = value.rawValue as! Any
+            dictionary[key] = value.rawValue
         } else if mode == .FromDictionary && dictionary[key] != nil {
             if let raw = dictionary[key] as? T.RawValue {
                 value = T(rawValue: raw)!

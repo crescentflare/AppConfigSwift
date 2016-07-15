@@ -120,7 +120,6 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //Create cell (if needed)
         let tableValue = tableValues[indexPath.row]
-        let previousType = indexPath.row > 0 ? tableValues[indexPath.row - 1].type : AppConfigManageTableValueType.Unknown
         let nextType = indexPath.row + 1 < tableValues.count ? tableValues[indexPath.row + 1].type : AppConfigManageTableValueType.Unknown
         var cell: AppConfigTableCell? = tableView.dequeueReusableCellWithIdentifier(tableValue.type.rawValue) as? AppConfigTableCell
         if cell == nil {
@@ -135,7 +134,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
                 cellView = AppConfigLoadingCellView()
                 cell!.cellView = cellView
             } else {
-                cellView = cell!.cellView as! AppConfigLoadingCellView
+                cellView = cell!.cellView as? AppConfigLoadingCellView
             }
 
             //Supply data
@@ -152,7 +151,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
                 cellView = AppConfigItemCellView()
                 cell!.cellView = cellView
             } else {
-                cellView = cell!.cellView as! AppConfigItemCellView
+                cellView = cell!.cellView as? AppConfigItemCellView
             }
             
             //Supply data
@@ -173,7 +172,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
                 cellView = AppConfigManageInfoCellView()
                 cell!.cellView = cellView
             } else {
-                cellView = cell!.cellView as! AppConfigManageInfoCellView
+                cellView = cell!.cellView as? AppConfigManageInfoCellView
             }
             
             //Supply data
@@ -190,7 +189,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
                 cellView = AppConfigSectionCellView()
                 cell!.cellView = cellView
             } else {
-                cellView = cell!.cellView as! AppConfigSectionCellView
+                cellView = cell!.cellView as? AppConfigSectionCellView
             }
             
             //Supply data
