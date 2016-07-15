@@ -55,14 +55,4 @@ import UIKit
         _label.text = ""
     }
 
-    
-    // --
-    // MARK: Layout
-    // --
-    
-    public override func sizeThatFits(size: CGSize) -> CGSize {
-        let result: CGSize = _contentView.systemLayoutSizeFittingSize(CGSizeMake(size.width, 0), withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
-        return CGSizeMake(size.width, result.height)
-    }
-    
 }

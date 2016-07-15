@@ -58,8 +58,8 @@ public class AppConfigStorage {
     public func activate(manager: AppConfigBaseManager?) {
         configManagerInstance = manager
         loadSelectedItemFromUserDefaults()
-        if manager != nil && selectedItem != nil && storedConfigs[selectedItem!] != nil {
-            manager!.applyConfigToModel(storedConfigs[selectedItem!] as! [String: Any], name: selectedItem)
+        if selectedItem != nil && storedConfigs[selectedItem!] != nil {
+            manager?.applyConfigToModel(storedConfigs[selectedItem!] as! [String: Any], name: selectedItem)
         }
         activated = true
     }
@@ -121,10 +121,7 @@ public class AppConfigStorage {
             if selectedItem != nil {
                 config = storedConfigs[selectedItem!] as! [String: Any]
             }
-            if config == nil {
-                config = [:]
-            }
-            configManagerInstance?.applyConfigToModel(config!, name: selectedItem)
+            configManagerInstance?.applyConfigToModel(config ?? [:], name: selectedItem)
         }
         NSNotificationCenter.defaultCenter().postNotificationName(AppConfigStorage.configurationChanged, object: self)
     }
@@ -171,12 +168,7 @@ public class AppConfigStorage {
             if loadedArray != nil && loadedArray!.count > 0 {
                 //Obtain default item with values from manager model (if applicable)
                 var defaultItem: [String: Any]? = nil
-                if configManagerInstance != nil {
-                    let model : AppConfigBaseModel? = configManagerInstance!.obtainBaseModelInstance()
-                    if model != nil {
-                        defaultItem = model!.obtainValues()
-                    }
-                }
+                defaultItem = configManagerInstance?.obtainBaseModelInstance().obtainValues()
 
                 //Add items (can be recursive for sub configs)
                 let loadedItems = loadedArray! as [AnyObject]
@@ -199,10 +191,7 @@ public class AppConfigStorage {
     private func addStorageItemFromDictionary(inout loadedConfigs: AppConfigOrderedDictionary<String, Any>, name: String, dictionary: [String: AnyObject], defaults:
         [String: Any]?) {
         //Insert values
-        var addItem: [String: Any] = [:]
-        if defaults != nil {
-            addItem = defaults!
-        }
+        var addItem: [String: Any] = defaults ?? [:]
         for (key, value) in dictionary {
             if key != "subConfigs" {
                 addItem[key] = value
