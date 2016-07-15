@@ -1,0 +1,6 @@
+framework module AppConfigSwift {
+  umbrella header "AppConfigSwift-umbrella.h"
+
+  export *
+  module * { export * }
+}

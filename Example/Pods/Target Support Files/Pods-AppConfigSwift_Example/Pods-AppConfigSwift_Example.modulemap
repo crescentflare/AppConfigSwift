@@ -1,0 +1,6 @@
+framework module Pods_AppConfigSwift_Example {
+  umbrella header "Pods-AppConfigSwift_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}
