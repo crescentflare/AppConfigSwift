@@ -54,8 +54,11 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
         tableFooter.frame = CGRectMake(0, 0, 0, 8)
         table.tableFooterView = tableFooter
         addSubview(table)
+        AppConfigViewUtility.addPinSuperViewEdgesConstraints(table, parentView: self)
         
         //Set table view properties
+        table.rowHeight = UITableViewAutomaticDimension
+        table.estimatedRowHeight = 40
         table.dataSource = self
         table.delegate = self
         
@@ -63,15 +66,6 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
         tableValues.append(AppConfigManageTableValue.valueForLoading(AppConfigBundle.localizedString("CFLAC_SHARED_LOADING_CONFIGS")))
     }
 
-    
-    // --
-    // MARK: Layout
-    // --
-    
-    public override func layoutSubviews() {
-        table.frame = CGRectMake(0, 0, frame.size.width, frame.size.height)
-    }
-    
     
     // --
     // MARK: Implementation
@@ -148,11 +142,6 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             cell?.selectionStyle = .None
             cell?.shouldHideDivider = nextType != .Config && nextType != .Info && nextType != .Loading
             cellView!.label = tableValue.labelString
-
-            //Calculate frame
-            var viewBounds: CGSize = cellView!.sizeThatFits(CGSizeMake(frame.size.width, frame.size.height))
-            viewBounds.width = max(viewBounds.width, frame.size.width)
-            cellView!.frame = CGRectMake(0, 0, viewBounds.width, viewBounds.height)
         }
         
         //Set up a config cell
@@ -174,11 +163,6 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             }
             cell?.shouldHideDivider = nextType != .Config && nextType != .Info && nextType != .Loading
             cellView!.label = tableValue.labelString
-            
-            //Calculate frame
-            var viewBounds: CGSize = cellView!.sizeThatFits(CGSizeMake(frame.size.width, frame.size.height))
-            viewBounds.width = max(viewBounds.width, frame.size.width)
-            cellView!.frame = CGRectMake(0, 0, viewBounds.width, viewBounds.height)
         }
         
         //Set up an info cell
@@ -196,11 +180,6 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             cell?.selectionStyle = .None
             cell?.shouldHideDivider = nextType != .Config && nextType != .Info && nextType != .Loading
             cellView!.label = tableValue.labelString
-
-            //Calculate frame
-            var viewBounds: CGSize = cellView!.sizeThatFits(CGSizeMake(frame.size.width, frame.size.height))
-            viewBounds.width = max(viewBounds.width, frame.size.width)
-            cellView!.frame = CGRectMake(0, 0, viewBounds.width, viewBounds.height)
         }
         
         //Set up a section cell
@@ -218,11 +197,6 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             cell?.selectionStyle = .None
             cell?.shouldHideDivider = true
             cellView!.label = tableValue.labelString
-            
-            //Calculate frame
-            var viewBounds: CGSize = cellView!.sizeThatFits(CGSizeMake(frame.size.width, frame.size.height))
-            viewBounds.width = max(viewBounds.width, frame.size.width)
-            cellView!.frame = CGRectMake(0, 0, viewBounds.width, viewBounds.height)
         }
         
         //Return result
@@ -249,14 +223,6 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
     // --
     // MARK: UITableViewDelegate
     // --
-    
-    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let cell: AppConfigTableCell? = self.tableView(table, cellForRowAtIndexPath: indexPath) as? AppConfigTableCell
-        if cell != nil && cell!.cellView != nil {
-            return cell!.cellView!.sizeThatFits(frame.size).height
-        }
-        return 0
-    }
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let tableValue = tableValues[indexPath.row]

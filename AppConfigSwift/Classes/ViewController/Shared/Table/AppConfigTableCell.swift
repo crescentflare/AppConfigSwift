@@ -25,6 +25,7 @@ public class AppConfigTableCell : UITableViewCell {
             _cellView = newValue
             if _cellView != nil {
                 contentView.addSubview(_cellView!)
+                AppConfigViewUtility.addPinSuperViewEdgesConstraints(_cellView!, parentView: contentView)
             }
         }
         get { return _cellView }
@@ -35,20 +36,12 @@ public class AppConfigTableCell : UITableViewCell {
     // MARK: Layout
     // --
     
-    public override func sizeThatFits(size: CGSize) -> CGSize {
-        if _cellView != nil {
-            return _cellView!.sizeThatFits(size)
-        }
-        return CGSize.zero
-    }
-    
     public override func layoutSubviews() {
         super.layoutSubviews()
         if shouldHideDivider {
-            self.separatorInset = UIEdgeInsetsMake(0, frame.size.width * 2, 0, 0);
-        }
-        if _cellView != nil {
-            self._cellView!.frame = CGRectMake(0, 0, contentView.frame.size.width, contentView.frame.size.height);
+            self.separatorInset = UIEdgeInsetsMake(0, frame.size.width * 2, 0, 0)
+        } else {
+            self.separatorInset = UIEdgeInsetsMake(0, 16, 0, 0)
         }
     }
     

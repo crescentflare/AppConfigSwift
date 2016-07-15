@@ -38,6 +38,7 @@ public class AppConfigViewUtility {
                                                 multiplier: 1.0,
                                                 constant: 0.0)
             parentView.addConstraint(constraint)
+            view.translatesAutoresizingMaskIntoConstraints = false
         }
     }
     
