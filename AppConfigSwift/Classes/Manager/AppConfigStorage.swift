@@ -37,6 +37,7 @@ public class AppConfigStorage {
 
     var configManagerInstance: AppConfigBaseManager?
     var storedConfigs: AppConfigOrderedDictionary<String, Any> = AppConfigOrderedDictionary()
+    var customConfigs: AppConfigOrderedDictionary<String, Any> = AppConfigOrderedDictionary()
     var loadFromAssetFile: String?
     var selectedItem: String?
     var activated: Bool = false
@@ -51,11 +52,7 @@ public class AppConfigStorage {
     
     //Activate storage, call this when using the selection menu
     //(optionally) specify the custom manager implementation to use
-    public func activate() {
-        self.activate(nil)
-    }
-
-    public func activate(manager: AppConfigBaseManager?) {
+    public func activate(manager: AppConfigBaseManager? = nil) {
         configManagerInstance = manager
         loadSelectedItemFromUserDefaults()
         if selectedItem != nil && storedConfigs[selectedItem!] != nil {
@@ -85,6 +82,11 @@ public class AppConfigStorage {
     // MARK: Obtain from storage
     // --
     
+    //Return settings for the given configuration
+    public func configSettings(config: String) -> [String: Any]? {
+        return storedConfigs[config] as? [String: Any]
+    }
+
     //Return the current selected configuration, or nil if none are selected
     public func selectedConfig() -> String? {
         return selectedItem
@@ -125,7 +127,17 @@ public class AppConfigStorage {
         }
         NSNotificationCenter.defaultCenter().postNotificationName(AppConfigStorage.configurationChanged, object: self)
     }
+
+    //Return if the given configuration is an extra custom configuration
+    public func isCustomConfig(config: String) -> Bool {
+        return customConfigs[config] != nil && storedConfigs[config] == nil
+    }
     
+    //Return if the given configuration has settings being overridden
+    public func isConfigOverride(config: String) -> Bool {
+        return customConfigs[config] != nil && storedConfigs[config] != nil
+    }
+
     
     // --
     // MARK: Loading

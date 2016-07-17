@@ -24,6 +24,8 @@ public class AppConfigModelMapper {
     // --
 
     var categorizedFields: [String: [String]] = [:]
+    var rawRepresentableFields: [String] = []
+    var rawRepresentableFieldValues: [String: [String]] = [:]
     var dictionary: [String: Any] = [:]
     var mode: AppConfigModelMapperMode
 
@@ -82,7 +84,7 @@ public class AppConfigModelMapper {
     }
     
     //Map between key and value: an enum containing a raw value (preferably string)
-    public func map<T: RawRepresentable>(key: String, inout value: T, fallback: T, category: String = "") {
+    public func map<T: RawRepresentable>(key: String, inout value: T, fallback: T, allValues: [T], category: String = "") {
         if mode == .ToDictionary {
             dictionary[key] = value.rawValue
         } else if mode == .FromDictionary && dictionary[key] != nil {
@@ -92,7 +94,16 @@ public class AppConfigModelMapper {
                 value = fallback
             }
         } else if mode == .CollectKeys {
-            addKey(key, category: category)
+            var stringValues: [String] = []
+            for value in allValues {
+                if value.rawValue is String {
+                    stringValues.append(value.rawValue as! String)
+                }
+            }
+            if stringValues.count > 0 {
+                rawRepresentableFieldValues[key] = stringValues
+            }
+            addKey(key, category: category, isRawRepresentable: true)
         }
     }
     
@@ -111,12 +122,25 @@ public class AppConfigModelMapper {
         return categorizedFields
     }
     
+    //After calling mapping on the model with this object, check if a given field is a raw representable class
+    public func isRawRepresentable(fieldName: String) -> Bool {
+        return rawRepresentableFields.contains(fieldName)
+    }
+    
+    //After calling mapping on the model with this object, return a list of possible values (only for raw representable types)
+    public func getRawRepresentableValues(fieldName: String) -> [String]? {
+        return rawRepresentableFieldValues[fieldName]
+    }
+    
     //Internal method to keep track of keys and categories
-    private func addKey(key: String, category: String) {
+    private func addKey(key: String, category: String, isRawRepresentable: Bool = false) {
         if categorizedFields[category] == nil {
             categorizedFields[category] = []
         }
         categorizedFields[category]!.append(key)
+        if isRawRepresentable && !rawRepresentableFields.contains(key) {
+            rawRepresentableFields.append(key)
+        }
     }
     
 }

@@ -13,6 +13,7 @@ import UIKit
 protocol AppConfigManageTableDelegate: class {
 
     func selectedConfig(configName: String)
+    func editConfig(configName: String)
 
 }
 
@@ -202,21 +203,22 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
         return cell!
     }
     
-    /*
     public func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         let tableValue = tableValues[indexPath.row]
         return tableValue.type == .Config
     }
     
     public func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let editAction = UITableViewRowAction.init(style: .Normal, title: CFLAppConfigBundle.localizedString("CFLAC_MANAGE_SWIPE_EDIT"), handler: { action, indexPath in
+        let editAction = UITableViewRowAction.init(style: .Normal, title: AppConfigBundle.localizedString("CFLAC_MANAGE_SWIPE_EDIT"), handler: { action, indexPath in
             let tableValue = self.tableValues[indexPath.row]
             tableView.setEditing(false, animated: true)
+            if tableValue.config != nil {
+                self.delegate?.editConfig(tableValue.config!)
+            }
         })
         editAction.backgroundColor = UIColor.blueColor()
         return [editAction]
     }
-    */
     
     
     // --

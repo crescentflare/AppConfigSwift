@@ -30,7 +30,7 @@ class ExampleAppConfigModel : AppConfigBaseModel {
         mapper.map("apiUrl", value: &apiUrl, category: "API related")
         mapper.map("networkTimeoutSec", value: &networkTimeoutSec, category: "API related")
         mapper.map("acceptAllSSL", value: &acceptAllSSL, category: "API related")
-        mapper.map("runType", value: &runType, fallback: .RunNormally)
+        mapper.map("runType", value: &runType, fallback: .RunNormally, allValues: ExampleAppConfigRunType.allValues())
     }
 
 }

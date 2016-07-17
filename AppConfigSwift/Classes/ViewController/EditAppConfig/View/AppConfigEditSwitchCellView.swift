@@ -1,14 +1,14 @@
 //
-//  AppConfigSectionCellView.swift
+//  AppConfigEditSwitchCellView.swift
 //  AppConfigSwift Pod
 //
-//  Library view: shared component
-//  A cell with a label to be used as a table section
+//  Library view: edit configuration
+//  A cell to switch a value on or off
 //
 
 import UIKit
 
-@IBDesignable public class AppConfigSectionCellView : UIView {
+@IBDesignable public class AppConfigEditSwitchCellView : UIView {
     
     // --
     // MARK: Members
@@ -16,6 +16,7 @@ import UIKit
     
     private var _contentView: UIView! = nil
     @IBOutlet private var _label: UILabel! = nil
+    @IBOutlet private var _switchControl: UISwitch! = nil
 
     
     // --
@@ -24,17 +25,30 @@ import UIKit
     
     @IBInspectable var labelText: String = "" {
         didSet {
-            label = labelText
+            _label.text = labelText
         }
     }
     
+    @IBInspectable var switchOn: Bool = false {
+        didSet {
+            _switchControl.on = switchOn
+        }
+    }
+
     var label: String? {
         set {
             _label!.text = newValue
         }
         get { return _label!.text }
     }
-    
+
+    var on: Bool {
+        set {
+            _switchControl!.on = newValue ?? false
+        }
+        get { return _switchControl!.on }
+    }
+
     
     // --
     // MARK: Initialization
@@ -51,8 +65,9 @@ import UIKit
     }
     
     public func setupView() {
-        _contentView = AppConfigViewUtility.loadNib("SectionCell", parentView: self)
+        _contentView = AppConfigViewUtility.loadNib("EditSwitchCell", parentView: self)
         _label.text = ""
+        _switchControl.on = false
     }
-
+   
 }

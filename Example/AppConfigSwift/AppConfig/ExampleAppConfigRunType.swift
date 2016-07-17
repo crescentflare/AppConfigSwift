@@ -15,5 +15,9 @@ enum ExampleAppConfigRunType: String {
     case RunNormally = "runNormally"
     case RunQuickly = "runQuickly"
     case RunStrictly = "runStrictly"
+    
+    static func allValues() -> [ExampleAppConfigRunType] {
+        return [RunNormally, RunQuickly, RunStrictly]
+    }
 
 }

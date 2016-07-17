@@ -25,7 +25,7 @@ import UIKit
     
     @IBInspectable var labelText: String = "" {
         didSet {
-            _label.text = labelText
+            label = labelText
         }
     }
     

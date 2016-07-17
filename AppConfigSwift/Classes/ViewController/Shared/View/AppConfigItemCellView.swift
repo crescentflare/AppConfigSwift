@@ -25,13 +25,13 @@ import UIKit
     
     @IBInspectable var labelText: String = "" {
         didSet {
-            _label.text = labelText
+            label = labelText
         }
     }
 
     @IBInspectable var additionalText: String = "" {
         didSet {
-            _additional.text = additionalText
+            additional = additionalText
         }
     }
 

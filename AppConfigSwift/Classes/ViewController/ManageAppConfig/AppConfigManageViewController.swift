@@ -69,6 +69,12 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
         view = manageConfigTable
     }
     
+    public override func viewDidAppear(animated: Bool) {
+        if isLoaded {
+            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
+        }
+    }
+    
     
     // --
     // MARK: Selectors
@@ -94,6 +100,11 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
         } else {
             navigationController?.popViewControllerAnimated(true)
         }
+    }
+    
+    func editConfig(configName: String) {
+        let viewController = AppConfigEditViewController(configName: configName, newConfig: false)
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
 }

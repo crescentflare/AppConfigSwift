@@ -27,9 +27,22 @@ public class AppConfigBaseModel {
 
     //Helper method to convert the list of defined properties in the derived model to a dictionary
     public func obtainValues() -> [String: Any] {
-        let mapper: AppConfigModelMapper = AppConfigModelMapper(mode: .ToDictionary)
+        let mapper = AppConfigModelMapper(mode: .ToDictionary)
         map(mapper)
         return mapper.getDictionaryValues()
+    }
+    
+    //Helper method to determine if the value is a raw representable (like an enum)
+    public func isRawRepresentable(fieldName: String) -> Bool {
+        let mapper = AppConfigModelMapper(mode: .CollectKeys)
+        map(mapper)
+        return mapper.isRawRepresentable(fieldName)
+    }
+    
+    public func getRawRepresentableValues(fieldName: String) -> [String]? {
+        let mapper = AppConfigModelMapper(mode: .CollectKeys)
+        map(mapper)
+        return mapper.getRawRepresentableValues(fieldName)
     }
     
     //Internal method to override the model with customized values
