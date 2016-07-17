@@ -324,7 +324,17 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
     // --
     
     func selectedItem(item: String, token: String?) {
-        //
+        for i in 0..<tableValues.count {
+            let tableValue = tableValues[i]
+            if tableValue.configSetting == token {
+                let totalIndexPath = NSIndexPath.init(forRow: i, inSection: 0)
+                tableValues[i] = AppConfigEditTableValue.valueForSelection(tableValue.configSetting!, andValue: item, andChoices: tableValue.selectionItems!)
+                table.beginUpdates()
+                table.reloadRowsAtIndexPaths([totalIndexPath], withRowAnimation: .None)
+                table.endUpdates()
+                break
+            }
+        }
     }
     
 }
