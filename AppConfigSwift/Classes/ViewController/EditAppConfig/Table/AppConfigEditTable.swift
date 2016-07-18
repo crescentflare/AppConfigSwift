@@ -228,7 +228,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
             //Supply data
             cell?.selectionStyle = .Default
             cell?.shouldHideDivider = !nextType.isCellType()
-            //TODO: set delegate for switch toggle updates
+            cellView!.delegate = self
             cellView!.label = tableValue.configSetting
             cellView!.on = tableValue.booleanValue
         }
