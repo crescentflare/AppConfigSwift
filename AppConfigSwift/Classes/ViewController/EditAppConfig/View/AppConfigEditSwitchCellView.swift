@@ -8,12 +8,20 @@
 
 import UIKit
 
+//Delegate protocol
+protocol AppConfigEditSwitchCellViewDelegate: class {
+    
+    func changedSwitchState(on: Bool, forConfigSetting: String)
+    
+}
+
 @IBDesignable public class AppConfigEditSwitchCellView : UIView {
     
     // --
     // MARK: Members
     // --
     
+    weak var delegate: AppConfigEditSwitchCellViewDelegate?
     private var _contentView: UIView! = nil
     @IBOutlet private var _label: UILabel! = nil
     @IBOutlet private var _switchControl: UISwitch! = nil
@@ -67,7 +75,28 @@ import UIKit
     public func setupView() {
         _contentView = AppConfigViewUtility.loadNib("EditSwitchCell", parentView: self)
         _label.text = ""
+        _switchControl.addTarget(self, action: #selector(setState), forControlEvents: .ValueChanged)
         _switchControl.on = false
     }
    
+
+    // --
+    // MARK: Selector
+    // --
+    
+    func setState(switchComponent: UISwitch) {
+        delegate?.changedSwitchState(switchComponent.on, forConfigSetting: label ?? "")
+    }
+
+
+    // --
+    // MARK: Helper
+    // --
+    
+    public func toggleState() {
+        let newState = !on
+        _switchControl.setOn(newState, animated: true)
+        delegate?.changedSwitchState(newState, forConfigSetting: label ?? "")
+    }
+
 }

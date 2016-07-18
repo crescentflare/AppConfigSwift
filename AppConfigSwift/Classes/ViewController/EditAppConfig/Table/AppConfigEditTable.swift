@@ -20,7 +20,7 @@ protocol AppConfigEditTableDelegate: class {
 
 
 //Class
-public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigEditTextCellViewDelegate, AppConfigSelectionPopupViewDelegate {
+public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigEditTextCellViewDelegate, AppConfigEditSwitchCellViewDelegate, AppConfigSelectionPopupViewDelegate {
     
     // --
     // MARK: Members
@@ -305,7 +305,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
         } else if tableValue.type == .SwitchValue {
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? AppConfigTableCell {
                 if let switchCellView = cell.cellView as? AppConfigEditSwitchCellView {
-                    switchCellView.on = !switchCellView.on
+                    switchCellView.toggleState()
                 }
             }
         } else if tableValue.type == .TextEntry {
@@ -328,6 +328,21 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
             let tableValue = tableValues[i]
             if tableValue.configSetting == forConfigSetting {
                 tableValues[i] = AppConfigEditTableValue.valueForTextEntry(tableValue.configSetting!, andValue: newText, numberOnly: tableValue.limitUsage)
+                break
+            }
+        }
+    }
+    
+
+    // --
+    // MARK: AppConfigEditSwitchCellViewDelegate
+    // --
+    
+    func changedSwitchState(on: Bool, forConfigSetting: String) {
+        for i in 0..<tableValues.count {
+            let tableValue = tableValues[i]
+            if tableValue.configSetting == forConfigSetting {
+                tableValues[i] = AppConfigEditTableValue.valueForSwitchValue(tableValue.configSetting!, andSwitchedOn: on)
                 break
             }
         }
