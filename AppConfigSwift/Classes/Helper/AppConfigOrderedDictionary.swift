@@ -30,7 +30,12 @@ public struct AppConfigOrderedDictionary<Tk: Hashable, Tv> {
     public func allKeys() -> [Tk] {
         return keys
     }
-
+    
+    public mutating func removeAllObjects() {
+        keys.removeAll()
+        values.removeAll()
+    }
+    
     
     // --
     // MARK: Indexing

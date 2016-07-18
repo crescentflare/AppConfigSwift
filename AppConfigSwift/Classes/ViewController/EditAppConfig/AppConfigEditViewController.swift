@@ -122,7 +122,16 @@ public class AppConfigEditViewController : UIViewController, AppConfigEditTableD
     // --
     
     func saveConfig(newSettings: [String: Any]) {
-        //TODO: save
+        let wasSelected = configName == AppConfigStorage.sharedManager.selectedConfig()
+        
+        if AppConfigStorage.sharedManager.isCustomConfig(configName) || AppConfigStorage.sharedManager.isConfigOverride(configName) {
+            AppConfigStorage.sharedManager.removeConfig(configName)
+        }
+        AppConfigStorage.sharedManager.putCustomConfig(newSettings, forConfig: newSettings["name"] as? String ?? "")
+        if wasSelected {
+            AppConfigStorage.sharedManager.selectConfig(newSettings["name"] as? String)
+        }
+        AppConfigStorage.sharedManager.synchronizeCustomConfigWithUserDefaults(newSettings["name"] as? String ?? "")
         navigationController?.popViewControllerAnimated(true)
     }
     
@@ -131,7 +140,14 @@ public class AppConfigEditViewController : UIViewController, AppConfigEditTableD
     }
     
     func revertConfig() {
-        //TODO: undo/delete
+        let wasSelected = configName == AppConfigStorage.sharedManager.selectedConfig()
+        if AppConfigStorage.sharedManager.isCustomConfig(configName) || AppConfigStorage.sharedManager.isConfigOverride(configName) {
+            AppConfigStorage.sharedManager.removeConfig(configName)
+            AppConfigStorage.sharedManager.synchronizeCustomConfigWithUserDefaults(configName)
+        }
+        if wasSelected {
+            AppConfigStorage.sharedManager.selectConfig(configName)
+        }
         navigationController?.popViewControllerAnimated(true)
     }
     
