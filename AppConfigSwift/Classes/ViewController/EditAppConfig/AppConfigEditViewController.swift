@@ -113,7 +113,7 @@ public class AppConfigEditViewController : UIViewController, AppConfigEditTableD
     }
     
     func saveButtonPressed(sender: UIButton) {
-        saveConfig([:])
+        saveConfig(editConfigTable.obtainNewConfigurationSettings())
     }
     
 
@@ -121,7 +121,7 @@ public class AppConfigEditViewController : UIViewController, AppConfigEditTableD
     // MARK: CFLAppConfigEditTableDelegate
     // --
     
-    func saveConfig(newSettings: [String: AnyObject]) {
+    func saveConfig(newSettings: [String: Any]) {
         //TODO: save
         navigationController?.popViewControllerAnimated(true)
     }

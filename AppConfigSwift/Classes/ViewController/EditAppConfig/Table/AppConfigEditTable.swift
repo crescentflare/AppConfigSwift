@@ -12,7 +12,7 @@ import UIKit
 //Delegate protocol
 protocol AppConfigEditTableDelegate: class {
 
-    func saveConfig(newSettings: [String: AnyObject])
+    func saveConfig(newSettings: [String: Any])
     func cancelEditing()
     func revertConfig()
 
@@ -141,7 +141,34 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
         table.reloadData()
     }
     
+    public func obtainNewConfigurationSettings() -> [String: Any] {
+        var result: [String: Any] = [:]
+        result["name"] = configName
+        for tableValue in tableValues {
+            switch tableValue.type {
+            case .TextEntry:
+                if tableValue.limitUsage {
+                    let formatter = NSNumberFormatter()
+                    formatter.numberStyle = .DecimalStyle
+                    result[tableValue.configSetting!] = formatter.numberFromString(tableValue.labelString)
+                } else {
+                    result[tableValue.configSetting!] = tableValue.labelString
+                }
+                break
+            case .SwitchValue:
+                result[tableValue.configSetting!] = tableValue.booleanValue
+                break
+            case .Selection:
+                result[tableValue.configSetting!] = tableValue.labelString
+                break
+            default:
+                break //Others are not editable cells
+            }
+        }
+        return result
+    }
 
+    
     // --
     // MARK: UITableViewDataSource
     // --
@@ -283,7 +310,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
         if tableValue.type == .Action && delegate != nil {
             switch tableValue.action {
             case .Save:
-                delegate?.saveConfig([:])
+                delegate?.saveConfig(obtainNewConfigurationSettings())
                 break
             case .Cancel:
                 delegate?.cancelEditing()
