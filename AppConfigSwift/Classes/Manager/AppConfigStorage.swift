@@ -174,6 +174,14 @@ public class AppConfigStorage {
     public func selectConfig(configName: String?) {
         selectedItem = nil
         if configName != nil {
+            for key in customConfigs.allKeys() {
+                if key == configName! {
+                    selectedItem = key
+                    break
+                }
+            }
+        }
+        if selectedItem == nil && configName != nil {
             for key in storedConfigs.allKeys() {
                 if key == configName! {
                     selectedItem = key
@@ -185,7 +193,10 @@ public class AppConfigStorage {
         if configManagerInstance != nil {
             var config: [String: Any]? = nil
             if selectedItem != nil {
-                config = storedConfigs[selectedItem!] as? [String: Any]
+                config = customConfigs[selectedItem!] as? [String: Any]
+                if config == nil {
+                    config = storedConfigs[selectedItem!] as? [String: Any]
+                }
             }
             configManagerInstance?.applyConfigToModel(config ?? [:], name: selectedItem)
         }
@@ -325,9 +336,9 @@ public class AppConfigStorage {
     }
     
     private func storeSelectedItemInUserDefaults() {
-        if selectedItem != nil && storedConfigs[selectedItem!] != nil {
+        if let settings = customConfigs[selectedItem ?? ""] ?? storedConfigs[selectedItem ?? ""] {
             var storeDictionary: [String: AnyObject] = [:]
-            for (key, value) in storedConfigs[selectedItem!] as! [String: Any] {
+            for (key, value) in settings as! [String: Any] {
                 storeDictionary[key] = value as? AnyObject
             }
             NSUserDefaults.standardUserDefaults().setValue(selectedItem, forKey: AppConfigStorage.defaultsSelectedConfigName)
