@@ -20,7 +20,7 @@ protocol AppConfigEditTableDelegate: class {
 
 
 //Class
-public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigSelectionPopupViewDelegate {
+public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigEditTextCellViewDelegate, AppConfigSelectionPopupViewDelegate {
     
     // --
     // MARK: Members
@@ -208,7 +208,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
             //Supply data
             cell?.selectionStyle = .Default
             cell?.shouldHideDivider = !nextType.isCellType()
-            //TODO: set delegate for text updates
+            cellView!.delegate = self
             cellView!.label = tableValue.configSetting
             cellView!.editedText = tableValue.labelString
             cellView!.applyNumberLimitation = tableValue.limitUsage
@@ -319,6 +319,21 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
     }
     
 
+    // --
+    // MARK: AppConfigEditTextCellViewDelegate
+    // --
+    
+    func changedEditText(newText: String, forConfigSetting: String) {
+        for i in 0..<tableValues.count {
+            let tableValue = tableValues[i]
+            if tableValue.configSetting == forConfigSetting {
+                tableValues[i] = AppConfigEditTableValue.valueForTextEntry(tableValue.configSetting!, andValue: newText, numberOnly: tableValue.limitUsage)
+                break
+            }
+        }
+    }
+
+    
     // --
     // MARK: AppConfigSelectionPopupViewDelegate
     // --

@@ -8,12 +8,20 @@
 
 import UIKit
 
-@IBDesignable public class AppConfigEditTextCellView : UIView {
+//Delegate protocol
+protocol AppConfigEditTextCellViewDelegate: class {
+    
+    func changedEditText(newText: String, forConfigSetting: String)
+    
+}
+
+@IBDesignable public class AppConfigEditTextCellView : UIView, UITextFieldDelegate {
     
     // --
     // MARK: Members
     // --
     
+    weak var delegate: AppConfigEditTextCellViewDelegate?
     private var _contentView: UIView! = nil
     @IBOutlet private var _label: UILabel! = nil
     @IBOutlet private var _editedText: UITextField! = nil
@@ -83,9 +91,50 @@ import UIKit
         _contentView = AppConfigViewUtility.loadNib("EditTextCell", parentView: self)
         _label.textColor = tintColor
         _label.text = ""
+        _editedText.delegate = self
         _editedText.text = ""
     }
 
+    
+    // --
+    // MARK: Selector
+    // --
+    
+    func textFieldDidChange(textField: UITextField) {
+        delegate?.changedEditText(textField.text ?? "", forConfigSetting: label ?? "")
+    }
+    
+    
+    // --
+    // MARK: UITextFieldDelegate
+    // --
+
+    public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        //Only use limitation code if applied
+        if !applyNumberLimitation {
+            return true
+        }
+        
+        //Allow backspace
+        if string.characters.count == 0 {
+            return true
+        }
+        
+        //Prevent invalid character input, if keyboard is set to a number-like input form
+        if textField.keyboardType == .NumbersAndPunctuation || textField.keyboardType == .NumberPad {
+            var checkString = string
+            if textField.text?.characters.count == 0 {
+                if string.rangeOfString("-")?.startIndex == string.startIndex {
+                    checkString = string.substringFromIndex(string.startIndex.advancedBy(1))
+                }
+            }
+            if checkString.rangeOfCharacterFromSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet) != nil {
+                return false
+            }
+        }
+        return true
+    }
+    
     
     // --
     // MARK: Helpers
