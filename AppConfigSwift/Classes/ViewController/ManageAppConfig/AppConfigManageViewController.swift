@@ -38,24 +38,24 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
             let highlightColor: UIColor = UIColor.init(red: red, green: green, blue: blue, alpha: 0.25)
             
             //Create button
-            let cancelButton: UIButton = UIButton()
-            cancelButton.titleLabel?.font = UIFont.systemFontOfSize(15)
-            cancelButton.setTitle(AppConfigBundle.localizedString("CFLAC_SHARED_CANCEL"), forState: UIControlState.Normal)
-            cancelButton.setTitleColor(tintColor, forState: UIControlState.Normal)
-            cancelButton.setTitleColor(highlightColor, forState: UIControlState.Highlighted)
-            let size: CGSize = cancelButton.sizeThatFits(CGSizeZero)
-            cancelButton.frame = CGRectMake(0, 0, size.width, size.height)
-            cancelButton.addTarget(self, action: #selector(cancelButtonPressed), forControlEvents: UIControlEvents.TouchUpInside)
+            let doneButton: UIButton = UIButton()
+            doneButton.titleLabel?.font = UIFont.systemFontOfSize(15)
+            doneButton.setTitle(AppConfigBundle.localizedString("CFLAC_SHARED_DONE"), forState: UIControlState.Normal)
+            doneButton.setTitleColor(tintColor, forState: UIControlState.Normal)
+            doneButton.setTitleColor(highlightColor, forState: UIControlState.Highlighted)
+            let size: CGSize = doneButton.sizeThatFits(CGSizeZero)
+            doneButton.frame = CGRectMake(0, 0, size.width, size.height)
+            doneButton.addTarget(self, action: #selector(doneButtonPressed), forControlEvents: UIControlEvents.TouchUpInside)
             
             //Wrap in bar button item
-            let cancelButtonWrapper: UIBarButtonItem = UIBarButtonItem.init(customView: cancelButton)
-            navigationItem.leftBarButtonItem = cancelButtonWrapper
+            let doneButtonWrapper: UIBarButtonItem = UIBarButtonItem.init(customView: doneButton)
+            navigationItem.leftBarButtonItem = doneButtonWrapper
         }
         
         //Update configuration list
         AppConfigStorage.sharedManager.loadFromSource({
             self.isLoaded = true
-            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
+            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), customConfigurations: AppConfigStorage.sharedManager.obtainCustomConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
         })
     }
     
@@ -69,12 +69,18 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
         view = manageConfigTable
     }
     
+    public override func viewDidAppear(animated: Bool) {
+        if isLoaded {
+            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), customConfigurations: AppConfigStorage.sharedManager.obtainCustomConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
+        }
+    }
+    
     
     // --
     // MARK: Selectors
     // --
     
-    func cancelButtonPressed(sender: UIButton) {
+    func doneButtonPressed(sender: UIButton) {
         if isPresentedController {
             dismissViewControllerAnimated(true, completion: nil)
         } else {
@@ -89,11 +95,19 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     
     func selectedConfig(configName: String) {
         AppConfigStorage.sharedManager.selectConfig(configName)
-        if isPresentedController {
-            dismissViewControllerAnimated(true, completion: nil)
-        } else {
-            navigationController?.popViewControllerAnimated(true)
+        if isLoaded {
+            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), customConfigurations: AppConfigStorage.sharedManager.obtainCustomConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
         }
+    }
+    
+    func editConfig(configName: String) {
+        let viewController = AppConfigEditViewController(configName: configName, newConfig: false)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func newCustomConfigFrom(configName: String) {
+        let viewController = AppConfigEditViewController(configName: configName, newConfig: true)
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
 }

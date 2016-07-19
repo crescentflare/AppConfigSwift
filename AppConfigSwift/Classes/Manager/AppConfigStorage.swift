@@ -37,8 +37,10 @@ public class AppConfigStorage {
 
     var configManagerInstance: AppConfigBaseManager?
     var storedConfigs: AppConfigOrderedDictionary<String, Any> = AppConfigOrderedDictionary()
+    var customConfigs: AppConfigOrderedDictionary<String, Any> = AppConfigOrderedDictionary()
     var loadFromAssetFile: String?
     var selectedItem: String?
+    var customConfigLoaded: Bool = false
     var activated: Bool = false
 
     
@@ -51,11 +53,7 @@ public class AppConfigStorage {
     
     //Activate storage, call this when using the selection menu
     //(optionally) specify the custom manager implementation to use
-    public func activate() {
-        self.activate(nil)
-    }
-
-    public func activate(manager: AppConfigBaseManager?) {
+    public func activate(manager: AppConfigBaseManager? = nil) {
         configManagerInstance = manager
         loadSelectedItemFromUserDefaults()
         if selectedItem != nil && storedConfigs[selectedItem!] != nil {
@@ -85,6 +83,14 @@ public class AppConfigStorage {
     // MARK: Obtain from storage
     // --
     
+    //Return settings for the given configuration
+    public func configSettings(config: String) -> [String: Any]? {
+        if let customConfig = customConfigs[config] as? [String: Any] {
+            return customConfig
+        }
+        return storedConfigs[config] as? [String: Any]
+    }
+
     //Return the current selected configuration, or nil if none are selected
     public func selectedConfig() -> String? {
         return selectedItem
@@ -99,15 +105,83 @@ public class AppConfigStorage {
         return list
     }
 
+    //Obtain a list of loaded custom configurations
+    public func obtainCustomConfigList() -> [String] {
+        var list: [String] = []
+        for key in customConfigs.allKeys() {
+            if !isConfigOverride(key) {
+                list.append(key)
+            }
+        }
+        return list
+    }
+
+    
+    // --
+    // MARK: Add to storage
+    // --
+    
+    //Set custom values for an existing or new configuration
+    public func putCustomConfig(settings: [String: Any], forConfig: String) {
+        if customConfigs[forConfig] != nil {
+            removeConfig(forConfig)
+        }
+        if storedConfigs[forConfig] == nil || !dictionariesEqual(storedConfigs[forConfig] as? [String: Any], rhs: settings) {
+            customConfigs[forConfig] = settings
+        }
+    }
+
+    private func dictionariesEqual(lhs: [String: Any]?, rhs: [String: Any]?) -> Bool {
+        var tmpLhs: [String: AnyObject] = [:]
+        var tmpRhs: [String: AnyObject] = [:]
+        if lhs != nil {
+            for (key, value) in lhs! {
+                tmpLhs[key] = value as? AnyObject
+            }
+        }
+        if rhs != nil {
+            for (key, value) in rhs! {
+                tmpRhs[key] = value as? AnyObject
+            }
+        }
+        return NSDictionary(dictionary: tmpLhs).isEqualToDictionary(tmpRhs)
+    }
+
     
     // --
     // MARK: Other operations
     // --
     
+    //Remove a configuration
+    public func removeConfig(config: String) -> Bool {
+        var removed = false
+        if customConfigs[config] != nil {
+            customConfigs[config] = nil
+            removed = true
+        } else if storedConfigs[config] != nil {
+            storedConfigs[config] = nil
+            removed = true
+        }
+        if removed && config == selectedItem {
+            selectedItem = nil
+            configManagerInstance?.applyConfigToModel([:], name: selectedItem)
+            NSNotificationCenter.defaultCenter().postNotificationName(AppConfigStorage.configurationChanged, object: self)
+        }
+        return removed
+    }
+
     //Select a configuration
     public func selectConfig(configName: String?) {
         selectedItem = nil
         if configName != nil {
+            for key in customConfigs.allKeys() {
+                if key == configName! {
+                    selectedItem = key
+                    break
+                }
+            }
+        }
+        if selectedItem == nil && configName != nil {
             for key in storedConfigs.allKeys() {
                 if key == configName! {
                     selectedItem = key
@@ -119,13 +193,26 @@ public class AppConfigStorage {
         if configManagerInstance != nil {
             var config: [String: Any]? = nil
             if selectedItem != nil {
-                config = storedConfigs[selectedItem!] as? [String: Any]
+                config = customConfigs[selectedItem!] as? [String: Any]
+                if config == nil {
+                    config = storedConfigs[selectedItem!] as? [String: Any]
+                }
             }
             configManagerInstance?.applyConfigToModel(config ?? [:], name: selectedItem)
         }
         NSNotificationCenter.defaultCenter().postNotificationName(AppConfigStorage.configurationChanged, object: self)
     }
+
+    //Return if the given configuration is an extra custom configuration
+    public func isCustomConfig(config: String) -> Bool {
+        return customConfigs[config] != nil && storedConfigs[config] == nil
+    }
     
+    //Return if the given configuration has settings being overridden
+    public func isConfigOverride(config: String) -> Bool {
+        return customConfigs[config] != nil && storedConfigs[config] != nil
+    }
+
     
     // --
     // MARK: Loading
@@ -147,6 +234,10 @@ public class AppConfigStorage {
                     self.storedConfigs = loadedConfigs!
                     self.loadFromAssetFile = nil
                 }
+                if !self.customConfigLoaded {
+                    self.loadCustomConfigurationsFromUserDefaults()
+                    self.customConfigLoaded = true
+                }
                 completion()
             }
         }
@@ -158,6 +249,10 @@ public class AppConfigStorage {
         if loadedConfigs != nil {
             storedConfigs = loadedConfigs!
             loadFromAssetFile = nil
+        }
+        if !customConfigLoaded {
+            loadCustomConfigurationsFromUserDefaults()
+            customConfigLoaded = true
         }
     }
     
@@ -217,6 +312,20 @@ public class AppConfigStorage {
     // MARK: Userdefaults handling
     // --
     
+    public func synchronizeCustomConfigsWithUserDefaults() {
+        var configs: [[String: AnyObject]] = []
+        for key in customConfigs.allKeys() {
+            if let customConfig = customConfigs[key] as? [String: Any] {
+                var storeDictionary: [String: AnyObject] = [:]
+                for (key, value) in customConfig as! [String: Any] {
+                    storeDictionary[key] = value as? AnyObject
+                }
+                configs.append(storeDictionary)
+            }
+        }
+        NSUserDefaults.standardUserDefaults().setValue(configs, forKey: AppConfigStorage.defaultsCustomConfigs)
+    }
+
     private func loadSelectedItemFromUserDefaults() {
         selectedItem = NSUserDefaults.standardUserDefaults().valueForKey(AppConfigStorage.defaultsSelectedConfigName) as? String
         if selectedItem != nil {
@@ -233,9 +342,9 @@ public class AppConfigStorage {
     }
     
     private func storeSelectedItemInUserDefaults() {
-        if selectedItem != nil && storedConfigs[selectedItem!] != nil {
+        if let settings = customConfigs[selectedItem ?? ""] ?? storedConfigs[selectedItem ?? ""] {
             var storeDictionary: [String: AnyObject] = [:]
-            for (key, value) in storedConfigs[selectedItem!] as! [String: Any] {
+            for (key, value) in settings as! [String: Any] {
                 storeDictionary[key] = value as? AnyObject
             }
             NSUserDefaults.standardUserDefaults().setValue(selectedItem, forKey: AppConfigStorage.defaultsSelectedConfigName)
@@ -243,6 +352,21 @@ public class AppConfigStorage {
         } else {
             NSUserDefaults.standardUserDefaults().removeObjectForKey(AppConfigStorage.defaultsSelectedConfigName)
             NSUserDefaults.standardUserDefaults().removeObjectForKey(AppConfigStorage.defaultsSelectedConfigDictionary)
+        }
+    }
+
+    private func loadCustomConfigurationsFromUserDefaults() {
+        customConfigs.removeAllObjects()
+        if var configs = NSUserDefaults.standardUserDefaults().valueForKey(AppConfigStorage.defaultsCustomConfigs) as? [[String: AnyObject]] {
+            for config in configs {
+                var loadDictionary: [String: Any] = [:]
+                for (key, value) in config {
+                    loadDictionary[key] = value as Any
+                }
+                if let dictionaryName = loadDictionary["name"] as? String {
+                    customConfigs[dictionaryName] = loadDictionary
+                }
+            }
         }
     }
 

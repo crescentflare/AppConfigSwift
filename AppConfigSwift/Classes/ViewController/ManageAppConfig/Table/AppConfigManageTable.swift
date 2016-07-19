@@ -13,12 +13,14 @@ import UIKit
 protocol AppConfigManageTableDelegate: class {
 
     func selectedConfig(configName: String)
+    func editConfig(configName: String)
+    func newCustomConfigFrom(configName: String)
 
 }
 
 
 //Class
-public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate {
+public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigSelectionPopupViewDelegate {
     
     // --
     // MARK: Members
@@ -71,33 +73,25 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
     // MARK: Implementation
     // --
     
-    public func setConfigurations(configurations: [String], lastSelected: String?) {
+    public func setConfigurations(configurations: [String], customConfigurations: [String], lastSelected: String?) {
         //Start with an empty table values list
         tableValues = []
-        
-        //Add last selected config (if found)
-        var foundLastSelected = false
-        tableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_MANAGE_SECTION_LAST_SELECTED")))
-        if lastSelected != nil {
-            for configuration: String in configurations {
-                if configuration == lastSelected! {
-                    foundLastSelected = true
-                    break
-                }
-            }
-        }
-        if foundLastSelected {
-            tableValues.append(AppConfigManageTableValue.valueForConfig(lastSelected!, andText: lastSelected!))
-        } else {
-            tableValues.append(AppConfigManageTableValue.valueForConfig(nil, andText: AppConfigBundle.localizedString("CFLAC_MANAGE_LAST_SELECTED_NONE")))
-        }
         
         //Add predefined configurations (if present)
         if configurations.count > 0 {
             tableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_MANAGE_SECTION_PREDEFINED")))
             for configuration: String in configurations {
-                tableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration))
+                tableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: AppConfigStorage.sharedManager.isConfigOverride(configuration)))
             }
+        }
+        
+        //Add custom configurations (if present)
+        if configurations.count > 0 {
+            tableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_MANAGE_SECTION_CUSTOM")))
+            for configuration: String in customConfigurations {
+                tableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: false))
+            }
+            tableValues.append(AppConfigManageTableValue.valueForConfig(nil, andText: AppConfigBundle.localizedString("CFLAC_MANAGE_ADD_NEW"), lastSelected: false, edited: false))
         }
         
         //Add build information
@@ -155,13 +149,12 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             }
             
             //Supply data
-            if tableValue.config != nil {
-                cell?.accessoryType = .DisclosureIndicator
-            } else {
-                cell?.selectionStyle = .None
-            }
+            cell?.accessoryType = tableValue.lastSelected ? .Checkmark : .DisclosureIndicator
             cell?.shouldHideDivider = nextType != .Config && nextType != .Info && nextType != .Loading
             cellView!.label = tableValue.labelString
+            if tableValue.edited {
+                cellView!.additional = AppConfigBundle.localizedString("CFLAC_MANAGE_INDICATOR_EDITED")
+            }
         }
         
         //Set up an info cell
@@ -202,21 +195,22 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
         return cell!
     }
     
-    /*
     public func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         let tableValue = tableValues[indexPath.row]
         return tableValue.type == .Config
     }
     
     public func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let editAction = UITableViewRowAction.init(style: .Normal, title: CFLAppConfigBundle.localizedString("CFLAC_MANAGE_SWIPE_EDIT"), handler: { action, indexPath in
+        let editAction = UITableViewRowAction.init(style: .Normal, title: AppConfigBundle.localizedString("CFLAC_MANAGE_SWIPE_EDIT"), handler: { action, indexPath in
             let tableValue = self.tableValues[indexPath.row]
             tableView.setEditing(false, animated: true)
+            if tableValue.config != nil {
+                self.delegate?.editConfig(tableValue.config!)
+            }
         })
         editAction.backgroundColor = UIColor.blueColor()
         return [editAction]
     }
-    */
     
     
     // --
@@ -228,9 +222,25 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
         if delegate != nil {
             if tableValue.config != nil {
                 delegate?.selectedConfig(tableValue.config!)
+            } else if tableValue.type == .Config {
+                let choicePopup = AppConfigSelectionPopupView()
+                choicePopup.label = AppConfigBundle.localizedString("CFLAC_SHARED_SELECT_MENU")
+                choicePopup.choices = AppConfigStorage.sharedManager.obtainConfigList()
+                choicePopup.delegate = self
+                choicePopup.addToSuperview(self)
+                AppConfigViewUtility.addPinSuperViewEdgesConstraints(choicePopup, parentView: self)
             }
         }
         table.deselectRowAtIndexPath(indexPath, animated: false)
     }
     
+    
+    // --
+    // MARK: AppConfigSelectionPopupViewDelegate
+    // --
+    
+    func selectedItem(item: String, token: String?) {
+        delegate?.newCustomConfigFrom(item)
+    }
+
 }
