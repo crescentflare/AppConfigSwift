@@ -160,7 +160,7 @@ protocol AppConfigSelectionPopupViewDelegate: class {
         //Supply data and return the cell
         cell?.selectionStyle = .Default
         cell?.accessoryType = .DisclosureIndicator
-        cell?.shouldHideDivider = indexPath.row + 1 < _tableChoices.count
+        cell?.shouldHideDivider = indexPath.row + 1 >= _tableChoices.count
         cellView!.label = _tableChoices[indexPath.row]
         return cell!
     }

@@ -312,12 +312,18 @@ public class AppConfigStorage {
     // MARK: Userdefaults handling
     // --
     
-    public func synchronizeCustomConfigWithUserDefaults(config: String) {
-        if customConfigs[config] != nil {
-            storeCustomItemInUserDefaults(config)
-        } else {
-            removeCustomItemFromUserDefaults(config)
+    public func synchronizeCustomConfigsWithUserDefaults() {
+        var configs: [[String: AnyObject]] = []
+        for key in customConfigs.allKeys() {
+            if let customConfig = customConfigs[key] as? [String: Any] {
+                var storeDictionary: [String: AnyObject] = [:]
+                for (key, value) in customConfig as! [String: Any] {
+                    storeDictionary[key] = value as? AnyObject
+                }
+                configs.append(storeDictionary)
+            }
         }
+        NSUserDefaults.standardUserDefaults().setValue(configs, forKey: AppConfigStorage.defaultsCustomConfigs)
     }
 
     private func loadSelectedItemFromUserDefaults() {
@@ -349,39 +355,6 @@ public class AppConfigStorage {
         }
     }
 
-    private func storeCustomItemInUserDefaults(config: String) {
-        if customConfigs[config] != nil {
-            var configs: [[String: AnyObject]] = []
-            removeCustomItemFromUserDefaults(config)
-            if let customConfigs = NSUserDefaults.standardUserDefaults().valueForKey(AppConfigStorage.defaultsCustomConfigs) as? [[String: AnyObject]] {
-                configs = customConfigs
-            }
-            if let customConfig = customConfigs[config] as? [String: Any] {
-                var storeDictionary: [String: AnyObject] = [:]
-                for (key, value) in customConfig as! [String: Any] {
-                    storeDictionary[key] = value as? AnyObject
-                }
-                configs.append(storeDictionary)
-            }
-            NSUserDefaults.standardUserDefaults().setValue(configs, forKey: AppConfigStorage.defaultsCustomConfigs)
-        }
-    }
-    
-    private func removeCustomItemFromUserDefaults(config: String) {
-        if var configs = NSUserDefaults.standardUserDefaults().valueForKey(AppConfigStorage.defaultsCustomConfigs) as? [[String: AnyObject]] {
-            for i in 0..<configs.count {
-                let settings = configs[i]
-                if let name = settings["name"] as? String {
-                    if name == config {
-                        configs.removeAtIndex(i)
-                        break
-                    }
-                }
-            }
-            NSUserDefaults.standardUserDefaults().setValue(configs, forKey: AppConfigStorage.defaultsCustomConfigs)
-        }
-    }
-    
     private func loadCustomConfigurationsFromUserDefaults() {
         customConfigs.removeAllObjects()
         if var configs = NSUserDefaults.standardUserDefaults().valueForKey(AppConfigStorage.defaultsCustomConfigs) as? [[String: AnyObject]] {

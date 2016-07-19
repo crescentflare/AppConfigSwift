@@ -123,15 +123,20 @@ public class AppConfigEditViewController : UIViewController, AppConfigEditTableD
     
     func saveConfig(newSettings: [String: Any]) {
         let wasSelected = configName == AppConfigStorage.sharedManager.selectedConfig()
-        
         if AppConfigStorage.sharedManager.isCustomConfig(configName) || AppConfigStorage.sharedManager.isConfigOverride(configName) {
             AppConfigStorage.sharedManager.removeConfig(configName)
         }
-        AppConfigStorage.sharedManager.putCustomConfig(newSettings, forConfig: newSettings["name"] as? String ?? "")
-        if wasSelected {
-            AppConfigStorage.sharedManager.selectConfig(newSettings["name"] as? String)
+        var storeSettings = newSettings
+        var newName = storeSettings["name"] as? String ?? ""
+        if newName.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).characters.count == 0 {
+            newName = AppConfigBundle.localizedString("CFLAC_EDIT_COPY_NONAME")
+            storeSettings["name"] = newName
         }
-        AppConfigStorage.sharedManager.synchronizeCustomConfigWithUserDefaults(newSettings["name"] as? String ?? "")
+        AppConfigStorage.sharedManager.putCustomConfig(storeSettings, forConfig: newName)
+        if wasSelected {
+            AppConfigStorage.sharedManager.selectConfig(newName)
+        }
+        AppConfigStorage.sharedManager.synchronizeCustomConfigsWithUserDefaults()
         navigationController?.popViewControllerAnimated(true)
     }
     
@@ -143,7 +148,7 @@ public class AppConfigEditViewController : UIViewController, AppConfigEditTableD
         let wasSelected = configName == AppConfigStorage.sharedManager.selectedConfig()
         if AppConfigStorage.sharedManager.isCustomConfig(configName) || AppConfigStorage.sharedManager.isConfigOverride(configName) {
             AppConfigStorage.sharedManager.removeConfig(configName)
-            AppConfigStorage.sharedManager.synchronizeCustomConfigWithUserDefaults(configName)
+            AppConfigStorage.sharedManager.synchronizeCustomConfigsWithUserDefaults()
         }
         if wasSelected {
             AppConfigStorage.sharedManager.selectConfig(configName)

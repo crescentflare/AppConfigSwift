@@ -14,12 +14,13 @@ protocol AppConfigManageTableDelegate: class {
 
     func selectedConfig(configName: String)
     func editConfig(configName: String)
+    func newCustomConfigFrom(configName: String)
 
 }
 
 
 //Class
-public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate {
+public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigSelectionPopupViewDelegate {
     
     // --
     // MARK: Members
@@ -72,7 +73,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
     // MARK: Implementation
     // --
     
-    public func setConfigurations(configurations: [String], lastSelected: String?) {
+    public func setConfigurations(configurations: [String], customConfigurations: [String], lastSelected: String?) {
         //Start with an empty table values list
         tableValues = []
         
@@ -82,6 +83,15 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             for configuration: String in configurations {
                 tableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: AppConfigStorage.sharedManager.isConfigOverride(configuration)))
             }
+        }
+        
+        //Add custom configurations (if present)
+        if configurations.count > 0 {
+            tableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_MANAGE_SECTION_CUSTOM")))
+            for configuration: String in customConfigurations {
+                tableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: false))
+            }
+            tableValues.append(AppConfigManageTableValue.valueForConfig(nil, andText: AppConfigBundle.localizedString("CFLAC_MANAGE_ADD_NEW"), lastSelected: false, edited: false))
         }
         
         //Add build information
@@ -139,11 +149,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             }
             
             //Supply data
-            if tableValue.config != nil {
-                cell?.accessoryType = tableValue.lastSelected ? .Checkmark : .DisclosureIndicator
-            } else {
-                cell?.selectionStyle = .None
-            }
+            cell?.accessoryType = tableValue.lastSelected ? .Checkmark : .DisclosureIndicator
             cell?.shouldHideDivider = nextType != .Config && nextType != .Info && nextType != .Loading
             cellView!.label = tableValue.labelString
             if tableValue.edited {
@@ -216,9 +222,25 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
         if delegate != nil {
             if tableValue.config != nil {
                 delegate?.selectedConfig(tableValue.config!)
+            } else if tableValue.type == .Config {
+                let choicePopup = AppConfigSelectionPopupView()
+                choicePopup.label = AppConfigBundle.localizedString("CFLAC_SHARED_SELECT_MENU")
+                choicePopup.choices = AppConfigStorage.sharedManager.obtainConfigList()
+                choicePopup.delegate = self
+                choicePopup.addToSuperview(self)
+                AppConfigViewUtility.addPinSuperViewEdgesConstraints(choicePopup, parentView: self)
             }
         }
         table.deselectRowAtIndexPath(indexPath, animated: false)
     }
     
+    
+    // --
+    // MARK: AppConfigSelectionPopupViewDelegate
+    // --
+    
+    func selectedItem(item: String, token: String?) {
+        delegate?.newCustomConfigFrom(item)
+    }
+
 }

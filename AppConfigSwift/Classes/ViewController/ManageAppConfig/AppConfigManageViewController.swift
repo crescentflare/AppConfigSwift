@@ -55,7 +55,7 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
         //Update configuration list
         AppConfigStorage.sharedManager.loadFromSource({
             self.isLoaded = true
-            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
+            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), customConfigurations: AppConfigStorage.sharedManager.obtainCustomConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
         })
     }
     
@@ -71,7 +71,7 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     
     public override func viewDidAppear(animated: Bool) {
         if isLoaded {
-            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
+            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), customConfigurations: AppConfigStorage.sharedManager.obtainCustomConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
         }
     }
     
@@ -96,12 +96,17 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     func selectedConfig(configName: String) {
         AppConfigStorage.sharedManager.selectConfig(configName)
         if isLoaded {
-            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
+            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), customConfigurations: AppConfigStorage.sharedManager.obtainCustomConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
         }
     }
     
     func editConfig(configName: String) {
         let viewController = AppConfigEditViewController(configName: configName, newConfig: false)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func newCustomConfigFrom(configName: String) {
+        let viewController = AppConfigEditViewController(configName: configName, newConfig: true)
         navigationController?.pushViewController(viewController, animated: true)
     }
     
