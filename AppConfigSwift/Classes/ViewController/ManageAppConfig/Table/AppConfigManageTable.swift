@@ -76,28 +76,11 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
         //Start with an empty table values list
         tableValues = []
         
-        //Add last selected config (if found)
-        var foundLastSelected = false
-        tableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_MANAGE_SECTION_LAST_SELECTED")))
-        if lastSelected != nil {
-            for configuration: String in configurations {
-                if configuration == lastSelected! {
-                    foundLastSelected = true
-                    break
-                }
-            }
-        }
-        if foundLastSelected {
-            tableValues.append(AppConfigManageTableValue.valueForConfig(lastSelected!, andText: lastSelected!))
-        } else {
-            tableValues.append(AppConfigManageTableValue.valueForConfig(nil, andText: AppConfigBundle.localizedString("CFLAC_MANAGE_LAST_SELECTED_NONE")))
-        }
-        
         //Add predefined configurations (if present)
         if configurations.count > 0 {
             tableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_MANAGE_SECTION_PREDEFINED")))
             for configuration: String in configurations {
-                tableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration))
+                tableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: AppConfigStorage.sharedManager.isConfigOverride(configuration)))
             }
         }
         
@@ -157,12 +140,15 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             
             //Supply data
             if tableValue.config != nil {
-                cell?.accessoryType = .DisclosureIndicator
+                cell?.accessoryType = tableValue.lastSelected ? .Checkmark : .DisclosureIndicator
             } else {
                 cell?.selectionStyle = .None
             }
             cell?.shouldHideDivider = nextType != .Config && nextType != .Info && nextType != .Loading
             cellView!.label = tableValue.labelString
+            if tableValue.edited {
+                cellView!.additional = AppConfigBundle.localizedString("CFLAC_MANAGE_INDICATOR_EDITED")
+            }
         }
         
         //Set up an info cell
