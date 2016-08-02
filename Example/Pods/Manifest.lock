@@ -6,11 +6,11 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   AppConfigSwift:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   AppConfigSwift: a335db77007da1432deec03dec6f952df026ec08
 
 PODFILE CHECKSUM: f0a547fff3a4ae5fd906e01ead29b3e533cab5bf
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.0.1
