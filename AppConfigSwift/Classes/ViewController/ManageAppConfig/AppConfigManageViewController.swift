@@ -14,9 +14,23 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     // MARK: Members
     // --
     
+    static var isOpenCounter = 0
     var isPresentedController: Bool = false
     var isLoaded: Bool = false
     var manageConfigTable: AppConfigManageTable = AppConfigManageTable()
+
+    
+    // --
+    // MARK: Launching
+    // --
+    
+    public static func launchFromShake() {
+        if AppConfigManageViewController.isOpenCounter == 0 {
+            let viewController: AppConfigManageViewController = AppConfigManageViewController()
+            let navigationController: UINavigationController = UINavigationController.init(rootViewController: viewController)
+            UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(navigationController, animated: true, completion: nil)
+        }
+    }
 
     
     // --
@@ -72,6 +86,16 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     public override func viewDidAppear(animated: Bool) {
         if isLoaded {
             self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), customConfigurations: AppConfigStorage.sharedManager.obtainCustomConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
+        }
+    }
+    
+    public override func viewWillAppear(animated: Bool) {
+        AppConfigManageViewController.isOpenCounter += 1
+    }
+    
+    deinit {
+        if AppConfigManageViewController.isOpenCounter > 0 {
+            AppConfigManageViewController.isOpenCounter -= 1
         }
     }
     
