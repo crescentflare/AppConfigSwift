@@ -89,3 +89,6 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AppConfigSwift/AppConfigSwift.framework"
 fi
+if [[ "$CONFIGURATION" == "QA" ]]; then
+  install_framework "$BUILT_PRODUCTS_DIR/AppConfigSwift/AppConfigSwift.framework"
+fi
