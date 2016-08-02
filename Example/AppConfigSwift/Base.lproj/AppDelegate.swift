@@ -8,6 +8,7 @@
 import UIKit
 import AppConfigSwift
 
+@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // --

@@ -317,7 +317,7 @@ public class AppConfigStorage {
         for key in customConfigs.allKeys() {
             if let customConfig = customConfigs[key] as? [String: Any] {
                 var storeDictionary: [String: AnyObject] = [:]
-                for (key, value) in customConfig as! [String: Any] {
+                for (key, value) in customConfig {
                     storeDictionary[key] = value as? AnyObject
                 }
                 configs.append(storeDictionary)
@@ -357,7 +357,7 @@ public class AppConfigStorage {
 
     private func loadCustomConfigurationsFromUserDefaults() {
         customConfigs.removeAllObjects()
-        if var configs = NSUserDefaults.standardUserDefaults().valueForKey(AppConfigStorage.defaultsCustomConfigs) as? [[String: AnyObject]] {
+        if let configs = NSUserDefaults.standardUserDefaults().valueForKey(AppConfigStorage.defaultsCustomConfigs) as? [[String: AnyObject]] {
             for config in configs {
                 var loadDictionary: [String: Any] = [:]
                 for (key, value) in config {
