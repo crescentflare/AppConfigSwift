@@ -78,11 +78,10 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
     
     public func setConfigurationSettings(configurationSettings: [String: Any], model: AppConfigBaseModel?) {
         // Add editable fields
-        var configSectionAdded = false
-        let modelValues = model?.obtainValues()
         var rawTableValues: [AppConfigEditTableValue] = []
         tableValues = []
         if configurationSettings.count > 0 {
+            // First add the name section + field for custom configurations
             let customizedCopy = newConfig || (AppConfigStorage.sharedManager.isCustomConfig(configName ?? "") && !AppConfigStorage.sharedManager.isConfigOverride(configName ?? ""))
             if customizedCopy {
                 for (key, value) in configurationSettings {
@@ -93,33 +92,80 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
                     }
                 }
             }
-            for (key, value) in configurationSettings {
-                if key == "name" {
-                    continue
-                }
-                if !configSectionAdded {
-                    if customizedCopy {
-                        rawTableValues.append(AppConfigEditTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_EDIT_SECTION_SETTINGS")))
-                    } else {
-                        rawTableValues.append(AppConfigEditTableValue.valueForSection(configName))
+
+            // Add configuration values
+            if let categorizedFields = model?.obtainCategorizedFields() {
+                // Using model and optional categories
+                let modelValues = model?.obtainValues() ?? [:]
+                let hasMultipleCategories = categorizedFields.allKeys().count > 1
+                var sortedCategories: [String] = []
+                for category in categorizedFields.allKeys() {
+                    if category.characters.count > 0 {
+                        sortedCategories.append(category)
                     }
-                    configSectionAdded = true
                 }
-                if modelValues != nil {
-                    if modelValues![key] is Bool {
+                for category in categorizedFields.allKeys() {
+                    if category.characters.count == 0 {
+                        sortedCategories.append("")
+                        break
+                    }
+                }
+                for category in sortedCategories {
+                    let categoryName = category.characters.count > 0 ? category : AppConfigBundle.localizedString("CFLAC_EDIT_SECTION_UNCATEGORIZED")
+                    var configSectionAdded = false
+                    for field in categorizedFields[category] ?? [] {
+                        if field == "name" {
+                            continue
+                        }
+                        if !configSectionAdded {
+                            var baseCategoryName = ""
+                            if customizedCopy {
+                                baseCategoryName = AppConfigBundle.localizedString("CFLAC_EDIT_SECTION_SETTINGS")
+                            } else {
+                                baseCategoryName = configName
+                            }
+                            if hasMultipleCategories {
+                                baseCategoryName += ": " + categoryName
+                            }
+                            rawTableValues.append(AppConfigEditTableValue.valueForSection(baseCategoryName))
+                            configSectionAdded = true
+                        }
+                        if modelValues[field] is Bool {
+                            rawTableValues.append(AppConfigEditTableValue.valueForSwitchValue(field, andSwitchedOn: configurationSettings[field] as? Bool ?? false))
+                            continue
+                        }
+                        if model?.isRawRepresentable(field) ?? false {
+                            let choices: [String] = model?.getRawRepresentableValues(field) ?? []
+                            rawTableValues.append(AppConfigEditTableValue.valueForSelection(field, andValue: configurationSettings[field] as? String ?? "", andChoices: choices))
+                            continue
+                        }
+                        if modelValues[field] is Int {
+                            rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(field, andValue: "\(configurationSettings[field] ?? 0)", numberOnly: true))
+                        } else {
+                            rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(field, andValue: "\(configurationSettings[field] ?? "")", numberOnly: false))
+                        }
+                    }
+                }
+            } else {
+                // Using raw dictionary
+                var configSectionAdded = false
+                for (key, value) in configurationSettings {
+                    if key == "name" {
+                        continue
+                    }
+                    if !configSectionAdded {
+                        if customizedCopy {
+                            rawTableValues.append(AppConfigEditTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_EDIT_SECTION_SETTINGS")))
+                        } else {
+                            rawTableValues.append(AppConfigEditTableValue.valueForSection(configName))
+                        }
+                        configSectionAdded = true
+                    }
+                    if value is Bool {
                         rawTableValues.append(AppConfigEditTableValue.valueForSwitchValue(key, andSwitchedOn: value as? Bool ?? false))
                         continue
                     }
-                    if model?.isRawRepresentable(key) ?? false {
-                        let choices: [String] = model?.getRawRepresentableValues(key) ?? []
-                        rawTableValues.append(AppConfigEditTableValue.valueForSelection(key, andValue: value as? String ?? "", andChoices: choices))
-                        continue
-                    }
-                    if modelValues![key] is Int {
-                        rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(key, andValue: "\(value)", numberOnly: true))
-                    } else {
-                        rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(key, andValue: "\(value)", numberOnly: false))
-                    }
+                    rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(key, andValue: "\(value)", numberOnly: value is Int))
                 }
             }
         }

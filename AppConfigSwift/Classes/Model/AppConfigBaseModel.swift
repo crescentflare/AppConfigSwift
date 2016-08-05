@@ -32,6 +32,12 @@ public class AppConfigBaseModel {
         return mapper.getDictionaryValues()
     }
     
+    public func obtainCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
+        let mapper = AppConfigModelMapper(mode: .CollectKeys)
+        map(mapper)
+        return mapper.getCategorizedFields()
+    }
+    
     //Helper method to determine if the value is a raw representable (like an enum)
     public func isRawRepresentable(fieldName: String) -> Bool {
         let mapper = AppConfigModelMapper(mode: .CollectKeys)
