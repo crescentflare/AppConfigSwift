@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		034F8B496F644B69EADB7D8518DCF99D /* AppConfigBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E295240453C0D1B19E9C37F2C5123C /* AppConfigBaseModel.swift */; };
+		04D6CA561D548EB300564635 /* AppConfigCellSectionDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6CA551D548EB300564635 /* AppConfigCellSectionDividerView.swift */; };
 		09E760F3F056C21B31ACFFDBCFF6D590 /* AppConfigStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8038651A56465A6355911FF0F234787B /* AppConfigStorage.swift */; };
 		158C09A93678BD3E2A2EBD2CE064B7F7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
 		1838A8FA5B24E4C13421B4F069968B41 /* AppConfigManageTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C75709283B80E08CEC27BF080F7E91 /* AppConfigManageTable.swift */; };
@@ -66,6 +67,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04D6CA551D548EB300564635 /* AppConfigCellSectionDividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfigCellSectionDividerView.swift; sourceTree = "<group>"; };
 		071BF98B2961718685023D90EB9D034F /* AppConfigEditTextCellView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigEditTextCellView.swift; sourceTree = "<group>"; };
 		076A8F3B8751F42D254ACB19F29C96A0 /* ManageInfoCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = ManageInfoCell.xib; sourceTree = "<group>"; };
 		0FCF9DFAAB3EA630C40B2C26430C77D7 /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 		8C7E47F86F8CF899EEFBEDA5D8B81408 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				04D6CA551D548EB300564635 /* AppConfigCellSectionDividerView.swift */,
 				34A65E11FA3E039BC47E21EB56C3AE59 /* AppConfigItemCellView.swift */,
 				DF228EC495C4E27E2EC98D8EE2C2BA38 /* AppConfigLoadingCellView.swift */,
 				E6069533AD13C530920838DB3FEF32AD /* AppConfigSectionCellView.swift */,
@@ -632,6 +635,7 @@
 				5CF3557F0AB324CFB44B5B5D624B5AC8 /* AppConfigEditSwitchCellView.swift in Sources */,
 				CB5143472256854269C5C8C3CDF6295D /* AppConfigEditTable.swift in Sources */,
 				90255E3FCC271D93BDC972CA791BDDF0 /* AppConfigEditTableValue.swift in Sources */,
+				04D6CA561D548EB300564635 /* AppConfigCellSectionDividerView.swift in Sources */,
 				428AE11A80DE345E2014D8CA08A262AF /* AppConfigEditTextCellView.swift in Sources */,
 				BBD539F5071C91EF6F861E946FBED811 /* AppConfigEditViewController.swift in Sources */,
 				30697EFF9BBFE073E1855FF8F50276BE /* AppConfigItemCellView.swift in Sources */,

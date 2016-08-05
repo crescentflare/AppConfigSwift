@@ -8,7 +8,7 @@
 
 import UIKit
 
-//Delegate protocol
+// Delegate protocol
 protocol AppConfigSelectionPopupViewDelegate: class {
     
     func selectedItem(item: String, token: String?)
@@ -76,22 +76,23 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     }
     
     public func setupView() {
-        //Load nib to content view
+        // Load nib to content view
         _contentView = AppConfigViewUtility.loadNib("SelectionPopup", parentView: self)
 
-        //Set up table view
+        // Set up table view
         let tableFooter = UIView()
         _tableView.backgroundColor = UIColor.init(white: 0.95, alpha: 1)
         tableFooter.frame = CGRectMake(0, 0, 0, 8)
         _tableView.tableFooterView = tableFooter
         
-        //Set table view properties
+        // Set table view properties
         _tableView.rowHeight = UITableViewAutomaticDimension
         _tableView.estimatedRowHeight = 40
         _tableView.dataSource = self
         _tableView.delegate = self
-        
-        //Empty state
+        _tableView.separatorStyle = .None
+
+        // Empty state
         _label.text = ""
     }
 
@@ -138,30 +139,50 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     // --
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return _tableChoices.count
+        return _tableChoices.count + 1
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        //Create cell (if needed)
+        // Create cell (if needed)
         var cell: AppConfigTableCell? = tableView.dequeueReusableCellWithIdentifier("ignored") as? AppConfigTableCell
         if cell == nil {
             cell = AppConfigTableCell()
         }
         
-        //Create view
-        var cellView: AppConfigItemCellView? = nil
-        if cell!.cellView == nil {
-            cellView = AppConfigItemCellView()
-            cell!.cellView = cellView
-        } else {
-            cellView = cell!.cellView as? AppConfigItemCellView
+        // Regular cell view
+        if indexPath.row < _tableChoices.count {
+            // Create view
+            var cellView: AppConfigItemCellView? = nil
+            if cell!.cellView == nil {
+                cellView = AppConfigItemCellView()
+                cell!.cellView = cellView
+            } else {
+                cellView = cell!.cellView as? AppConfigItemCellView
+            }
+            
+            // Supply data and return the cell
+            cell?.selectionStyle = .Default
+            cell?.accessoryType = .DisclosureIndicator
+            cell?.shouldHideDivider = indexPath.row + 1 >= _tableChoices.count
+            cellView!.label = _tableChoices[indexPath.row]
         }
         
-        //Supply data and return the cell
-        cell?.selectionStyle = .Default
-        cell?.accessoryType = .DisclosureIndicator
-        cell?.shouldHideDivider = indexPath.row + 1 >= _tableChoices.count
-        cellView!.label = _tableChoices[indexPath.row]
+        // Bottom divider
+        if indexPath.row >= _tableChoices.count {
+            // Create view
+            var cellView: AppConfigCellSectionDividerView? = nil
+            if cell!.cellView == nil {
+                cellView = AppConfigCellSectionDividerView(location: .Bottom)
+                cell!.cellView = cellView
+            } else {
+                cellView = cell!.cellView as? AppConfigCellSectionDividerView
+            }
+            
+            // Supply data
+            cell?.selectionStyle = .None
+            cell?.shouldHideDivider = true
+        }
+        
         return cell!
     }
     
