@@ -17,7 +17,7 @@ AppConfigSwift is available through [CocoaPods](http://cocoapods.org). To instal
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod "AppConfigSwift"
+pod "AppConfigSwift", "0.7.0"
 ```
 
 ## Author
