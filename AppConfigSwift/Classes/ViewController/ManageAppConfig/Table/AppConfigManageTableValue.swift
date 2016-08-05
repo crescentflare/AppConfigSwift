@@ -15,6 +15,13 @@ public enum AppConfigManageTableValueType: String {
     case Config = "config"
     case Info = "info"
     case Section = "section"
+    case TopDivider = "topDivider"
+    case BottomDivider = "bottomDivider"
+    case BetweenDivider = "betweenDivider"
+    
+    public func isCellType() -> Bool {
+        return self == .Config || self == .Info || self == .Loading
+    }
     
 }
 
@@ -62,6 +69,10 @@ public class AppConfigManageTableValue {
     
     public static func valueForSection(sectionText: String) -> AppConfigManageTableValue {
         return AppConfigManageTableValue(config: nil, labelString: sectionText, type: .Section, lastSelected: false, edited: false)
+    }
+    
+    public static func valueForDivider(type: AppConfigManageTableValueType) -> AppConfigManageTableValue {
+        return AppConfigManageTableValue(config: nil, labelString: "", type: type, lastSelected: false, edited: false)
     }
     
 }

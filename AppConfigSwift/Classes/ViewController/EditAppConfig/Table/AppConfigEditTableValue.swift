@@ -17,6 +17,9 @@ public enum AppConfigEditTableValueType: String {
     case SwitchValue = "switch_value"
     case Selection = "selection"
     case Section = "section"
+    case TopDivider = "topDivider"
+    case BottomDivider = "bottomDivider"
+    case BetweenDivider = "betweenDivider"
     
     func isCellType() -> Bool {
         return self == .Loading || self == .Action || self == .TextEntry || self == .SwitchValue || self == .Selection
@@ -90,6 +93,10 @@ public class AppConfigEditTableValue {
 
     public static func valueForSection(sectionText: String) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: nil, labelString: sectionText, booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: .Section)
+    }
+
+    public static func valueForDivider(type: AppConfigEditTableValueType) -> AppConfigEditTableValue {
+        return AppConfigEditTableValue(configSetting: nil, labelString: "", booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: type)
     }
 
 }

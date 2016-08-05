@@ -16,6 +16,7 @@ public class AppConfigTableCell : UITableViewCell {
     // --
     
     var shouldHideDivider: Bool = false
+    var _dividerLine: UIView? = nil
     var _cellView: UIView? = nil
     var cellView: UIView? {
         set {
@@ -33,16 +34,37 @@ public class AppConfigTableCell : UITableViewCell {
 
     
     // --
+    // MARK: Initialize
+    // --
+
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupView()
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupView()
+    }
+    
+    public func setupView() {
+        _dividerLine = UIView()
+        _dividerLine?.backgroundColor = UIColor.init(white: 0.8, alpha: 1)
+        addSubview(_dividerLine!)
+        AppConfigViewUtility.addHeightConstraint(_dividerLine!, height: 1 / UIScreen.mainScreen().scale)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .Left, constant: 16)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .Right)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .Bottom)
+    }
+
+    
+    // --
     // MARK: Layout
     // --
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        if shouldHideDivider {
-            self.separatorInset = UIEdgeInsetsMake(0, frame.size.width * 2, 0, 0)
-        } else {
-            self.separatorInset = UIEdgeInsetsMake(0, 16, 0, 0)
-        }
+        _dividerLine?.hidden = shouldHideDivider
     }
     
 }

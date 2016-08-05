@@ -12,10 +12,9 @@ class Application: UIApplication {
 
     override func sendEvent(event: UIEvent) {
         super.sendEvent(event)
-        if event.subtype == .MotionShake {
+        if AppConfigStorage.sharedManager.isActivated() && event.subtype == .MotionShake {
             AppConfigManageViewController.launchFromShake()
         }
     }
 
 }
-

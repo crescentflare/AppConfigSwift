@@ -23,7 +23,7 @@ public class AppConfigModelMapper {
     // MARK: Members
     // --
 
-    var categorizedFields: [String: [String]] = [:]
+    var categorizedFields: AppConfigOrderedDictionary<String, [String]> = AppConfigOrderedDictionary()
     var rawRepresentableFields: [String] = []
     var rawRepresentableFieldValues: [String: [String]] = [:]
     var dictionary: [String: Any] = [:]
@@ -118,7 +118,7 @@ public class AppConfigModelMapper {
     // --
 
     //After calling mapping on the model with this object, retrieve the grouped/categorized fields
-    public func getCategorizedFields() -> [String: [String]] {
+    public func getCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
         return categorizedFields
     }
     
