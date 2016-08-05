@@ -238,7 +238,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
     
     public func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         let tableValue = tableValues[indexPath.row]
-        return tableValue.type == .Config
+        return tableValue.type == .Config && tableValue.config != nil
     }
     
     public func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
