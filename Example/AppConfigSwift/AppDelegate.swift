@@ -22,8 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // --
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        AppConfigStorage.sharedManager.activate(ExampleAppConfigManager.sharedManager)
-        AppConfigStorage.sharedManager.setLoadingSourceAssetFile(NSBundle.mainBundle().pathForResource("AppConfig", ofType: "plist"))
+        #if RELEASE
+            // Disable library
+        #else
+            AppConfigStorage.sharedManager.activate(ExampleAppConfigManager.sharedManager)
+            AppConfigStorage.sharedManager.setLoadingSourceAssetFile(NSBundle.mainBundle().pathForResource("AppConfig", ofType: "plist"))
+        #endif
         return true
     }
     

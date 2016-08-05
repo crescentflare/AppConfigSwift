@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     // --
     // MARK: View components
     // --
+    
+    @IBOutlet var changeButton: UIButton!
     @IBOutlet var selectedConfigValue: UILabel!
     @IBOutlet var apiUrlValue: UILabel!
     @IBOutlet var runTypeValue: UILabel!
@@ -24,10 +26,14 @@ class ViewController: UIViewController {
     // --
     // MARK: Lifecycle
     // --
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateConfigurationValues()
         AppConfigStorage.sharedManager.addDataObserver(self, selector: #selector(updateConfigurationValues), name: AppConfigStorage.configurationChanged)
+        if !AppConfigStorage.sharedManager.isActivated() {
+            changeButton.hidden = true
+        }
     }
     
     deinit {
@@ -55,6 +61,7 @@ class ViewController: UIViewController {
     // --
     // MARK: Selector
     // --
+    
     @IBAction func changeConfiguration() {
         let viewController: AppConfigManageViewController = AppConfigManageViewController()
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: viewController)
