@@ -173,18 +173,18 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
         // Add actions
         rawTableValues.append(AppConfigEditTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_ACTIONS")))
         if newConfig {
-            rawTableValues.append(AppConfigEditTableValue.valueForAction(.Save, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_CREATE")))
+            rawTableValues.append(AppConfigEditTableValue.valueForAction(.save, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_CREATE")))
         } else {
-            rawTableValues.append(AppConfigEditTableValue.valueForAction(.Save, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_APPLY")))
+            rawTableValues.append(AppConfigEditTableValue.valueForAction(.save, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_APPLY")))
         }
         if !newConfig {
             if !AppConfigStorage.shared.isCustomConfig(config: configName) || AppConfigStorage.shared.isConfigOverride(config: configName) {
-                rawTableValues.append(AppConfigEditTableValue.valueForAction(.Revert, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_RESET")))
+                rawTableValues.append(AppConfigEditTableValue.valueForAction(.revert, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_RESET")))
             } else {
-                rawTableValues.append(AppConfigEditTableValue.valueForAction(.Revert, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_DELETE")))
+                rawTableValues.append(AppConfigEditTableValue.valueForAction(.revert, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_DELETE")))
             }
         }
-        rawTableValues.append(AppConfigEditTableValue.valueForAction(.Cancel, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_CANCEL")))
+        rawTableValues.append(AppConfigEditTableValue.valueForAction(.cancel, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_CANCEL")))
 
         // Style table by adding dividers and reload
         var prevType: AppConfigEditTableValueType = .unknown
@@ -395,13 +395,13 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
         UIApplication.shared.sendAction(#selector(resignFirstResponder), to: nil, from: nil, for: nil)
         if tableValue.type == .action && delegate != nil {
             switch tableValue.action {
-            case .Save:
+            case .save:
                 delegate?.saveConfig(newSettings: obtainNewConfigurationSettings())
                 break
-            case .Cancel:
+            case .cancel:
                 delegate?.cancelEditing()
                 break
-            case .Revert:
+            case .revert:
                 delegate?.revertConfig()
                 break
             default:
