@@ -9,24 +9,24 @@
 import UIKit
 
 // Value type enum
-public enum AppConfigCellSectionLocation: String {
+enum AppConfigCellSectionLocation: String {
     
-    case None = "none"
-    case Top = "top"
-    case Bottom = "bottom"
+    case none = "none"
+    case top = "top"
+    case bottom = "bottom"
     
 }
 
 // View
-@IBDesignable open class AppConfigCellSectionDividerView : UIView {
+@IBDesignable class AppConfigCellSectionDividerView : UIView {
     
     // --
     // MARK: Members
     // --
     
-    fileprivate var _location: AppConfigCellSectionLocation = .None
-    fileprivate var _dividerLine: UIView? = nil
-    fileprivate var _dividerLineConstraint: NSLayoutConstraint? = nil
+    private var _location = AppConfigCellSectionLocation.none
+    private var _dividerLine: UIView? = nil
+    private var _dividerLineConstraint: NSLayoutConstraint? = nil
 
     
     // --
@@ -41,13 +41,13 @@ public enum AppConfigCellSectionLocation: String {
 
     var location: AppConfigCellSectionLocation? {
         set {
-            _location = newValue ?? .None
+            _location = newValue ?? .none
             if _dividerLine != nil {
                 if _dividerLineConstraint != nil {
                     _dividerLine?.removeConstraint(_dividerLineConstraint!)
                 }
-                _dividerLineConstraint = AppConfigViewUtility.addPinSuperViewEdgeConstraint(view: _dividerLine!, parentView: self, edge: _location == .Top ? .bottom : .top)
-                _dividerLine?.isHidden = _location == .None
+                _dividerLineConstraint = AppConfigViewUtility.addPinSuperViewEdgeConstraint(view: _dividerLine!, parentView: self, edge: _location == .top ? .bottom : .top)
+                _dividerLine?.isHidden = _location == .none
             }
         }
         get { return _location }
@@ -63,21 +63,21 @@ public enum AppConfigCellSectionLocation: String {
         setupView()
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
 
     convenience init(location: AppConfigCellSectionLocation) {
         self.init(frame: CGRect.zero)
-        setupDivider(location)
+        setupDivider(location: location)
     }
     
-    open func setupView() {
+    func setupView() {
         self.backgroundColor = UIColor.init(white: 0.95, alpha: 1)
     }
     
-    open func setupDivider(_ location: AppConfigCellSectionLocation) {
+    func setupDivider(location: AppConfigCellSectionLocation) {
         _dividerLine = UIView()
         _dividerLine?.backgroundColor = UIColor.init(white: 0.75, alpha: 1)
         addSubview(_dividerLine!)
@@ -91,7 +91,7 @@ public enum AppConfigCellSectionLocation: String {
     // MARK: Layout
     // --
 
-    open override var intrinsicContentSize : CGSize {
+    override var intrinsicContentSize : CGSize {
         return CGSize(width: 0, height: 8)
     }
 

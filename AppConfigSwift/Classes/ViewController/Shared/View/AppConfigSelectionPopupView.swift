@@ -15,7 +15,7 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     
 }
 
-@IBDesignable open class AppConfigSelectionPopupView : UIView, UITableViewDataSource, UITableViewDelegate {
+@IBDesignable class AppConfigSelectionPopupView : UIView, UITableViewDataSource, UITableViewDelegate {
     
     // --
     // MARK: Members
@@ -23,10 +23,10 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     
     weak var delegate: AppConfigSelectionPopupViewDelegate?
     var token: String?
-    fileprivate var _contentView: UIView! = nil
-    @IBOutlet fileprivate var _label: UILabel! = nil
-    @IBOutlet fileprivate var _tableView: UITableView! = nil
-    fileprivate var _tableChoices: [String] = []
+    private var _contentView: UIView! = nil
+    @IBOutlet private var _label: UILabel! = nil
+    @IBOutlet private var _tableView: UITableView! = nil
+    private var _tableChoices: [String] = []
 
     
     // --
@@ -70,12 +70,12 @@ protocol AppConfigSelectionPopupViewDelegate: class {
         setupView()
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
     
-    open func setupView() {
+    func setupView() {
         // Load nib to content view
         _contentView = AppConfigViewUtility.loadNib(named: "SelectionPopup", parentView: self)
 
@@ -101,11 +101,11 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     // MARK: Add/remove
     // --
     
-    @IBAction fileprivate func closePopup() {
+    @IBAction private func closePopup() {
         dismiss()
     }
     
-    open func dismiss(_ animated: Bool = true) {
+    func dismiss(_ animated: Bool = true) {
         if (animated) {
             UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 self.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
@@ -120,7 +120,7 @@ protocol AppConfigSelectionPopupViewDelegate: class {
         }
     }
     
-    open func addToSuperview(_ superView: UIView, animated: Bool = true) {
+    func addToSuperview(_ superView: UIView, animated: Bool = true) {
         superView.addSubview(self)
         transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         alpha = 0
@@ -138,11 +138,11 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     // MARK: UITableViewDataSource
     // --
     
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return _tableChoices.count + 1
     }
     
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Create cell (if needed)
         var cell: AppConfigTableCell? = tableView.dequeueReusableCell(withIdentifier: "ignored") as? AppConfigTableCell
         if cell == nil {
@@ -172,7 +172,7 @@ protocol AppConfigSelectionPopupViewDelegate: class {
             // Create view
             var cellView: AppConfigCellSectionDividerView? = nil
             if cell!.cellView == nil {
-                cellView = AppConfigCellSectionDividerView(location: .Bottom)
+                cellView = AppConfigCellSectionDividerView(location: .bottom)
                 cell!.cellView = cellView
             } else {
                 cellView = cell!.cellView as? AppConfigCellSectionDividerView
@@ -191,7 +191,7 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     // MARK: UITableViewDelegate
     // --
     
-    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if delegate != nil {
             delegate?.selectedItem(_tableChoices[(indexPath as NSIndexPath).row], token: token)
         }

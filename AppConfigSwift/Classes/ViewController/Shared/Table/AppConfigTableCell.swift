@@ -9,7 +9,7 @@
 
 import UIKit
 
-open class AppConfigTableCell : UITableViewCell {
+class AppConfigTableCell : UITableViewCell {
     
     // --
     // MARK: Members
@@ -42,12 +42,12 @@ open class AppConfigTableCell : UITableViewCell {
         setupView()
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
     
-    open func setupView() {
+    func setupView() {
         _dividerLine = UIView()
         _dividerLine?.backgroundColor = UIColor.init(white: 0.8, alpha: 1)
         addSubview(_dividerLine!)
@@ -62,7 +62,7 @@ open class AppConfigTableCell : UITableViewCell {
     // MARK: Layout
     // --
     
-    open override func layoutSubviews() {
+    override func layoutSubviews() {
         super.layoutSubviews()
         _dividerLine?.isHidden = shouldHideDivider
     }

@@ -10,19 +10,19 @@
 //Value type enum
 enum AppConfigEditTableValueType: String {
     
-    case Unknown = "unknown"
-    case Loading = "loading"
-    case Action = "action"
-    case TextEntry = "text_entry"
-    case SwitchValue = "switch_value"
-    case Selection = "selection"
-    case Section = "section"
-    case TopDivider = "topDivider"
-    case BottomDivider = "bottomDivider"
-    case BetweenDivider = "betweenDivider"
+    case unknown = "unknown"
+    case loading = "loading"
+    case action = "action"
+    case textEntry = "text_entry"
+    case switchValue = "switch_value"
+    case selection = "selection"
+    case section = "section"
+    case topDivider = "topDivider"
+    case bottomDivider = "bottomDivider"
+    case betweenDivider = "betweenDivider"
     
     func isCellType() -> Bool {
-        return self == .Loading || self == .Action || self == .TextEntry || self == .SwitchValue || self == .Selection
+        return self == .loading || self == .action || self == .textEntry || self == .switchValue || self == .selection
     }
 
 }
@@ -72,27 +72,27 @@ class AppConfigEditTableValue {
     // --
     
     static func valueForLoading(text: String) -> AppConfigEditTableValue {
-        return AppConfigEditTableValue(configSetting: nil, labelString: text, booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: .Loading)
+        return AppConfigEditTableValue(configSetting: nil, labelString: text, booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: .loading)
     }
     
     static func valueForAction(_ action: AppConfigEditTableActionType, andText: String) -> AppConfigEditTableValue {
-        return AppConfigEditTableValue(configSetting: nil, labelString: andText, booleanValue: false, limitUsage: false, selectionItems: nil, action: action, type: .Action)
+        return AppConfigEditTableValue(configSetting: nil, labelString: andText, booleanValue: false, limitUsage: false, selectionItems: nil, action: action, type: .action)
     }
     
     static func valueForTextEntry(configSetting: String, andValue: String, numberOnly: Bool) -> AppConfigEditTableValue {
-        return AppConfigEditTableValue(configSetting: configSetting, labelString: andValue, booleanValue: false, limitUsage: numberOnly, selectionItems: nil, action: .None, type: .TextEntry)
+        return AppConfigEditTableValue(configSetting: configSetting, labelString: andValue, booleanValue: false, limitUsage: numberOnly, selectionItems: nil, action: .None, type: .textEntry)
     }
     
     static func valueForSwitchValue(configSetting: String, andSwitchedOn: Bool) -> AppConfigEditTableValue {
-        return AppConfigEditTableValue(configSetting: configSetting, labelString: "", booleanValue: andSwitchedOn, limitUsage: false, selectionItems: nil, action: .None, type: .SwitchValue)
+        return AppConfigEditTableValue(configSetting: configSetting, labelString: "", booleanValue: andSwitchedOn, limitUsage: false, selectionItems: nil, action: .None, type: .switchValue)
     }
 
     static func valueForSelection(configSetting: String, andValue: String, andChoices: [String]) -> AppConfigEditTableValue {
-        return AppConfigEditTableValue(configSetting: configSetting, labelString: andValue, booleanValue: false, limitUsage: false, selectionItems: andChoices, action: .None, type: .Selection)
+        return AppConfigEditTableValue(configSetting: configSetting, labelString: andValue, booleanValue: false, limitUsage: false, selectionItems: andChoices, action: .None, type: .selection)
     }
 
     static func valueForSection(text: String) -> AppConfigEditTableValue {
-        return AppConfigEditTableValue(configSetting: nil, labelString: text, booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: .Section)
+        return AppConfigEditTableValue(configSetting: nil, labelString: text, booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: .section)
     }
 
     static func valueForDivider(type: AppConfigEditTableValueType) -> AppConfigEditTableValue {

@@ -8,15 +8,15 @@
 
 import UIKit
 
-@IBDesignable open class AppConfigLoadingCellView : UIView {
+@IBDesignable class AppConfigLoadingCellView : UIView {
     
     // --
     // MARK: Members
     // --
     
-    fileprivate var _contentView: UIView! = nil
-    @IBOutlet fileprivate var _label: UILabel! = nil
-    @IBOutlet fileprivate var _spinner: UIActivityIndicatorView! = nil
+    private var _contentView: UIView! = nil
+    @IBOutlet private var _label: UILabel! = nil
+    @IBOutlet private var _spinner: UIActivityIndicatorView! = nil
 
     
     // --
@@ -46,12 +46,12 @@ import UIKit
         setupView()
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
     
-    open func setupView() {
+    func setupView() {
         _contentView = AppConfigViewUtility.loadNib(named: "LoadingCell", parentView: self)
         _label.text = ""
         _spinner.startAnimating()
