@@ -23,36 +23,36 @@ open class AppConfigBaseModel {
     
     //Provides mapping between config selectiom, editing, also provides optional categorization
     //Override in your derived model (check the example for details)
-    open func map(_ mapper: AppConfigModelMapper) { }
+    open func map(mapper: AppConfigModelMapper) { }
 
     //Helper method to convert the list of defined properties in the derived model to a dictionary
-    open func obtainValues() -> [String: Any] {
+    public func obtainValues() -> [String: Any] {
         let mapper = AppConfigModelMapper(mode: .toDictionary)
-        map(mapper)
+        map(mapper: mapper)
         return mapper.getDictionaryValues()
     }
     
-    open func obtainCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
+    public func obtainCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
         let mapper = AppConfigModelMapper(mode: .collectKeys)
-        map(mapper)
+        map(mapper: mapper)
         return mapper.getCategorizedFields()
     }
     
     //Helper method to determine if the value is a raw representable (like an enum)
-    open func isRawRepresentable(_ fieldName: String) -> Bool {
+    public func isRawRepresentable(field: String) -> Bool {
         let mapper = AppConfigModelMapper(mode: .collectKeys)
-        map(mapper)
-        return mapper.isRawRepresentable(field: fieldName)
+        map(mapper: mapper)
+        return mapper.isRawRepresentable(field: field)
     }
     
-    open func getRawRepresentableValues(_ fieldName: String) -> [String]? {
+    public func getRawRepresentableValues(forField: String) -> [String]? {
         let mapper = AppConfigModelMapper(mode: .collectKeys)
-        map(mapper)
-        return mapper.getRawRepresentableValues(forField: fieldName)
+        map(mapper: mapper)
+        return mapper.getRawRepresentableValues(forField: forField)
     }
     
     //Internal method to override the model with customized values
-    open func applyOverrides(_ overrides: [String: Any], name: String?) {
+    public func apply(overrides: [String: Any], name: String?) {
         var setValues = overrides
         if name != nil {
             setValues["name"] = name!
@@ -60,7 +60,7 @@ open class AppConfigBaseModel {
             setValues.removeValue(forKey: "name")
         }
         let mapper: AppConfigModelMapper = AppConfigModelMapper(dictionary: setValues, mode: .fromDictionary)
-        map(mapper)
+        map(mapper: mapper)
     }
  
 }

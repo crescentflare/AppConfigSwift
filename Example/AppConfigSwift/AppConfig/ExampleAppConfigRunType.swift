@@ -12,12 +12,12 @@ import AppConfigSwift
 //Enum definition using string raw values for storage
 enum ExampleAppConfigRunType: String {
     
-    case RunNormally = "runNormally"
-    case RunQuickly = "runQuickly"
-    case RunStrictly = "runStrictly"
+    case runNormally = "runNormally"
+    case runQuickly = "runQuickly"
+    case runStrictly = "runStrictly"
     
     static func allValues() -> [ExampleAppConfigRunType] {
-        return [RunNormally, RunQuickly, RunStrictly]
+        return [runNormally, runQuickly, runStrictly]
     }
 
 }

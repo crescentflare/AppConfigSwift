@@ -42,7 +42,7 @@ open class AppConfigBaseManager {
     //Internal method to apply a new configuration selection to the model
     open func applyConfigToModel(_ config: [String: Any], name: String?) {
         currentConfig = obtainBaseModelInstance()
-        currentConfig?.applyOverrides(config, name: name)
+        currentConfig?.apply(overrides: config, name: name)
     }
     
 }

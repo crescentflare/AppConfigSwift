@@ -15,22 +15,24 @@ class ExampleAppConfigModel : AppConfigBaseModel {
     // --
     // MARK: Model fields
     // --
+    
     var name = "Production"
     var apiUrl = "https://production.example.com/"
-    var networkTimeoutSec: Int = 20
+    var networkTimeoutSec = 20
     var acceptAllSSL = false
-    var runType = ExampleAppConfigRunType.RunNormally
+    var runType = ExampleAppConfigRunType.runNormally
 
     
     // --
     // MARK: Field grouping and serialization
     // --
-    override func map(_ mapper: AppConfigModelMapper) {
+    
+    override func map(mapper: AppConfigModelMapper) {
         mapper.map(key: "name", value: &name)
         mapper.map(key: "apiUrl", value: &apiUrl, category: "API related")
         mapper.map(key: "networkTimeoutSec", value: &networkTimeoutSec, category: "API related")
         mapper.map(key: "acceptAllSSL", value: &acceptAllSSL, category: "API related")
-        mapper.map(key: "runType", value: &runType, fallback: .RunNormally, allValues: ExampleAppConfigRunType.allValues())
+        mapper.map(key: "runType", value: &runType, fallback: .runNormally, allValues: ExampleAppConfigRunType.allValues())
     }
 
 }

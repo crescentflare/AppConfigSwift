@@ -134,8 +134,8 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
                             rawTableValues.append(AppConfigEditTableValue.valueForSwitchValue(field, andSwitchedOn: configurationSettings[field] as? Bool ?? false))
                             continue
                         }
-                        if model?.isRawRepresentable(field) ?? false {
-                            let choices: [String] = model?.getRawRepresentableValues(field) ?? []
+                        if model?.isRawRepresentable(field: field) ?? false {
+                            let choices: [String] = model?.getRawRepresentableValues(forField: field) ?? []
                             rawTableValues.append(AppConfigEditTableValue.valueForSelection(field, andValue: configurationSettings[field] as? String ?? "", andChoices: choices))
                             continue
                         }

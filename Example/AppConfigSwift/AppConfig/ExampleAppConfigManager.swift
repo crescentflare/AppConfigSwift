@@ -14,7 +14,7 @@ class ExampleAppConfigManager : AppConfigBaseManager {
     // MARK: Singleton instance
     // --
     
-    static let shared: ExampleAppConfigManager = ExampleAppConfigManager()
+    static let shared = ExampleAppConfigManager()
 
     
     // --

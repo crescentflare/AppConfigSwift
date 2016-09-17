@@ -40,10 +40,6 @@ class ViewController: UIViewController {
         AppConfigStorage.sharedManager.removeDataObserver(self, name: AppConfigStorage.configurationChanged)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
 
     // --
     // MARK: Helper
@@ -63,8 +59,8 @@ class ViewController: UIViewController {
     // --
     
     @IBAction func changeConfiguration() {
-        let viewController: AppConfigManageViewController = AppConfigManageViewController()
-        let navigationController: UINavigationController = UINavigationController.init(rootViewController: viewController)
+        let viewController = AppConfigManageViewController()
+        let navigationController = UINavigationController.init(rootViewController: viewController)
         present(navigationController, animated: true, completion: nil)
     }
     
