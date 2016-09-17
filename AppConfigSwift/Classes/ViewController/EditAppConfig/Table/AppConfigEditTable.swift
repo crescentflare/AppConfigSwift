@@ -58,7 +58,7 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
         tableFooter.frame = CGRect(x: 0, y: 0, width: 0, height: 8)
         table.tableFooterView = tableFooter
         addSubview(table)
-        AppConfigViewUtility.addPinSuperViewEdgesConstraints(table, parentView: self)
+        AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: table, parentView: self)
         
         // Set table view properties
         table.rowHeight = UITableViewAutomaticDimension
@@ -68,7 +68,7 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
         table.separatorStyle = .none
         
         // Show loading indicator by default
-        tableValues.append(AppConfigEditTableValue.valueForLoading(AppConfigBundle.localizedString("CFLAC_SHARED_LOADING_CONFIGS")))
+        tableValues.append(AppConfigEditTableValue.valueForLoading(AppConfigBundle.localizedString(key: "CFLAC_SHARED_LOADING_CONFIGS")))
     }
 
     
@@ -82,11 +82,11 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
         tableValues = []
         if configurationSettings.count > 0 {
             // First add the name section + field for custom configurations
-            let customizedCopy = newConfig || (AppConfigStorage.sharedManager.isCustomConfig(configName ?? "") && !AppConfigStorage.sharedManager.isConfigOverride(configName ?? ""))
+            let customizedCopy = newConfig || (AppConfigStorage.shared.isCustomConfig(config: configName ?? "") && !AppConfigStorage.shared.isConfigOverride(config: configName ?? ""))
             if customizedCopy {
                 for (key, value) in configurationSettings {
                     if key == "name" {
-                        rawTableValues.append(AppConfigEditTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_EDIT_SECTION_NAME")))
+                        rawTableValues.append(AppConfigEditTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_NAME")))
                         rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(key, andValue: value as? String ?? "", numberOnly: false))
                         break;
                     }
@@ -111,7 +111,7 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
                     }
                 }
                 for category in sortedCategories {
-                    let categoryName = category.characters.count > 0 ? category : AppConfigBundle.localizedString("CFLAC_EDIT_SECTION_UNCATEGORIZED")
+                    let categoryName = category.characters.count > 0 ? category : AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_UNCATEGORIZED")
                     var configSectionAdded = false
                     for field in categorizedFields[category] ?? [] {
                         if field == "name" {
@@ -120,7 +120,7 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
                         if !configSectionAdded {
                             var baseCategoryName = ""
                             if customizedCopy {
-                                baseCategoryName = AppConfigBundle.localizedString("CFLAC_EDIT_SECTION_SETTINGS")
+                                baseCategoryName = AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_SETTINGS")
                             } else {
                                 baseCategoryName = configName
                             }
@@ -155,7 +155,7 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
                     }
                     if !configSectionAdded {
                         if customizedCopy {
-                            rawTableValues.append(AppConfigEditTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_EDIT_SECTION_SETTINGS")))
+                            rawTableValues.append(AppConfigEditTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_SETTINGS")))
                         } else {
                             rawTableValues.append(AppConfigEditTableValue.valueForSection(configName))
                         }
@@ -171,20 +171,20 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
         }
 
         // Add actions
-        rawTableValues.append(AppConfigEditTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_EDIT_SECTION_ACTIONS")))
+        rawTableValues.append(AppConfigEditTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_ACTIONS")))
         if newConfig {
-            rawTableValues.append(AppConfigEditTableValue.valueForAction(.Save, andText: AppConfigBundle.localizedString("CFLAC_EDIT_ACTION_CREATE")))
+            rawTableValues.append(AppConfigEditTableValue.valueForAction(.Save, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_CREATE")))
         } else {
-            rawTableValues.append(AppConfigEditTableValue.valueForAction(.Save, andText: AppConfigBundle.localizedString("CFLAC_EDIT_ACTION_APPLY")))
+            rawTableValues.append(AppConfigEditTableValue.valueForAction(.Save, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_APPLY")))
         }
         if !newConfig {
-            if !AppConfigStorage.sharedManager.isCustomConfig(configName) || AppConfigStorage.sharedManager.isConfigOverride(configName) {
-                rawTableValues.append(AppConfigEditTableValue.valueForAction(.Revert, andText: AppConfigBundle.localizedString("CFLAC_EDIT_ACTION_RESET")))
+            if !AppConfigStorage.shared.isCustomConfig(config: configName) || AppConfigStorage.shared.isConfigOverride(config: configName) {
+                rawTableValues.append(AppConfigEditTableValue.valueForAction(.Revert, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_RESET")))
             } else {
-                rawTableValues.append(AppConfigEditTableValue.valueForAction(.Revert, andText: AppConfigBundle.localizedString("CFLAC_EDIT_ACTION_DELETE")))
+                rawTableValues.append(AppConfigEditTableValue.valueForAction(.Revert, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_DELETE")))
             }
         }
-        rawTableValues.append(AppConfigEditTableValue.valueForAction(.Cancel, andText: AppConfigBundle.localizedString("CFLAC_EDIT_ACTION_CANCEL")))
+        rawTableValues.append(AppConfigEditTableValue.valueForAction(.Cancel, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_CANCEL")))
 
         // Style table by adding dividers and reload
         var prevType: AppConfigEditTableValueType = .Unknown
@@ -414,7 +414,7 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
             choicePopup.delegate = self
             choicePopup.token = tableValue.configSetting
             choicePopup.addToSuperview(self)
-            AppConfigViewUtility.addPinSuperViewEdgesConstraints(choicePopup, parentView: self)
+            AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: choicePopup, parentView: self)
         } else if tableValue.type == .SwitchValue {
             if let cell = tableView.cellForRow(at: indexPath) as? AppConfigTableCell {
                 if let switchCellView = cell.cellView as? AppConfigEditSwitchCellView {

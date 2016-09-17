@@ -30,14 +30,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateConfigurationValues()
-        AppConfigStorage.sharedManager.addDataObserver(self, selector: #selector(updateConfigurationValues), name: AppConfigStorage.configurationChanged)
-        if !AppConfigStorage.sharedManager.isActivated() {
+        AppConfigStorage.shared.addDataObserver(self, selector: #selector(updateConfigurationValues), name: AppConfigStorage.configurationChanged)
+        if !AppConfigStorage.shared.isActivated() {
             changeButton.isHidden = true
         }
     }
     
     deinit {
-        AppConfigStorage.sharedManager.removeDataObserver(self, name: AppConfigStorage.configurationChanged)
+        AppConfigStorage.shared.removeDataObserver(self, name: AppConfigStorage.configurationChanged)
     }
 
 

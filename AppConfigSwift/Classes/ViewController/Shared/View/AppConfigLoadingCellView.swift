@@ -52,7 +52,7 @@ import UIKit
     }
     
     open func setupView() {
-        _contentView = AppConfigViewUtility.loadNib("LoadingCell", parentView: self)
+        _contentView = AppConfigViewUtility.loadNib(named: "LoadingCell", parentView: self)
         _label.text = ""
         _spinner.startAnimating()
     }

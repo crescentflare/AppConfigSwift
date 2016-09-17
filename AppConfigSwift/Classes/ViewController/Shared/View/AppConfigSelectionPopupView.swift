@@ -77,7 +77,7 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     
     open func setupView() {
         // Load nib to content view
-        _contentView = AppConfigViewUtility.loadNib("SelectionPopup", parentView: self)
+        _contentView = AppConfigViewUtility.loadNib(named: "SelectionPopup", parentView: self)
 
         // Set up table view
         let tableFooter = UIView()

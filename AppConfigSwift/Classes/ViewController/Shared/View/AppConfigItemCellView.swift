@@ -65,7 +65,7 @@ import UIKit
     }
     
     open func setupView() {
-        _contentView = AppConfigViewUtility.loadNib("ItemCell", parentView: self)
+        _contentView = AppConfigViewUtility.loadNib(named: "ItemCell", parentView: self)
         _label.text = ""
         _additional.text = ""
     }

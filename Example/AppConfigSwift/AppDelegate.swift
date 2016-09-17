@@ -25,8 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if RELEASE
             // Disable library
         #else
-            AppConfigStorage.sharedManager.activate(ExampleAppConfigManager.shared)
-            AppConfigStorage.sharedManager.setLoadingSourceAssetFile(Bundle.main.path(forResource: "AppConfig", ofType: "plist"))
+            AppConfigStorage.shared.activate(manager: ExampleAppConfigManager.shared)
+            AppConfigStorage.shared.setLoadingSourceAsset(filePath: Bundle.main.path(forResource: "AppConfig", ofType: "plist"))
         #endif
         return true
     }

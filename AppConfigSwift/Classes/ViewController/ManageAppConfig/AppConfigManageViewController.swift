@@ -40,7 +40,7 @@ open class AppConfigManageViewController : UIViewController, AppConfigManageTabl
     open override func viewDidLoad() {
         //Set title
         super.viewDidLoad()
-        navigationItem.title = AppConfigBundle.localizedString("CFLAC_MANAGE_TITLE")
+        navigationItem.title = AppConfigBundle.localizedString(key: "CFLAC_MANAGE_TITLE")
         navigationController?.navigationBar.isTranslucent = false
         
         //Add button to close the configuration selection
@@ -54,7 +54,7 @@ open class AppConfigManageViewController : UIViewController, AppConfigManageTabl
             //Create button
             let doneButton: UIButton = UIButton()
             doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-            doneButton.setTitle(AppConfigBundle.localizedString("CFLAC_SHARED_DONE"), for: UIControlState())
+            doneButton.setTitle(AppConfigBundle.localizedString(key: "CFLAC_SHARED_DONE"), for: UIControlState())
             doneButton.setTitleColor(tintColor, for: UIControlState())
             doneButton.setTitleColor(highlightColor, for: UIControlState.highlighted)
             let size: CGSize = doneButton.sizeThatFits(CGSize.zero)
@@ -67,9 +67,9 @@ open class AppConfigManageViewController : UIViewController, AppConfigManageTabl
         }
         
         //Update configuration list
-        AppConfigStorage.sharedManager.loadFromSource({
+        AppConfigStorage.shared.loadFromSource(completion: {
             self.isLoaded = true
-            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), customConfigurations: AppConfigStorage.sharedManager.obtainCustomConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
+            self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), lastSelected: AppConfigStorage.shared.selectedConfig())
         })
     }
     
@@ -85,7 +85,7 @@ open class AppConfigManageViewController : UIViewController, AppConfigManageTabl
     
     open override func viewDidAppear(_ animated: Bool) {
         if isLoaded {
-            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), customConfigurations: AppConfigStorage.sharedManager.obtainCustomConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
+            self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), lastSelected: AppConfigStorage.shared.selectedConfig())
         }
     }
     
@@ -118,9 +118,9 @@ open class AppConfigManageViewController : UIViewController, AppConfigManageTabl
     // --
     
     func selectedConfig(_ configName: String) {
-        AppConfigStorage.sharedManager.selectConfig(configName)
+        AppConfigStorage.shared.selectConfig(configName: configName)
         if isLoaded {
-            self.manageConfigTable.setConfigurations(AppConfigStorage.sharedManager.obtainConfigList(), customConfigurations: AppConfigStorage.sharedManager.obtainCustomConfigList(), lastSelected: AppConfigStorage.sharedManager.selectedConfig())
+            self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), lastSelected: AppConfigStorage.shared.selectedConfig())
         }
     }
     

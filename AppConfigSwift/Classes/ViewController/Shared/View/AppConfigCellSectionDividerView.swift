@@ -46,7 +46,7 @@ public enum AppConfigCellSectionLocation: String {
                 if _dividerLineConstraint != nil {
                     _dividerLine?.removeConstraint(_dividerLineConstraint!)
                 }
-                _dividerLineConstraint = AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: _location == .Top ? .bottom : .top)
+                _dividerLineConstraint = AppConfigViewUtility.addPinSuperViewEdgeConstraint(view: _dividerLine!, parentView: self, edge: _location == .Top ? .bottom : .top)
                 _dividerLine?.isHidden = _location == .None
             }
         }
@@ -81,8 +81,8 @@ public enum AppConfigCellSectionLocation: String {
         _dividerLine = UIView()
         _dividerLine?.backgroundColor = UIColor.init(white: 0.75, alpha: 1)
         addSubview(_dividerLine!)
-        AppConfigViewUtility.addPinSuperViewHorizontalEdgesConstraints(_dividerLine!, parentView: self)
-        AppConfigViewUtility.addHeightConstraint(_dividerLine!, height: 1 / UIScreen.main.scale)
+        AppConfigViewUtility.addPinSuperViewHorizontalEdgesConstraints(view: _dividerLine!, parentView: self)
+        AppConfigViewUtility.addHeightConstraint(view: _dividerLine!, height: 1 / UIScreen.main.scale)
         self.location = location
     }
     

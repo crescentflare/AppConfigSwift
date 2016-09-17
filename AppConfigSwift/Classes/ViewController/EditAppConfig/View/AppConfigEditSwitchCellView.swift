@@ -73,7 +73,7 @@ protocol AppConfigEditSwitchCellViewDelegate: class {
     }
     
     open func setupView() {
-        _contentView = AppConfigViewUtility.loadNib("EditSwitchCell", parentView: self)
+        _contentView = AppConfigViewUtility.loadNib(named: "EditSwitchCell", parentView: self)
         _label.text = ""
         _switchControl.addTarget(self, action: #selector(setState), for: .valueChanged)
         _switchControl.isOn = false

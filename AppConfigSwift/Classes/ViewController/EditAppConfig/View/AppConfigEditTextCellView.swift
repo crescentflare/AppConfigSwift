@@ -88,7 +88,7 @@ protocol AppConfigEditTextCellViewDelegate: class {
     }
     
     open func setupView() {
-        _contentView = AppConfigViewUtility.loadNib("EditTextCell", parentView: self)
+        _contentView = AppConfigViewUtility.loadNib(named: "EditTextCell", parentView: self)
         _label.textColor = tintColor
         _label.text = ""
         _editedText.addTarget(self, action: #selector(textFieldDidChange), for: .allEvents)

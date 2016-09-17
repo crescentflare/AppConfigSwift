@@ -6,7 +6,7 @@
 //  Provides helper functions to load nib files and set up constraints
 //
 
-open class AppConfigViewUtility {
+public class AppConfigViewUtility {
     
     // --
     // MARK: Initialization
@@ -19,12 +19,12 @@ open class AppConfigViewUtility {
     // MARK: Load NIB
     // --
     
-    open static func loadNib(_ name: String, parentView: UIView) -> UIView {
-        let nib = AppConfigBundle.loadNibNamed(name, owner: parentView, options: nil)
+    public static func loadNib(named: String, parentView: UIView) -> UIView {
+        let nib = AppConfigBundle.loadNib(named: named, owner: parentView, options: nil)
         if let contentView = nib?.instantiate(withOwner: parentView, options: nil)[0] as? UIView {
             contentView.frame = parentView.bounds
             parentView.addSubview(contentView)
-            addPinSuperViewEdgesConstraints(contentView, parentView: parentView)
+            addPinSuperViewEdgesConstraints(view: contentView, parentView: parentView)
             return contentView
         }
         let dummyView = UIView()
@@ -37,7 +37,7 @@ open class AppConfigViewUtility {
     // MARK: Constraint setup
     // --
     
-    open static func addPinSuperViewEdgeConstraint(_ view: UIView, parentView: UIView, edge: NSLayoutAttribute, constant: CGFloat = 0) -> NSLayoutConstraint? {
+    public static func addPinSuperViewEdgeConstraint(view: UIView, parentView: UIView, edge: NSLayoutAttribute, constant: CGFloat = 0) -> NSLayoutConstraint? {
         if edge == .left || edge == .right || edge == .top || edge == .bottom {
             let constraint = NSLayoutConstraint(item: view,
                                                 attribute: edge,
@@ -53,19 +53,19 @@ open class AppConfigViewUtility {
         return nil
     }
     
-    open static func addPinSuperViewHorizontalEdgesConstraints(_ view: UIView, parentView: UIView) {
-        addPinSuperViewEdgeConstraint(view, parentView: parentView, edge: .left)
-        addPinSuperViewEdgeConstraint(view, parentView: parentView, edge: .right)
+    public static func addPinSuperViewHorizontalEdgesConstraints(view: UIView, parentView: UIView) {
+        addPinSuperViewEdgeConstraint(view: view, parentView: parentView, edge: .left)
+        addPinSuperViewEdgeConstraint(view: view, parentView: parentView, edge: .right)
     }
 
-    open static func addPinSuperViewEdgesConstraints(_ view: UIView, parentView: UIView) {
-        addPinSuperViewEdgeConstraint(view, parentView: parentView, edge: .left)
-        addPinSuperViewEdgeConstraint(view, parentView: parentView, edge: .right)
-        addPinSuperViewEdgeConstraint(view, parentView: parentView, edge: .top)
-        addPinSuperViewEdgeConstraint(view, parentView: parentView, edge: .bottom)
+    public static func addPinSuperViewEdgesConstraints(view: UIView, parentView: UIView) {
+        addPinSuperViewEdgeConstraint(view: view, parentView: parentView, edge: .left)
+        addPinSuperViewEdgeConstraint(view: view, parentView: parentView, edge: .right)
+        addPinSuperViewEdgeConstraint(view: view, parentView: parentView, edge: .top)
+        addPinSuperViewEdgeConstraint(view: view, parentView: parentView, edge: .bottom)
     }
     
-    open static func addSizeAxisConstraint(_ view: UIView, axisSize: CGFloat, axis: NSLayoutAttribute) {
+    public static func addSizeAxisConstraint(view: UIView, axisSize: CGFloat, axis: NSLayoutAttribute) {
         if axis == .width || axis == .height {
             let constraint = NSLayoutConstraint(item: view,
                                                 attribute: axis,
@@ -79,12 +79,12 @@ open class AppConfigViewUtility {
         }
     }
 
-    open static func addWidthConstraint(_ view: UIView, width: CGFloat) {
-        addSizeAxisConstraint(view, axisSize: width, axis: .width)
+    public static func addWidthConstraint(view: UIView, width: CGFloat) {
+        addSizeAxisConstraint(view: view, axisSize: width, axis: .width)
     }
 
-    open static func addHeightConstraint(_ view: UIView, height: CGFloat) {
-        addSizeAxisConstraint(view, axisSize: height, axis: .height)
+    public static func addHeightConstraint(view: UIView, height: CGFloat) {
+        addSizeAxisConstraint(view: view, axisSize: height, axis: .height)
     }
     
 }

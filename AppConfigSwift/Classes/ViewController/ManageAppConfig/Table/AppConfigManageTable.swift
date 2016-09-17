@@ -56,7 +56,7 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
         tableFooter.frame = CGRect(x: 0, y: 0, width: 0, height: 8)
         table.tableFooterView = tableFooter
         addSubview(table)
-        AppConfigViewUtility.addPinSuperViewEdgesConstraints(table, parentView: self)
+        AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: table, parentView: self)
         
         // Set table view properties
         table.rowHeight = UITableViewAutomaticDimension
@@ -66,7 +66,7 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
         table.separatorStyle = .none
         
         // Show loading indicator by default
-        tableValues.append(AppConfigManageTableValue.valueForLoading(AppConfigBundle.localizedString("CFLAC_SHARED_LOADING_CONFIGS")))
+        tableValues.append(AppConfigManageTableValue.valueForLoading(AppConfigBundle.localizedString(key: "CFLAC_SHARED_LOADING_CONFIGS")))
     }
 
     
@@ -81,26 +81,26 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
         
         // Add predefined configurations (if present)
         if configurations.count > 0 {
-            rawTableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_MANAGE_SECTION_PREDEFINED")))
+            rawTableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_PREDEFINED")))
             for configuration: String in configurations {
-                rawTableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: AppConfigStorage.sharedManager.isConfigOverride(configuration)))
+                rawTableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: AppConfigStorage.shared.isConfigOverride(config: configuration)))
             }
         }
         
         // Add custom configurations (if present)
         if configurations.count > 0 {
-            rawTableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_MANAGE_SECTION_CUSTOM")))
+            rawTableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_CUSTOM")))
             for configuration: String in customConfigurations {
                 rawTableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: false))
             }
-            rawTableValues.append(AppConfigManageTableValue.valueForConfig(nil, andText: AppConfigBundle.localizedString("CFLAC_MANAGE_ADD_NEW"), lastSelected: false, edited: false))
+            rawTableValues.append(AppConfigManageTableValue.valueForConfig(nil, andText: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_ADD_NEW"), lastSelected: false, edited: false))
         }
         
         // Add build information
         let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-        rawTableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_MANAGE_SECTION_BUILD_INFO")))
-        rawTableValues.append(AppConfigManageTableValue.valueForInfo(AppConfigBundle.localizedString("CFLAC_MANAGE_BUILD_NR") + ": " + bundleVersion))
-        rawTableValues.append(AppConfigManageTableValue.valueForInfo(AppConfigBundle.localizedString("CFLAC_MANAGE_BUILD_IOS_VERSION") + ": " + UIDevice.current.systemVersion))
+        rawTableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_BUILD_INFO")))
+        rawTableValues.append(AppConfigManageTableValue.valueForInfo(AppConfigBundle.localizedString(key: "CFLAC_MANAGE_BUILD_NR") + ": " + bundleVersion))
+        rawTableValues.append(AppConfigManageTableValue.valueForInfo(AppConfigBundle.localizedString(key: "CFLAC_MANAGE_BUILD_IOS_VERSION") + ": " + UIDevice.current.systemVersion))
         
         // Style table by adding dividers and reload
         var prevType: AppConfigManageTableValueType = .Unknown
@@ -174,7 +174,7 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
             cell?.shouldHideDivider = !nextType.isCellType()
             cellView!.label = tableValue.labelString
             if tableValue.edited {
-                cellView!.additional = AppConfigBundle.localizedString("CFLAC_MANAGE_INDICATOR_EDITED")
+                cellView!.additional = AppConfigBundle.localizedString(key: "CFLAC_MANAGE_INDICATOR_EDITED")
             }
         }
         
@@ -242,7 +242,7 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
     }
     
     open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let editAction = UITableViewRowAction.init(style: .normal, title: AppConfigBundle.localizedString("CFLAC_MANAGE_SWIPE_EDIT"), handler: { action, indexPath in
+        let editAction = UITableViewRowAction.init(style: .normal, title: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SWIPE_EDIT"), handler: { action, indexPath in
             let tableValue = self.tableValues[(indexPath as NSIndexPath).row]
             tableView.setEditing(false, animated: true)
             if tableValue.config != nil {
@@ -265,11 +265,11 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
                 delegate?.selectedConfig(tableValue.config!)
             } else if tableValue.type == .Config {
                 let choicePopup = AppConfigSelectionPopupView()
-                choicePopup.label = AppConfigBundle.localizedString("CFLAC_SHARED_SELECT_MENU")
-                choicePopup.choices = AppConfigStorage.sharedManager.obtainConfigList()
+                choicePopup.label = AppConfigBundle.localizedString(key: "CFLAC_SHARED_SELECT_MENU")
+                choicePopup.choices = AppConfigStorage.shared.obtainConfigList()
                 choicePopup.delegate = self
                 choicePopup.addToSuperview(self)
-                AppConfigViewUtility.addPinSuperViewEdgesConstraints(choicePopup, parentView: self)
+                AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: choicePopup, parentView: self)
             }
         }
         table.deselectRow(at: indexPath, animated: false)

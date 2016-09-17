@@ -26,7 +26,7 @@ open class AppConfigTableCell : UITableViewCell {
             _cellView = newValue
             if _cellView != nil {
                 contentView.addSubview(_cellView!)
-                AppConfigViewUtility.addPinSuperViewEdgesConstraints(_cellView!, parentView: contentView)
+                AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: _cellView!, parentView: contentView)
             }
         }
         get { return _cellView }
@@ -51,10 +51,10 @@ open class AppConfigTableCell : UITableViewCell {
         _dividerLine = UIView()
         _dividerLine?.backgroundColor = UIColor.init(white: 0.8, alpha: 1)
         addSubview(_dividerLine!)
-        AppConfigViewUtility.addHeightConstraint(_dividerLine!, height: 1 / UIScreen.main.scale)
-        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .left, constant: 16)
-        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .right)
-        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .bottom)
+        AppConfigViewUtility.addHeightConstraint(view: _dividerLine!, height: 1 / UIScreen.main.scale)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(view: _dividerLine!, parentView: self, edge: .left, constant: 16)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(view: _dividerLine!, parentView: self, edge: .right)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(view: _dividerLine!, parentView: self, edge: .bottom)
     }
 
     

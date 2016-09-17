@@ -51,7 +51,7 @@ public class AppConfigModelMapper {
     // --
     
     //Map between key and value: boolean
-    open func map(key: String, value: inout Bool, category: String = "") {
+    public func map(key: String, value: inout Bool, category: String = "") {
         if mode == .toDictionary {
             dictionary[key] = value
         } else if mode == .fromDictionary && dictionary[key] != nil {
@@ -62,7 +62,7 @@ public class AppConfigModelMapper {
     }
 
     //Map between key and value: int
-    open func map(key: String, value: inout Int, category: String = "") {
+    public func map(key: String, value: inout Int, category: String = "") {
         if mode == .toDictionary {
             dictionary[key] = value
         } else if mode == .fromDictionary && dictionary[key] != nil {
@@ -73,7 +73,7 @@ public class AppConfigModelMapper {
     }
 
     //Map between key and value: string
-    open func map(key: String, value: inout String, category: String = "") {
+    public func map(key: String, value: inout String, category: String = "") {
         if mode == .toDictionary {
             dictionary[key] = value
         } else if mode == .fromDictionary && dictionary[key] != nil {
@@ -84,7 +84,7 @@ public class AppConfigModelMapper {
     }
     
     //Map between key and value: an enum containing a raw value (preferably string)
-    open func map<T: RawRepresentable>(key: String, value: inout T, fallback: T, allValues: [T], category: String = "") {
+    public func map<T: RawRepresentable>(key: String, value: inout T, fallback: T, allValues: [T], category: String = "") {
         if mode == .toDictionary {
             dictionary[key] = value.rawValue
         } else if mode == .fromDictionary && dictionary[key] != nil {
@@ -108,7 +108,7 @@ public class AppConfigModelMapper {
     }
     
     //After calling mapping on the model with to dictionary mode, retrieve the result using this function
-    open func getDictionaryValues() -> [String: Any] {
+    public func getDictionaryValues() -> [String: Any] {
         return dictionary
     }
 
@@ -118,22 +118,22 @@ public class AppConfigModelMapper {
     // --
 
     //After calling mapping on the model with this object, retrieve the grouped/categorized fields
-    open func getCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
+    public func getCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
         return categorizedFields
     }
     
     //After calling mapping on the model with this object, check if a given field is a raw representable class
-    open func isRawRepresentable(field: String) -> Bool {
+    public func isRawRepresentable(field: String) -> Bool {
         return rawRepresentableFields.contains(field)
     }
     
     //After calling mapping on the model with this object, return a list of possible values (only for raw representable types)
-    open func getRawRepresentableValues(forField: String) -> [String]? {
+    public func getRawRepresentableValues(forField: String) -> [String]? {
         return rawRepresentableFieldValues[forField]
     }
     
     //Internal method to keep track of keys and categories
-    fileprivate func add(key: String, category: String, isRawRepresentable: Bool = false) {
+    private func add(key: String, category: String, isRawRepresentable: Bool = false) {
         if categorizedFields[category] == nil {
             categorizedFields[category] = []
         }
