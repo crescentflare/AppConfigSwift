@@ -42,13 +42,13 @@ open class AppConfigBaseModel {
     open func isRawRepresentable(_ fieldName: String) -> Bool {
         let mapper = AppConfigModelMapper(mode: .collectKeys)
         map(mapper)
-        return mapper.isRawRepresentable(fieldName)
+        return mapper.isRawRepresentable(field: fieldName)
     }
     
     open func getRawRepresentableValues(_ fieldName: String) -> [String]? {
         let mapper = AppConfigModelMapper(mode: .collectKeys)
         map(mapper)
-        return mapper.getRawRepresentableValues(fieldName)
+        return mapper.getRawRepresentableValues(forField: fieldName)
     }
     
     //Internal method to override the model with customized values

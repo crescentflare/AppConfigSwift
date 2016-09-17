@@ -13,18 +13,20 @@ class ExampleAppConfigManager : AppConfigBaseManager {
     // --
     // MARK: Singleton instance
     // --
-    static let sharedManager: ExampleAppConfigManager = ExampleAppConfigManager()
+    
+    static let shared: ExampleAppConfigManager = ExampleAppConfigManager()
 
     
     // --
     // MARK: Methods
     // --
+    
     override func obtainBaseModelInstance() -> AppConfigBaseModel {
         return ExampleAppConfigModel()
     }
     
     static func currentConfig() -> ExampleAppConfigModel {
-        return sharedManager.currentConfigInstance() as! ExampleAppConfigModel
+        return shared.currentConfigInstance() as! ExampleAppConfigModel
     }
 
 }
