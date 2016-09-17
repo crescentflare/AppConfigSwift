@@ -19,7 +19,7 @@ public class AppConfigStorage {
     // MARK: Singleton instance
     // --
     
-    public static let shared: AppConfigStorage = AppConfigStorage()
+    public static let shared = AppConfigStorage()
     
 
     // --

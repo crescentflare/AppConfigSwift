@@ -15,17 +15,17 @@ protocol AppConfigEditTextCellViewDelegate: class {
     
 }
 
-@IBDesignable open class AppConfigEditTextCellView : UIView, UITextFieldDelegate {
+@IBDesignable class AppConfigEditTextCellView : UIView, UITextFieldDelegate {
     
     // --
     // MARK: Members
     // --
     
     weak var delegate: AppConfigEditTextCellViewDelegate?
-    fileprivate var _contentView: UIView! = nil
-    @IBOutlet fileprivate var _label: UILabel! = nil
-    @IBOutlet fileprivate var _editedText: UITextField! = nil
-    fileprivate var _applyNumberLimitation = false
+    private var _contentView: UIView! = nil
+    @IBOutlet private var _label: UILabel! = nil
+    @IBOutlet private var _editedText: UITextField! = nil
+    private var _applyNumberLimitation = false
 
     
     // --
@@ -82,12 +82,12 @@ protocol AppConfigEditTextCellViewDelegate: class {
         setupView()
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
     
-    open func setupView() {
+    func setupView() {
         _contentView = AppConfigViewUtility.loadNib(named: "EditTextCell", parentView: self)
         _label.textColor = tintColor
         _label.text = ""
@@ -110,7 +110,7 @@ protocol AppConfigEditTextCellViewDelegate: class {
     // MARK: UITextFieldDelegate
     // --
 
-    open func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         //Only use limitation code if applied
         if !applyNumberLimitation {
             return true
@@ -141,7 +141,7 @@ protocol AppConfigEditTextCellViewDelegate: class {
     // MARK: Helpers
     // --
    
-    open func startEditing() {
+    func startEditing() {
         _editedText.becomeFirstResponder()
     }
     

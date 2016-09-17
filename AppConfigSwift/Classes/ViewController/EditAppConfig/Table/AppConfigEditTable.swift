@@ -12,7 +12,7 @@ import UIKit
 // Delegate protocol
 protocol AppConfigEditTableDelegate: class {
 
-    func saveConfig(_ newSettings: [String: Any])
+    func saveConfig(newSettings: [String: Any])
     func cancelEditing()
     func revertConfig()
 
@@ -20,7 +20,7 @@ protocol AppConfigEditTableDelegate: class {
 
 
 // Class
-open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigEditTextCellViewDelegate, AppConfigEditSwitchCellViewDelegate, AppConfigSelectionPopupViewDelegate {
+class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigEditTextCellViewDelegate, AppConfigEditSwitchCellViewDelegate, AppConfigSelectionPopupViewDelegate {
     
     // --
     // MARK: Members
@@ -28,8 +28,8 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
     
     weak var delegate: AppConfigEditTableDelegate?
     var tableValues: [AppConfigEditTableValue] = []
-    var configName: String = ""
-    var newConfig: Bool = false
+    var configName = ""
+    var newConfig = false
     let table = UITableView()
 
     
@@ -46,7 +46,7 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
         self.init(frame: CGRect.zero)
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initialize()
     }
@@ -68,7 +68,7 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
         table.separatorStyle = .none
         
         // Show loading indicator by default
-        tableValues.append(AppConfigEditTableValue.valueForLoading(AppConfigBundle.localizedString(key: "CFLAC_SHARED_LOADING_CONFIGS")))
+        tableValues.append(AppConfigEditTableValue.valueForLoading(text: AppConfigBundle.localizedString(key: "CFLAC_SHARED_LOADING_CONFIGS")))
     }
 
     
@@ -76,18 +76,18 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
     // MARK: Implementation
     // --
     
-    open func setConfigurationSettings(_ configurationSettings: [String: Any], model: AppConfigBaseModel?) {
+    func setConfiguration(settings: [String: Any], model: AppConfigBaseModel?) {
         // Add editable fields
         var rawTableValues: [AppConfigEditTableValue] = []
         tableValues = []
-        if configurationSettings.count > 0 {
+        if settings.count > 0 {
             // First add the name section + field for custom configurations
             let customizedCopy = newConfig || (AppConfigStorage.shared.isCustomConfig(config: configName ?? "") && !AppConfigStorage.shared.isConfigOverride(config: configName ?? ""))
             if customizedCopy {
-                for (key, value) in configurationSettings {
+                for (key, value) in settings {
                     if key == "name" {
-                        rawTableValues.append(AppConfigEditTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_NAME")))
-                        rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(key, andValue: value as? String ?? "", numberOnly: false))
+                        rawTableValues.append(AppConfigEditTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_NAME")))
+                        rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(configSetting: key, andValue: value as? String ?? "", numberOnly: false))
                         break;
                     }
                 }
@@ -127,51 +127,51 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
                             if hasMultipleCategories {
                                 baseCategoryName += ": " + categoryName
                             }
-                            rawTableValues.append(AppConfigEditTableValue.valueForSection(baseCategoryName))
+                            rawTableValues.append(AppConfigEditTableValue.valueForSection(text: baseCategoryName))
                             configSectionAdded = true
                         }
                         if modelValues[field] is Bool {
-                            rawTableValues.append(AppConfigEditTableValue.valueForSwitchValue(field, andSwitchedOn: configurationSettings[field] as? Bool ?? false))
+                            rawTableValues.append(AppConfigEditTableValue.valueForSwitchValue(configSetting: field, andSwitchedOn: settings[field] as? Bool ?? false))
                             continue
                         }
                         if model?.isRawRepresentable(field: field) ?? false {
                             let choices: [String] = model?.getRawRepresentableValues(forField: field) ?? []
-                            rawTableValues.append(AppConfigEditTableValue.valueForSelection(field, andValue: configurationSettings[field] as? String ?? "", andChoices: choices))
+                            rawTableValues.append(AppConfigEditTableValue.valueForSelection(configSetting: field, andValue: settings[field] as? String ?? "", andChoices: choices))
                             continue
                         }
                         if modelValues[field] is Int {
-                            rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(field, andValue: "\(configurationSettings[field] ?? 0)", numberOnly: true))
+                            rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(configSetting: field, andValue: "\(settings[field] ?? 0)", numberOnly: true))
                         } else {
-                            rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(field, andValue: "\(configurationSettings[field] ?? "")", numberOnly: false))
+                            rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(configSetting: field, andValue: "\(settings[field] ?? "")", numberOnly: false))
                         }
                     }
                 }
             } else {
                 // Using raw dictionary
                 var configSectionAdded = false
-                for (key, value) in configurationSettings {
+                for (key, value) in settings {
                     if key == "name" {
                         continue
                     }
                     if !configSectionAdded {
                         if customizedCopy {
-                            rawTableValues.append(AppConfigEditTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_SETTINGS")))
+                            rawTableValues.append(AppConfigEditTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_SETTINGS")))
                         } else {
-                            rawTableValues.append(AppConfigEditTableValue.valueForSection(configName))
+                            rawTableValues.append(AppConfigEditTableValue.valueForSection(text: configName))
                         }
                         configSectionAdded = true
                     }
                     if value is Bool {
-                        rawTableValues.append(AppConfigEditTableValue.valueForSwitchValue(key, andSwitchedOn: value as? Bool ?? false))
+                        rawTableValues.append(AppConfigEditTableValue.valueForSwitchValue(configSetting: key, andSwitchedOn: value as? Bool ?? false))
                         continue
                     }
-                    rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(key, andValue: "\(value)", numberOnly: value is Int))
+                    rawTableValues.append(AppConfigEditTableValue.valueForTextEntry(configSetting: key, andValue: "\(value)", numberOnly: value is Int))
                 }
             }
         }
 
         // Add actions
-        rawTableValues.append(AppConfigEditTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_ACTIONS")))
+        rawTableValues.append(AppConfigEditTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_ACTIONS")))
         if newConfig {
             rawTableValues.append(AppConfigEditTableValue.valueForAction(.Save, andText: AppConfigBundle.localizedString(key: "CFLAC_EDIT_ACTION_CREATE")))
         } else {
@@ -190,24 +190,24 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
         var prevType: AppConfigEditTableValueType = .Unknown
         for tableValue in rawTableValues {
             if !prevType.isCellType() && tableValue.type.isCellType() {
-                tableValues.append(AppConfigEditTableValue.valueForDivider(.TopDivider))
+                tableValues.append(AppConfigEditTableValue.valueForDivider(type: .TopDivider))
             } else if prevType.isCellType() && !tableValue.type.isCellType() {
-                tableValues.append(AppConfigEditTableValue.valueForDivider(.BottomDivider))
+                tableValues.append(AppConfigEditTableValue.valueForDivider(type: .BottomDivider))
             } else if !prevType.isCellType() && !tableValue.type.isCellType() {
-                tableValues.append(AppConfigEditTableValue.valueForDivider(.BetweenDivider))
+                tableValues.append(AppConfigEditTableValue.valueForDivider(type: .BetweenDivider))
             }
             tableValues.append(tableValue)
             prevType = tableValue.type
         }
         if prevType.isCellType() {
-            tableValues.append(AppConfigEditTableValue.valueForDivider(.BottomDivider))
+            tableValues.append(AppConfigEditTableValue.valueForDivider(type: .BottomDivider))
         } else {
-            tableValues.append(AppConfigEditTableValue.valueForDivider(.BetweenDivider))
+            tableValues.append(AppConfigEditTableValue.valueForDivider(type: .BetweenDivider))
         }
         table.reloadData()
     }
     
-    open func obtainNewConfigurationSettings() -> [String: Any] {
+    func obtainNewConfigurationSettings() -> [String: Any] {
         var result: [String: Any] = [:]
         result["name"] = configName
         for tableValue in tableValues {
@@ -239,15 +239,15 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
     // MARK: UITableViewDataSource
     // --
     
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableValues.count
     }
     
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Create cell (if needed)
         let tableValue = tableValues[(indexPath as NSIndexPath).row]
         let nextType = (indexPath as NSIndexPath).row + 1 < tableValues.count ? tableValues[(indexPath as NSIndexPath).row + 1].type : AppConfigEditTableValueType.Unknown
-        var cell: AppConfigTableCell? = tableView.dequeueReusableCell(withIdentifier: tableValue.type.rawValue) as? AppConfigTableCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: tableValue.type.rawValue) as? AppConfigTableCell
         if cell == nil {
             cell = AppConfigTableCell()
         }
@@ -390,13 +390,13 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
     // MARK: UITableViewDelegate
     // --
     
-    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tableValue = tableValues[(indexPath as NSIndexPath).row]
         UIApplication.shared.sendAction(#selector(resignFirstResponder), to: nil, from: nil, for: nil)
         if tableValue.type == .Action && delegate != nil {
             switch tableValue.action {
             case .Save:
-                delegate?.saveConfig(obtainNewConfigurationSettings())
+                delegate?.saveConfig(newSettings: obtainNewConfigurationSettings())
                 break
             case .Cancel:
                 delegate?.cancelEditing()
@@ -440,7 +440,7 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
         for i in 0..<tableValues.count {
             let tableValue = tableValues[i]
             if tableValue.configSetting == forConfigSetting {
-                tableValues[i] = AppConfigEditTableValue.valueForTextEntry(tableValue.configSetting!, andValue: newText, numberOnly: tableValue.limitUsage)
+                tableValues[i] = AppConfigEditTableValue.valueForTextEntry(configSetting: tableValue.configSetting!, andValue: newText, numberOnly: tableValue.limitUsage)
                 break
             }
         }
@@ -455,7 +455,7 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
         for i in 0..<tableValues.count {
             let tableValue = tableValues[i]
             if tableValue.configSetting == forConfigSetting {
-                tableValues[i] = AppConfigEditTableValue.valueForSwitchValue(tableValue.configSetting!, andSwitchedOn: on)
+                tableValues[i] = AppConfigEditTableValue.valueForSwitchValue(configSetting: tableValue.configSetting!, andSwitchedOn: on)
                 break
             }
         }
@@ -471,7 +471,7 @@ open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelega
             let tableValue = tableValues[i]
             if tableValue.configSetting == token {
                 let totalIndexPath = IndexPath.init(row: i, section: 0)
-                tableValues[i] = AppConfigEditTableValue.valueForSelection(tableValue.configSetting!, andValue: item, andChoices: tableValue.selectionItems!)
+                tableValues[i] = AppConfigEditTableValue.valueForSelection(configSetting: tableValue.configSetting!, andValue: item, andChoices: tableValue.selectionItems!)
                 table.beginUpdates()
                 table.reloadRows(at: [totalIndexPath], with: .none)
                 table.endUpdates()

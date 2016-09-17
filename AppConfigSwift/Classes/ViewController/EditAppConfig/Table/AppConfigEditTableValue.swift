@@ -8,7 +8,7 @@
 //
 
 //Value type enum
-public enum AppConfigEditTableValueType: String {
+enum AppConfigEditTableValueType: String {
     
     case Unknown = "unknown"
     case Loading = "loading"
@@ -28,7 +28,7 @@ public enum AppConfigEditTableValueType: String {
 }
 
 //Action type enum
-public enum AppConfigEditTableActionType: String {
+enum AppConfigEditTableActionType: String {
     
     case None = "none"
     case Save = "save"
@@ -37,7 +37,7 @@ public enum AppConfigEditTableActionType: String {
     
 }
 
-open class AppConfigEditTableValue {
+class AppConfigEditTableValue {
     
     // --
     // MARK: Members
@@ -56,7 +56,7 @@ open class AppConfigEditTableValue {
     // MARK: Initialization
     // --
     
-    public init(configSetting: String?, labelString: String, booleanValue: Bool, limitUsage: Bool, selectionItems: [String]?, action: AppConfigEditTableActionType, type: AppConfigEditTableValueType) {
+    init(configSetting: String?, labelString: String, booleanValue: Bool, limitUsage: Bool, selectionItems: [String]?, action: AppConfigEditTableActionType, type: AppConfigEditTableValueType) {
         self.configSetting = configSetting
         self.labelString = labelString
         self.booleanValue = booleanValue
@@ -71,31 +71,31 @@ open class AppConfigEditTableValue {
     // MARK: Factory methods
     // --
     
-    open static func valueForLoading(_ loadingText: String) -> AppConfigEditTableValue {
-        return AppConfigEditTableValue(configSetting: nil, labelString: loadingText, booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: .Loading)
+    static func valueForLoading(text: String) -> AppConfigEditTableValue {
+        return AppConfigEditTableValue(configSetting: nil, labelString: text, booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: .Loading)
     }
     
-    open static func valueForAction(_ action: AppConfigEditTableActionType, andText: String) -> AppConfigEditTableValue {
+    static func valueForAction(_ action: AppConfigEditTableActionType, andText: String) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: nil, labelString: andText, booleanValue: false, limitUsage: false, selectionItems: nil, action: action, type: .Action)
     }
     
-    open static func valueForTextEntry(_ configSetting: String, andValue: String, numberOnly: Bool) -> AppConfigEditTableValue {
+    static func valueForTextEntry(configSetting: String, andValue: String, numberOnly: Bool) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: configSetting, labelString: andValue, booleanValue: false, limitUsage: numberOnly, selectionItems: nil, action: .None, type: .TextEntry)
     }
     
-    open static func valueForSwitchValue(_ configSetting: String, andSwitchedOn: Bool) -> AppConfigEditTableValue {
+    static func valueForSwitchValue(configSetting: String, andSwitchedOn: Bool) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: configSetting, labelString: "", booleanValue: andSwitchedOn, limitUsage: false, selectionItems: nil, action: .None, type: .SwitchValue)
     }
 
-    open static func valueForSelection(_ configSetting: String, andValue: String, andChoices: [String]) -> AppConfigEditTableValue {
+    static func valueForSelection(configSetting: String, andValue: String, andChoices: [String]) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: configSetting, labelString: andValue, booleanValue: false, limitUsage: false, selectionItems: andChoices, action: .None, type: .Selection)
     }
 
-    open static func valueForSection(_ sectionText: String) -> AppConfigEditTableValue {
-        return AppConfigEditTableValue(configSetting: nil, labelString: sectionText, booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: .Section)
+    static func valueForSection(text: String) -> AppConfigEditTableValue {
+        return AppConfigEditTableValue(configSetting: nil, labelString: text, booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: .Section)
     }
 
-    open static func valueForDivider(_ type: AppConfigEditTableValueType) -> AppConfigEditTableValue {
+    static func valueForDivider(type: AppConfigEditTableValueType) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: nil, labelString: "", booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: type)
     }
 
