@@ -10,9 +10,9 @@
 //Enum for mapping mode
 public enum AppConfigModelMapperMode {
     
-    case CollectKeys
-    case ToDictionary
-    case FromDictionary
+    case collectKeys
+    case toDictionary
+    case fromDictionary
     
 }
 
@@ -51,49 +51,49 @@ public class AppConfigModelMapper {
     // --
     
     //Map between key and value: boolean
-    public func map(key: String, inout value: Bool, category: String = "") {
-        if mode == .ToDictionary {
+    public func map(key: String, value: inout Bool, category: String = "") {
+        if mode == .toDictionary {
             dictionary[key] = value
-        } else if mode == .FromDictionary && dictionary[key] != nil {
+        } else if mode == .fromDictionary && dictionary[key] != nil {
             value = dictionary[key] as! Bool
-        } else if mode == .CollectKeys {
-            addKey(key, category: category)
+        } else if mode == .collectKeys {
+            add(key: key, category: category)
         }
     }
 
     //Map between key and value: int
-    public func map(key: String, inout value: Int, category: String = "") {
-        if mode == .ToDictionary {
+    public func map(key: String, value: inout Int, category: String = "") {
+        if mode == .toDictionary {
             dictionary[key] = value
-        } else if mode == .FromDictionary && dictionary[key] != nil {
+        } else if mode == .fromDictionary && dictionary[key] != nil {
             value = dictionary[key] as! Int
-        } else if mode == .CollectKeys {
-            addKey(key, category: category)
+        } else if mode == .collectKeys {
+            add(key: key, category: category)
         }
     }
 
     //Map between key and value: string
-    public func map(key: String, inout value: String, category: String = "") {
-        if mode == .ToDictionary {
+    public func map(key: String, value: inout String, category: String = "") {
+        if mode == .toDictionary {
             dictionary[key] = value
-        } else if mode == .FromDictionary && dictionary[key] != nil {
+        } else if mode == .fromDictionary && dictionary[key] != nil {
             value = dictionary[key] as! String
-        } else if mode == .CollectKeys {
-            addKey(key, category: category)
+        } else if mode == .collectKeys {
+            add(key: key, category: category)
         }
     }
     
     //Map between key and value: an enum containing a raw value (preferably string)
-    public func map<T: RawRepresentable>(key: String, inout value: T, fallback: T, allValues: [T], category: String = "") {
-        if mode == .ToDictionary {
+    public func map<T: RawRepresentable>(key: String, value: inout T, fallback: T, allValues: [T], category: String = "") {
+        if mode == .toDictionary {
             dictionary[key] = value.rawValue
-        } else if mode == .FromDictionary && dictionary[key] != nil {
+        } else if mode == .fromDictionary && dictionary[key] != nil {
             if let raw = dictionary[key] as? T.RawValue {
                 value = T(rawValue: raw)!
             } else {
                 value = fallback
             }
-        } else if mode == .CollectKeys {
+        } else if mode == .collectKeys {
             var stringValues: [String] = []
             for value in allValues {
                 if value.rawValue is String {
@@ -103,7 +103,7 @@ public class AppConfigModelMapper {
             if stringValues.count > 0 {
                 rawRepresentableFieldValues[key] = stringValues
             }
-            addKey(key, category: category, isRawRepresentable: true)
+            add(key: key, category: category, isRawRepresentable: true)
         }
     }
     
@@ -123,17 +123,17 @@ public class AppConfigModelMapper {
     }
     
     //After calling mapping on the model with this object, check if a given field is a raw representable class
-    public func isRawRepresentable(fieldName: String) -> Bool {
-        return rawRepresentableFields.contains(fieldName)
+    public func isRawRepresentable(field: String) -> Bool {
+        return rawRepresentableFields.contains(field)
     }
     
     //After calling mapping on the model with this object, return a list of possible values (only for raw representable types)
-    public func getRawRepresentableValues(fieldName: String) -> [String]? {
-        return rawRepresentableFieldValues[fieldName]
+    public func getRawRepresentableValues(forField: String) -> [String]? {
+        return rawRepresentableFieldValues[forField]
     }
     
     //Internal method to keep track of keys and categories
-    private func addKey(key: String, category: String, isRawRepresentable: Bool = false) {
+    private func add(key: String, category: String, isRawRepresentable: Bool = false) {
         if categorizedFields[category] == nil {
             categorizedFields[category] = []
         }

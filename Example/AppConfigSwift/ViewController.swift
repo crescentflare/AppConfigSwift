@@ -30,18 +30,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateConfigurationValues()
-        AppConfigStorage.sharedManager.addDataObserver(self, selector: #selector(updateConfigurationValues), name: AppConfigStorage.configurationChanged)
-        if !AppConfigStorage.sharedManager.isActivated() {
-            changeButton.hidden = true
+        AppConfigStorage.shared.addDataObserver(self, selector: #selector(updateConfigurationValues), name: AppConfigStorage.configurationChanged)
+        if !AppConfigStorage.shared.isActivated() {
+            changeButton.isHidden = true
         }
     }
     
     deinit {
-        AppConfigStorage.sharedManager.removeDataObserver(self, name: AppConfigStorage.configurationChanged)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        AppConfigStorage.shared.removeDataObserver(self, name: AppConfigStorage.configurationChanged)
     }
 
 
@@ -63,9 +59,9 @@ class ViewController: UIViewController {
     // --
     
     @IBAction func changeConfiguration() {
-        let viewController: AppConfigManageViewController = AppConfigManageViewController()
-        let navigationController: UINavigationController = UINavigationController.init(rootViewController: viewController)
-        presentViewController(navigationController, animated: true, completion: nil)
+        let viewController = AppConfigManageViewController()
+        let navigationController = UINavigationController.init(rootViewController: viewController)
+        present(navigationController, animated: true, completion: nil)
     }
     
 }

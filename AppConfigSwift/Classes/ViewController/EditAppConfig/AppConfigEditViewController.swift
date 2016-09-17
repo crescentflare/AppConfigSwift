@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate {
+class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate {
     
     // --
     // MARK: Members
@@ -16,7 +16,7 @@ public class AppConfigEditViewController : UIViewController, AppConfigEditTableD
     
     var newConfig = false
     var configName = ""
-    let editConfigTable: AppConfigEditTable = AppConfigEditTable()
+    let editConfigTable = AppConfigEditTable()
 
     
     // --
@@ -31,60 +31,60 @@ public class AppConfigEditViewController : UIViewController, AppConfigEditTableD
         editConfigTable.configName = configName
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         //Set title
         super.viewDidLoad()
-        navigationItem.title = AppConfigBundle.localizedString(newConfig ? "CFLAC_EDIT_NEW_TITLE" : "CFLAC_EDIT_TITLE")
-        navigationController?.navigationBar.translucent = false
+        navigationItem.title = AppConfigBundle.localizedString(key: newConfig ? "CFLAC_EDIT_NEW_TITLE" : "CFLAC_EDIT_TITLE")
+        navigationController?.navigationBar.isTranslucent = false
         
         //Add button to close the configuration selection
         if navigationController != nil {
             //Obtain colors
             let tintColor = view.tintColor
             var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
-            tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+            tintColor?.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
             let highlightColor: UIColor = UIColor.init(red: red, green: green, blue: blue, alpha: 0.25)
             
             //Add cancel button
-            let cancelButton: UIButton = UIButton()
-            cancelButton.titleLabel?.font = UIFont.systemFontOfSize(15)
-            cancelButton.setTitle(AppConfigBundle.localizedString("CFLAC_SHARED_CANCEL"), forState: UIControlState.Normal)
-            cancelButton.setTitleColor(tintColor, forState: UIControlState.Normal)
-            cancelButton.setTitleColor(highlightColor, forState: UIControlState.Highlighted)
-            let cancelButtonSize: CGSize = cancelButton.sizeThatFits(CGSizeZero)
-            cancelButton.frame = CGRectMake(0, 0, cancelButtonSize.width, cancelButtonSize.height)
-            cancelButton.addTarget(self, action: #selector(cancelButtonPressed), forControlEvents: UIControlEvents.TouchUpInside)
+            let cancelButton = UIButton()
+            cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+            cancelButton.setTitle(AppConfigBundle.localizedString(key: "CFLAC_SHARED_CANCEL"), for: UIControlState())
+            cancelButton.setTitleColor(tintColor, for: UIControlState())
+            cancelButton.setTitleColor(highlightColor, for: UIControlState.highlighted)
+            let cancelButtonSize: CGSize = cancelButton.sizeThatFits(CGSize.zero)
+            cancelButton.frame = CGRect(x: 0, y: 0, width: cancelButtonSize.width, height: cancelButtonSize.height)
+            cancelButton.addTarget(self, action: #selector(cancelButtonPressed), for: UIControlEvents.touchUpInside)
             
             //Wrap in bar button item
-            let cancelButtonWrapper: UIBarButtonItem = UIBarButtonItem.init(customView: cancelButton)
+            let cancelButtonWrapper = UIBarButtonItem.init(customView: cancelButton)
             navigationItem.leftBarButtonItem = cancelButtonWrapper
 
             //Create button
-            let saveButton: UIButton = UIButton()
-            saveButton.titleLabel?.font = UIFont.systemFontOfSize(15)
-            saveButton.setTitle(AppConfigBundle.localizedString("CFLAC_SHARED_SAVE"), forState: UIControlState.Normal)
-            saveButton.setTitleColor(tintColor, forState: UIControlState.Normal)
-            saveButton.setTitleColor(highlightColor, forState: UIControlState.Highlighted)
-            let saveButtonSize: CGSize = saveButton.sizeThatFits(CGSizeZero)
-            saveButton.frame = CGRectMake(0, 0, saveButtonSize.width, saveButtonSize.height)
-            saveButton.addTarget(self, action: #selector(saveButtonPressed), forControlEvents: UIControlEvents.TouchUpInside)
+            let saveButton = UIButton()
+            saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+            saveButton.setTitle(AppConfigBundle.localizedString(key: "CFLAC_SHARED_SAVE"), for: UIControlState())
+            saveButton.setTitleColor(tintColor, for: UIControlState())
+            saveButton.setTitleColor(highlightColor, for: UIControlState.highlighted)
+            let saveButtonSize: CGSize = saveButton.sizeThatFits(CGSize.zero)
+            saveButton.frame = CGRect(x: 0, y: 0, width: saveButtonSize.width, height: saveButtonSize.height)
+            saveButton.addTarget(self, action: #selector(saveButtonPressed), for: UIControlEvents.touchUpInside)
             
             //Wrap in bar button item
-            let saveButtonWrapper: UIBarButtonItem = UIBarButtonItem.init(customView: saveButton)
+            let saveButtonWrapper = UIBarButtonItem.init(customView: saveButton)
             navigationItem.rightBarButtonItem = saveButtonWrapper
         }
         
         //Update configuration list
-        AppConfigStorage.sharedManager.loadFromSource({
-            self.editConfigTable.setConfigurationSettings(self.obtainSettings(), model: AppConfigStorage.sharedManager.configManager()?.obtainBaseModelInstance())
+        AppConfigStorage.shared.loadFromSource(completion: {
+            self.editConfigTable.setConfiguration(settings: self.obtainSettings(), model: AppConfigStorage.shared.configManager()?.obtainBaseModelInstance())
         })
     }
     
-    public override func loadView() {
+    override func loadView() {
         editConfigTable.delegate = self
         view = editConfigTable
     }
@@ -95,9 +95,9 @@ public class AppConfigEditViewController : UIViewController, AppConfigEditTableD
     // --
     
     func obtainSettings() -> [String: Any] {
-        var settings = AppConfigStorage.sharedManager.configSettings(configName) ?? [:]
+        var settings = AppConfigStorage.shared.configSettings(config: configName) ?? [:]
         if newConfig {
-            settings["name"] = "\(configName) \(AppConfigBundle.localizedString("CFLAC_EDIT_COPY_SUFFIX"))"
+            settings["name"] = "\(configName) \(AppConfigBundle.localizedString(key: "CFLAC_EDIT_COPY_SUFFIX"))"
         }
         return settings
     }
@@ -107,53 +107,53 @@ public class AppConfigEditViewController : UIViewController, AppConfigEditTableD
     // MARK: Selectors
     // --
     
-    func cancelButtonPressed(sender: UIButton) {
+    func cancelButtonPressed(_ sender: UIButton) {
         //TODO: are you sure dialog/check?
         cancelEditing()
     }
     
-    func saveButtonPressed(sender: UIButton) {
-        saveConfig(editConfigTable.obtainNewConfigurationSettings())
+    func saveButtonPressed(_ sender: UIButton) {
+        saveConfig(newSettings: editConfigTable.obtainNewConfigurationSettings())
     }
     
 
     // --
-    // MARK: CFLAppConfigEditTableDelegate
+    // MARK: AppConfigEditTableDelegate
     // --
     
     func saveConfig(newSettings: [String: Any]) {
-        let wasSelected = configName == AppConfigStorage.sharedManager.selectedConfig()
-        if AppConfigStorage.sharedManager.isCustomConfig(configName) || AppConfigStorage.sharedManager.isConfigOverride(configName) {
-            AppConfigStorage.sharedManager.removeConfig(configName)
+        let wasSelected = configName == AppConfigStorage.shared.selectedConfig()
+        if AppConfigStorage.shared.isCustomConfig(config: configName) || AppConfigStorage.shared.isConfigOverride(config: configName) {
+            AppConfigStorage.shared.removeConfig(config: configName)
         }
         var storeSettings = newSettings
         var newName = storeSettings["name"] as? String ?? ""
-        if newName.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).characters.count == 0 {
-            newName = AppConfigBundle.localizedString("CFLAC_EDIT_COPY_NONAME")
+        if newName.trimmingCharacters(in: CharacterSet.whitespaces).characters.count == 0 {
+            newName = AppConfigBundle.localizedString(key: "CFLAC_EDIT_COPY_NONAME")
             storeSettings["name"] = newName
         }
-        AppConfigStorage.sharedManager.putCustomConfig(storeSettings, forConfig: newName)
+        AppConfigStorage.shared.putCustomConfig(settings: storeSettings, forConfig: newName)
         if wasSelected {
-            AppConfigStorage.sharedManager.selectConfig(newName)
+            AppConfigStorage.shared.selectConfig(configName: newName)
         }
-        AppConfigStorage.sharedManager.synchronizeCustomConfigsWithUserDefaults()
-        navigationController?.popViewControllerAnimated(true)
+        AppConfigStorage.shared.synchronizeCustomConfigsWithUserDefaults()
+        navigationController?.popViewController(animated: true)
     }
     
     func cancelEditing() {
-        navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewController(animated: true)
     }
     
     func revertConfig() {
-        let wasSelected = configName == AppConfigStorage.sharedManager.selectedConfig()
-        if AppConfigStorage.sharedManager.isCustomConfig(configName) || AppConfigStorage.sharedManager.isConfigOverride(configName) {
-            AppConfigStorage.sharedManager.removeConfig(configName)
-            AppConfigStorage.sharedManager.synchronizeCustomConfigsWithUserDefaults()
+        let wasSelected = configName == AppConfigStorage.shared.selectedConfig()
+        if AppConfigStorage.shared.isCustomConfig(config: configName) || AppConfigStorage.shared.isConfigOverride(config: configName) {
+            AppConfigStorage.shared.removeConfig(config: configName)
+            AppConfigStorage.shared.synchronizeCustomConfigsWithUserDefaults()
         }
         if wasSelected {
-            AppConfigStorage.sharedManager.selectConfig(configName)
+            AppConfigStorage.shared.selectConfig(configName: configName)
         }
-        navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewController(animated: true)
     }
     
 }

@@ -19,12 +19,12 @@ public class AppConfigBundle {
     // MARK: Implementation
     // --
     
-    public static func imageNamed(image: String) -> UIImage? {
-        return UIImage.init(named: image, inBundle: AppConfigBundle.podBundle(), compatibleWithTraitCollection: nil)
+    public static func image(named: String) -> UIImage? {
+        return UIImage.init(named: named, in: AppConfigBundle.podBundle(), compatibleWith: nil)
     }
     
-    public static func loadNibNamed(name: String!, owner: AnyObject!, options: [NSObject: AnyObject]!) -> UINib! {
-        return UINib(nibName: name, bundle: AppConfigBundle.podBundle())
+    public static func loadNib(named: String!, owner: AnyObject!, options: [AnyHashable: Any]!) -> UINib! {
+        return UINib(nibName: named, bundle: AppConfigBundle.podBundle())
     }
 
     public static func localizedString(key: String) -> String {
@@ -35,9 +35,9 @@ public class AppConfigBundle {
     // --
     // MARK: Internal helper
     // --
-    private static func podBundle() -> NSBundle? {
-        if let url = NSBundle.init(forClass: AppConfigBundle.self).URLForResource("AppConfigSwift", withExtension: "bundle") {
-            return NSBundle.init(URL: url)
+    private static func podBundle() -> Bundle? {
+        if let url = Bundle.init(for: AppConfigBundle.self).url(forResource: "AppConfigSwift", withExtension: "bundle") {
+            return Bundle.init(url: url)
         }
         return nil
     }

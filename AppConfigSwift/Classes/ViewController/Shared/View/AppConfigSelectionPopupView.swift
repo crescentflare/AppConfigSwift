@@ -11,11 +11,11 @@ import UIKit
 // Delegate protocol
 protocol AppConfigSelectionPopupViewDelegate: class {
     
-    func selectedItem(item: String, token: String?)
+    func selectedItem(_ item: String, token: String?)
     
 }
 
-@IBDesignable public class AppConfigSelectionPopupView : UIView, UITableViewDataSource, UITableViewDelegate {
+@IBDesignable class AppConfigSelectionPopupView : UIView, UITableViewDataSource, UITableViewDelegate {
     
     // --
     // MARK: Members
@@ -70,19 +70,19 @@ protocol AppConfigSelectionPopupViewDelegate: class {
         setupView()
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
     
-    public func setupView() {
+    func setupView() {
         // Load nib to content view
-        _contentView = AppConfigViewUtility.loadNib("SelectionPopup", parentView: self)
+        _contentView = AppConfigViewUtility.loadNib(named: "SelectionPopup", parentView: self)
 
         // Set up table view
         let tableFooter = UIView()
         _tableView.backgroundColor = UIColor.init(white: 0.95, alpha: 1)
-        tableFooter.frame = CGRectMake(0, 0, 0, 8)
+        tableFooter.frame = CGRect(x: 0, y: 0, width: 0, height: 8)
         _tableView.tableFooterView = tableFooter
         
         // Set table view properties
@@ -90,7 +90,7 @@ protocol AppConfigSelectionPopupViewDelegate: class {
         _tableView.estimatedRowHeight = 40
         _tableView.dataSource = self
         _tableView.delegate = self
-        _tableView.separatorStyle = .None
+        _tableView.separatorStyle = .none
 
         // Empty state
         _label.text = ""
@@ -105,10 +105,10 @@ protocol AppConfigSelectionPopupViewDelegate: class {
         dismiss()
     }
     
-    public func dismiss(animated: Bool = true) {
+    func dismiss(_ animated: Bool = true) {
         if (animated) {
-            UIView.animateWithDuration(0.25, animations: { () -> Void in
-                self.transform = CGAffineTransformMakeScale(1.3, 1.3)
+            UIView.animate(withDuration: 0.25, animations: { () -> Void in
+                self.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
                 self.alpha = 0
             }, completion: { (finished: Bool) -> Void in
                 if finished {
@@ -120,13 +120,13 @@ protocol AppConfigSelectionPopupViewDelegate: class {
         }
     }
     
-    public func addToSuperview(superView: UIView, animated: Bool = true) {
+    func addToSuperview(_ superView: UIView, animated: Bool = true) {
         superView.addSubview(self)
-        transform = CGAffineTransformMakeScale(1.3, 1.3)
+        transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         alpha = 0
         if (animated) {
-            UIView.animateWithDuration(0.25, animations: { () -> Void in
-                self.transform = CGAffineTransformMakeScale(1, 1)
+            UIView.animate(withDuration: 0.25, animations: { () -> Void in
+                self.transform = CGAffineTransform(scaleX: 1, y: 1)
                 self.alpha = 1
             }, completion: { (finished: Bool) -> Void in
             })
@@ -138,19 +138,19 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     // MARK: UITableViewDataSource
     // --
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return _tableChoices.count + 1
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Create cell (if needed)
-        var cell: AppConfigTableCell? = tableView.dequeueReusableCellWithIdentifier("ignored") as? AppConfigTableCell
+        var cell: AppConfigTableCell? = tableView.dequeueReusableCell(withIdentifier: "ignored") as? AppConfigTableCell
         if cell == nil {
             cell = AppConfigTableCell()
         }
         
         // Regular cell view
-        if indexPath.row < _tableChoices.count {
+        if (indexPath as NSIndexPath).row < _tableChoices.count {
             // Create view
             var cellView: AppConfigItemCellView? = nil
             if cell!.cellView == nil {
@@ -161,25 +161,25 @@ protocol AppConfigSelectionPopupViewDelegate: class {
             }
             
             // Supply data and return the cell
-            cell?.selectionStyle = .Default
-            cell?.accessoryType = .DisclosureIndicator
-            cell?.shouldHideDivider = indexPath.row + 1 >= _tableChoices.count
-            cellView!.label = _tableChoices[indexPath.row]
+            cell?.selectionStyle = .default
+            cell?.accessoryType = .disclosureIndicator
+            cell?.shouldHideDivider = (indexPath as NSIndexPath).row + 1 >= _tableChoices.count
+            cellView!.label = _tableChoices[(indexPath as NSIndexPath).row]
         }
         
         // Bottom divider
-        if indexPath.row >= _tableChoices.count {
+        if (indexPath as NSIndexPath).row >= _tableChoices.count {
             // Create view
             var cellView: AppConfigCellSectionDividerView? = nil
             if cell!.cellView == nil {
-                cellView = AppConfigCellSectionDividerView(location: .Bottom)
+                cellView = AppConfigCellSectionDividerView(location: .bottom)
                 cell!.cellView = cellView
             } else {
                 cellView = cell!.cellView as? AppConfigCellSectionDividerView
             }
             
             // Supply data
-            cell?.selectionStyle = .None
+            cell?.selectionStyle = .none
             cell?.shouldHideDivider = true
         }
         
@@ -191,11 +191,11 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     // MARK: UITableViewDelegate
     // --
     
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if delegate != nil {
-            delegate?.selectedItem(_tableChoices[indexPath.row], token: token)
+            delegate?.selectedItem(_tableChoices[(indexPath as NSIndexPath).row], token: token)
         }
-        _tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        _tableView.deselectRow(at: indexPath, animated: false)
         dismiss()
     }
 

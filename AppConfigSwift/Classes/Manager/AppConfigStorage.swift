@@ -19,7 +19,7 @@ public class AppConfigStorage {
     // MARK: Singleton instance
     // --
     
-    public static let sharedManager: AppConfigStorage = AppConfigStorage()
+    public static let shared = AppConfigStorage()
     
 
     // --
@@ -57,7 +57,7 @@ public class AppConfigStorage {
         configManagerInstance = manager
         loadSelectedItemFromUserDefaults()
         if selectedItem != nil && storedConfigs[selectedItem!] != nil {
-            manager?.applyConfigToModel(storedConfigs[selectedItem!] as! [String: Any], name: selectedItem)
+            manager?.applyConfigToModel(config: storedConfigs[selectedItem!] as! [String: Any], name: selectedItem)
         }
         activated = true
     }
@@ -109,7 +109,7 @@ public class AppConfigStorage {
     public func obtainCustomConfigList() -> [String] {
         var list: [String] = []
         for key in customConfigs.allKeys() {
-            if !isConfigOverride(key) {
+            if !isConfigOverride(config: key) {
                 list.append(key)
             }
         }
@@ -124,9 +124,9 @@ public class AppConfigStorage {
     //Set custom values for an existing or new configuration
     public func putCustomConfig(settings: [String: Any], forConfig: String) {
         if customConfigs[forConfig] != nil {
-            removeConfig(forConfig)
+            removeConfig(config: forConfig)
         }
-        if storedConfigs[forConfig] == nil || !dictionariesEqual(storedConfigs[forConfig] as? [String: Any], rhs: settings) {
+        if storedConfigs[forConfig] == nil || !dictionariesEqual(lhs: storedConfigs[forConfig] as? [String: Any], rhs: settings) {
             customConfigs[forConfig] = settings
         }
     }
@@ -144,7 +144,7 @@ public class AppConfigStorage {
                 tmpRhs[key] = value as? AnyObject
             }
         }
-        return NSDictionary(dictionary: tmpLhs).isEqualToDictionary(tmpRhs)
+        return NSDictionary(dictionary: tmpLhs).isEqual(to: tmpRhs)
     }
 
     
@@ -164,8 +164,8 @@ public class AppConfigStorage {
         }
         if removed && config == selectedItem {
             selectedItem = nil
-            configManagerInstance?.applyConfigToModel([:], name: selectedItem)
-            NSNotificationCenter.defaultCenter().postNotificationName(AppConfigStorage.configurationChanged, object: self)
+            configManagerInstance?.applyConfigToModel(config: [:], name: selectedItem)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: AppConfigStorage.configurationChanged), object: self)
         }
         return removed
     }
@@ -198,9 +198,9 @@ public class AppConfigStorage {
                     config = storedConfigs[selectedItem!] as? [String: Any]
                 }
             }
-            configManagerInstance?.applyConfigToModel(config ?? [:], name: selectedItem)
+            configManagerInstance?.applyConfigToModel(config: config ?? [:], name: selectedItem)
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(AppConfigStorage.configurationChanged, object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: AppConfigStorage.configurationChanged), object: self)
     }
 
     //Return if the given configuration is an extra custom configuration
@@ -221,15 +221,15 @@ public class AppConfigStorage {
     //Supply the path of the file containing the overrides
     //Should point to a plist file
     //The file is only loaded when the selection screen is opened
-    public func setLoadingSourceAssetFile(filePath: String?) {
+    public func setLoadingSourceAsset(filePath: String?) {
         loadFromAssetFile = filePath
     }
     
     //Load configurations, called internally by library view controllers
-    public func loadFromSource(completion: () -> Void) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            let loadedConfigs: AppConfigOrderedDictionary? = self.loadFromSourceInternal(self.loadFromAssetFile)
-            dispatch_async(dispatch_get_main_queue()) {
+    public func loadFromSource(completion: @escaping () -> Void) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+            let loadedConfigs: AppConfigOrderedDictionary? = self.loadFromSourceInternal(fileName: self.loadFromAssetFile)
+            DispatchQueue.main.async {
                 if loadedConfigs != nil {
                     self.storedConfigs = loadedConfigs!
                     self.loadFromAssetFile = nil
@@ -245,7 +245,7 @@ public class AppConfigStorage {
     
     //Load configurations, same as above but without threading
     public func loadFromSourceSync() {
-        let loadedConfigs: AppConfigOrderedDictionary<String, Any>? = loadFromSourceInternal(loadFromAssetFile)
+        let loadedConfigs: AppConfigOrderedDictionary<String, Any>? = loadFromSourceInternal(fileName: loadFromAssetFile)
         if loadedConfigs != nil {
             storedConfigs = loadedConfigs!
             loadFromAssetFile = nil
@@ -272,7 +272,7 @@ public class AppConfigStorage {
                     if let dictionary = value as? [String: AnyObject] {
                         let configName: String? = dictionary["name"] as? String
                         if configName != nil {
-                            addStorageItemFromDictionary(&loadedConfigs, name: configName!, dictionary: dictionary, defaults: defaultItem)
+                            addStorageItemFromDictionary(loadedConfigs: &loadedConfigs, name: configName!, dictionary: dictionary, defaults: defaultItem)
                         }
                     }
                 }
@@ -283,7 +283,7 @@ public class AppConfigStorage {
     }
     
     //Internal private method: add a single configuration from a dictionary, can be recursive when having sub configs
-    private func addStorageItemFromDictionary(inout loadedConfigs: AppConfigOrderedDictionary<String, Any>, name: String, dictionary: [String: AnyObject], defaults:
+    private func addStorageItemFromDictionary(loadedConfigs: inout AppConfigOrderedDictionary<String, Any>, name: String, dictionary: [String: AnyObject], defaults:
         [String: Any]?) {
         //Insert values
         var addItem: [String: Any] = defaults ?? [:]
@@ -300,7 +300,7 @@ public class AppConfigStorage {
                 if let dictionary = value as? [String: AnyObject] {
                     let configName: String? = dictionary["name"] as? String
                     if configName != nil {
-                        addStorageItemFromDictionary(&loadedConfigs, name: configName!, dictionary: dictionary, defaults: addItem)
+                        addStorageItemFromDictionary(loadedConfigs: &loadedConfigs, name: configName!, dictionary: dictionary, defaults: addItem)
                     }
                 }
             }
@@ -323,13 +323,13 @@ public class AppConfigStorage {
                 configs.append(storeDictionary)
             }
         }
-        NSUserDefaults.standardUserDefaults().setValue(configs, forKey: AppConfigStorage.defaultsCustomConfigs)
+        UserDefaults.standard.setValue(configs, forKey: AppConfigStorage.defaultsCustomConfigs)
     }
 
     private func loadSelectedItemFromUserDefaults() {
-        selectedItem = NSUserDefaults.standardUserDefaults().valueForKey(AppConfigStorage.defaultsSelectedConfigName) as? String
+        selectedItem = UserDefaults.standard.value(forKey: AppConfigStorage.defaultsSelectedConfigName) as? String
         if selectedItem != nil {
-            if let values = NSUserDefaults.standardUserDefaults().valueForKey(AppConfigStorage.defaultsSelectedConfigDictionary) as? [String: AnyObject] {
+            if let values = UserDefaults.standard.value(forKey: AppConfigStorage.defaultsSelectedConfigDictionary) as? [String: AnyObject] {
                 var loadDictionary: [String: Any] = [:]
                 for (key, value) in values {
                     loadDictionary[key] = value as Any
@@ -347,17 +347,17 @@ public class AppConfigStorage {
             for (key, value) in settings as! [String: Any] {
                 storeDictionary[key] = value as? AnyObject
             }
-            NSUserDefaults.standardUserDefaults().setValue(selectedItem, forKey: AppConfigStorage.defaultsSelectedConfigName)
-            NSUserDefaults.standardUserDefaults().setValue(storeDictionary, forKey: AppConfigStorage.defaultsSelectedConfigDictionary)
+            UserDefaults.standard.setValue(selectedItem, forKey: AppConfigStorage.defaultsSelectedConfigName)
+            UserDefaults.standard.setValue(storeDictionary, forKey: AppConfigStorage.defaultsSelectedConfigDictionary)
         } else {
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(AppConfigStorage.defaultsSelectedConfigName)
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(AppConfigStorage.defaultsSelectedConfigDictionary)
+            UserDefaults.standard.removeObject(forKey: AppConfigStorage.defaultsSelectedConfigName)
+            UserDefaults.standard.removeObject(forKey: AppConfigStorage.defaultsSelectedConfigDictionary)
         }
     }
 
     private func loadCustomConfigurationsFromUserDefaults() {
         customConfigs.removeAllObjects()
-        if let configs = NSUserDefaults.standardUserDefaults().valueForKey(AppConfigStorage.defaultsCustomConfigs) as? [[String: AnyObject]] {
+        if let configs = UserDefaults.standard.value(forKey: AppConfigStorage.defaultsCustomConfigs) as? [[String: AnyObject]] {
             for config in configs {
                 var loadDictionary: [String: Any] = [:]
                 for (key, value) in config {
@@ -375,12 +375,12 @@ public class AppConfigStorage {
     // MARK: Observers
     // --
     
-    public func addDataObserver(observer: NSObject, selector: Selector, name: String) {
-        NSNotificationCenter.defaultCenter().addObserver(observer, selector: selector, name: name, object: self)
+    public func addDataObserver(_ observer: NSObject, selector: Selector, name: String) {
+        NotificationCenter.default.addObserver(observer, selector: selector, name: NSNotification.Name(rawValue: name), object: self)
     }
     
-    public func removeDataObserver(observer: NSObject, name: String) {
-        NSNotificationCenter.defaultCenter().removeObserver(observer, name: name, object: self)
+    public func removeDataObserver(_ observer: NSObject, name: String) {
+        NotificationCenter.default.removeObserver(observer, name: NSNotification.Name(rawValue: name), object: self)
     }
     
 }
