@@ -37,7 +37,7 @@ public enum AppConfigEditTableActionType: String {
     
 }
 
-public class AppConfigEditTableValue {
+open class AppConfigEditTableValue {
     
     // --
     // MARK: Members
@@ -71,31 +71,31 @@ public class AppConfigEditTableValue {
     // MARK: Factory methods
     // --
     
-    public static func valueForLoading(loadingText: String) -> AppConfigEditTableValue {
+    open static func valueForLoading(_ loadingText: String) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: nil, labelString: loadingText, booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: .Loading)
     }
     
-    public static func valueForAction(action: AppConfigEditTableActionType, andText: String) -> AppConfigEditTableValue {
+    open static func valueForAction(_ action: AppConfigEditTableActionType, andText: String) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: nil, labelString: andText, booleanValue: false, limitUsage: false, selectionItems: nil, action: action, type: .Action)
     }
     
-    public static func valueForTextEntry(configSetting: String, andValue: String, numberOnly: Bool) -> AppConfigEditTableValue {
+    open static func valueForTextEntry(_ configSetting: String, andValue: String, numberOnly: Bool) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: configSetting, labelString: andValue, booleanValue: false, limitUsage: numberOnly, selectionItems: nil, action: .None, type: .TextEntry)
     }
     
-    public static func valueForSwitchValue(configSetting: String, andSwitchedOn: Bool) -> AppConfigEditTableValue {
+    open static func valueForSwitchValue(_ configSetting: String, andSwitchedOn: Bool) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: configSetting, labelString: "", booleanValue: andSwitchedOn, limitUsage: false, selectionItems: nil, action: .None, type: .SwitchValue)
     }
 
-    public static func valueForSelection(configSetting: String, andValue: String, andChoices: [String]) -> AppConfigEditTableValue {
+    open static func valueForSelection(_ configSetting: String, andValue: String, andChoices: [String]) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: configSetting, labelString: andValue, booleanValue: false, limitUsage: false, selectionItems: andChoices, action: .None, type: .Selection)
     }
 
-    public static func valueForSection(sectionText: String) -> AppConfigEditTableValue {
+    open static func valueForSection(_ sectionText: String) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: nil, labelString: sectionText, booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: .Section)
     }
 
-    public static func valueForDivider(type: AppConfigEditTableValueType) -> AppConfigEditTableValue {
+    open static func valueForDivider(_ type: AppConfigEditTableValueType) -> AppConfigEditTableValue {
         return AppConfigEditTableValue(configSetting: nil, labelString: "", booleanValue: false, limitUsage: false, selectionItems: nil, action: .None, type: type)
     }
 

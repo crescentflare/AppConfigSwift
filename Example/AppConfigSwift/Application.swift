@@ -10,9 +10,9 @@ import AppConfigSwift
 
 class Application: UIApplication {
 
-    override func sendEvent(event: UIEvent) {
+    override func sendEvent(_ event: UIEvent) {
         super.sendEvent(event)
-        if AppConfigStorage.sharedManager.isActivated() && event.subtype == .MotionShake {
+        if AppConfigStorage.sharedManager.isActivated() && event.subtype == .motionShake {
             AppConfigManageViewController.launchFromShake()
         }
     }

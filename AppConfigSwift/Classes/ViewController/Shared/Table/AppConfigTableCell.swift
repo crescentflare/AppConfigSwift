@@ -9,7 +9,7 @@
 
 import UIKit
 
-public class AppConfigTableCell : UITableViewCell {
+open class AppConfigTableCell : UITableViewCell {
     
     // --
     // MARK: Members
@@ -47,14 +47,14 @@ public class AppConfigTableCell : UITableViewCell {
         setupView()
     }
     
-    public func setupView() {
+    open func setupView() {
         _dividerLine = UIView()
         _dividerLine?.backgroundColor = UIColor.init(white: 0.8, alpha: 1)
         addSubview(_dividerLine!)
-        AppConfigViewUtility.addHeightConstraint(_dividerLine!, height: 1 / UIScreen.mainScreen().scale)
-        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .Left, constant: 16)
-        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .Right)
-        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .Bottom)
+        AppConfigViewUtility.addHeightConstraint(_dividerLine!, height: 1 / UIScreen.main.scale)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .left, constant: 16)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .right)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(_dividerLine!, parentView: self, edge: .bottom)
     }
 
     
@@ -62,9 +62,9 @@ public class AppConfigTableCell : UITableViewCell {
     // MARK: Layout
     // --
     
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
-        _dividerLine?.hidden = shouldHideDivider
+        _dividerLine?.isHidden = shouldHideDivider
     }
     
 }

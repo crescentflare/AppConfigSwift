@@ -8,14 +8,14 @@
 
 import UIKit
 
-@IBDesignable public class AppConfigManageInfoCellView : UIView {
+@IBDesignable open class AppConfigManageInfoCellView : UIView {
     
     // --
     // MARK: Members
     // --
     
-    private var _contentView: UIView! = nil
-    @IBOutlet private var _label: UILabel! = nil
+    fileprivate var _contentView: UIView! = nil
+    @IBOutlet fileprivate var _label: UILabel! = nil
 
     
     // --
@@ -50,7 +50,7 @@ import UIKit
         setupView()
     }
     
-    public func setupView() {
+    open func setupView() {
         _contentView = AppConfigViewUtility.loadNib("ManageInfoCell", parentView: self)
         _label.text = ""
     }

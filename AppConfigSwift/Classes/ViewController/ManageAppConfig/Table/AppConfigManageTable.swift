@@ -12,15 +12,15 @@ import UIKit
 // Delegate protocol
 protocol AppConfigManageTableDelegate: class {
 
-    func selectedConfig(configName: String)
-    func editConfig(configName: String)
-    func newCustomConfigFrom(configName: String)
+    func selectedConfig(_ configName: String)
+    func editConfig(_ configName: String)
+    func newCustomConfigFrom(_ configName: String)
 
 }
 
 
 // Class
-public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigSelectionPopupViewDelegate {
+open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigSelectionPopupViewDelegate {
     
     // --
     // MARK: Members
@@ -53,7 +53,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
         // Set up table view
         let tableFooter = UIView()
         table.backgroundColor = UIColor.init(white: 0.95, alpha: 1)
-        tableFooter.frame = CGRectMake(0, 0, 0, 8)
+        tableFooter.frame = CGRect(x: 0, y: 0, width: 0, height: 8)
         table.tableFooterView = tableFooter
         addSubview(table)
         AppConfigViewUtility.addPinSuperViewEdgesConstraints(table, parentView: self)
@@ -63,7 +63,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
         table.estimatedRowHeight = 40
         table.dataSource = self
         table.delegate = self
-        table.separatorStyle = .None
+        table.separatorStyle = .none
         
         // Show loading indicator by default
         tableValues.append(AppConfigManageTableValue.valueForLoading(AppConfigBundle.localizedString("CFLAC_SHARED_LOADING_CONFIGS")))
@@ -74,7 +74,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
     // MARK: Implementation
     // --
     
-    public func setConfigurations(configurations: [String], customConfigurations: [String], lastSelected: String?) {
+    open func setConfigurations(_ configurations: [String], customConfigurations: [String], lastSelected: String?) {
         // Start with an empty table values list
         var rawTableValues: [AppConfigManageTableValue] = []
         tableValues = []
@@ -97,10 +97,10 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
         }
         
         // Add build information
-        let bundleVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleVersion") as! String
+        let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
         rawTableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString("CFLAC_MANAGE_SECTION_BUILD_INFO")))
         rawTableValues.append(AppConfigManageTableValue.valueForInfo(AppConfigBundle.localizedString("CFLAC_MANAGE_BUILD_NR") + ": " + bundleVersion))
-        rawTableValues.append(AppConfigManageTableValue.valueForInfo(AppConfigBundle.localizedString("CFLAC_MANAGE_BUILD_IOS_VERSION") + ": " + UIDevice.currentDevice().systemVersion))
+        rawTableValues.append(AppConfigManageTableValue.valueForInfo(AppConfigBundle.localizedString("CFLAC_MANAGE_BUILD_IOS_VERSION") + ": " + UIDevice.current.systemVersion))
         
         // Style table by adding dividers and reload
         var prevType: AppConfigManageTableValueType = .Unknown
@@ -128,15 +128,15 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
     // MARK: UITableViewDataSource
     // --
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableValues.count
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Create cell (if needed)
-        let tableValue = tableValues[indexPath.row]
-        let nextType = indexPath.row + 1 < tableValues.count ? tableValues[indexPath.row + 1].type : AppConfigManageTableValueType.Unknown
-        var cell: AppConfigTableCell? = tableView.dequeueReusableCellWithIdentifier(tableValue.type.rawValue) as? AppConfigTableCell
+        let tableValue = tableValues[(indexPath as NSIndexPath).row]
+        let nextType = (indexPath as NSIndexPath).row + 1 < tableValues.count ? tableValues[(indexPath as NSIndexPath).row + 1].type : AppConfigManageTableValueType.Unknown
+        var cell: AppConfigTableCell? = tableView.dequeueReusableCell(withIdentifier: tableValue.type.rawValue) as? AppConfigTableCell
         if cell == nil {
             cell = AppConfigTableCell()
         }
@@ -153,7 +153,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             }
 
             // Supply data
-            cell?.selectionStyle = .None
+            cell?.selectionStyle = .none
             cell?.shouldHideDivider = !nextType.isCellType()
             cellView!.label = tableValue.labelString
         }
@@ -170,7 +170,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             }
             
             // Supply data
-            cell?.accessoryType = tableValue.lastSelected ? .Checkmark : .DisclosureIndicator
+            cell?.accessoryType = tableValue.lastSelected ? .checkmark : .disclosureIndicator
             cell?.shouldHideDivider = !nextType.isCellType()
             cellView!.label = tableValue.labelString
             if tableValue.edited {
@@ -190,7 +190,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             }
             
             // Supply data
-            cell?.selectionStyle = .None
+            cell?.selectionStyle = .none
             cell?.shouldHideDivider = !nextType.isCellType()
             cellView!.label = tableValue.labelString
         }
@@ -207,7 +207,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             }
             
             // Supply data
-            cell?.selectionStyle = .None
+            cell?.selectionStyle = .none
             cell?.shouldHideDivider = true
             cellView!.label = tableValue.labelString
         }
@@ -228,7 +228,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
             }
 
             // Supply data
-            cell?.selectionStyle = .None
+            cell?.selectionStyle = .none
             cell?.shouldHideDivider = true
         }
         
@@ -236,20 +236,20 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
         return cell!
     }
     
-    public func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        let tableValue = tableValues[indexPath.row]
+    open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let tableValue = tableValues[(indexPath as NSIndexPath).row]
         return tableValue.type == .Config && tableValue.config != nil
     }
     
-    public func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let editAction = UITableViewRowAction.init(style: .Normal, title: AppConfigBundle.localizedString("CFLAC_MANAGE_SWIPE_EDIT"), handler: { action, indexPath in
-            let tableValue = self.tableValues[indexPath.row]
+    open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let editAction = UITableViewRowAction.init(style: .normal, title: AppConfigBundle.localizedString("CFLAC_MANAGE_SWIPE_EDIT"), handler: { action, indexPath in
+            let tableValue = self.tableValues[(indexPath as NSIndexPath).row]
             tableView.setEditing(false, animated: true)
             if tableValue.config != nil {
                 self.delegate?.editConfig(tableValue.config!)
             }
         })
-        editAction.backgroundColor = UIColor.blueColor()
+        editAction.backgroundColor = UIColor.blue
         return [editAction]
     }
     
@@ -258,8 +258,8 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
     // MARK: UITableViewDelegate
     // --
     
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let tableValue = tableValues[indexPath.row]
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let tableValue = tableValues[(indexPath as NSIndexPath).row]
         if delegate != nil {
             if tableValue.config != nil {
                 delegate?.selectedConfig(tableValue.config!)
@@ -272,7 +272,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
                 AppConfigViewUtility.addPinSuperViewEdgesConstraints(choicePopup, parentView: self)
             }
         }
-        table.deselectRowAtIndexPath(indexPath, animated: false)
+        table.deselectRow(at: indexPath, animated: false)
     }
     
     
@@ -280,7 +280,7 @@ public class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDe
     // MARK: AppConfigSelectionPopupViewDelegate
     // --
     
-    func selectedItem(item: String, token: String?) {
+    func selectedItem(_ item: String, token: String?) {
         delegate?.newCustomConfigFrom(item)
     }
 

@@ -32,7 +32,7 @@ class ViewController: UIViewController {
         self.updateConfigurationValues()
         AppConfigStorage.sharedManager.addDataObserver(self, selector: #selector(updateConfigurationValues), name: AppConfigStorage.configurationChanged)
         if !AppConfigStorage.sharedManager.isActivated() {
-            changeButton.hidden = true
+            changeButton.isHidden = true
         }
     }
     
@@ -65,7 +65,7 @@ class ViewController: UIViewController {
     @IBAction func changeConfiguration() {
         let viewController: AppConfigManageViewController = AppConfigManageViewController()
         let navigationController: UINavigationController = UINavigationController.init(rootViewController: viewController)
-        presentViewController(navigationController, animated: true, completion: nil)
+        present(navigationController, animated: true, completion: nil)
     }
     
 }

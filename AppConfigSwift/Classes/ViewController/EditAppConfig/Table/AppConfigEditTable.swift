@@ -12,7 +12,7 @@ import UIKit
 // Delegate protocol
 protocol AppConfigEditTableDelegate: class {
 
-    func saveConfig(newSettings: [String: Any])
+    func saveConfig(_ newSettings: [String: Any])
     func cancelEditing()
     func revertConfig()
 
@@ -20,7 +20,7 @@ protocol AppConfigEditTableDelegate: class {
 
 
 // Class
-public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigEditTextCellViewDelegate, AppConfigEditSwitchCellViewDelegate, AppConfigSelectionPopupViewDelegate {
+open class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigEditTextCellViewDelegate, AppConfigEditSwitchCellViewDelegate, AppConfigSelectionPopupViewDelegate {
     
     // --
     // MARK: Members
@@ -55,7 +55,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
         // Set up table view
         let tableFooter = UIView()
         table.backgroundColor = UIColor.init(white: 0.95, alpha: 1)
-        tableFooter.frame = CGRectMake(0, 0, 0, 8)
+        tableFooter.frame = CGRect(x: 0, y: 0, width: 0, height: 8)
         table.tableFooterView = tableFooter
         addSubview(table)
         AppConfigViewUtility.addPinSuperViewEdgesConstraints(table, parentView: self)
@@ -65,7 +65,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
         table.estimatedRowHeight = 40
         table.dataSource = self
         table.delegate = self
-        table.separatorStyle = .None
+        table.separatorStyle = .none
         
         // Show loading indicator by default
         tableValues.append(AppConfigEditTableValue.valueForLoading(AppConfigBundle.localizedString("CFLAC_SHARED_LOADING_CONFIGS")))
@@ -76,7 +76,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
     // MARK: Implementation
     // --
     
-    public func setConfigurationSettings(configurationSettings: [String: Any], model: AppConfigBaseModel?) {
+    open func setConfigurationSettings(_ configurationSettings: [String: Any], model: AppConfigBaseModel?) {
         // Add editable fields
         var rawTableValues: [AppConfigEditTableValue] = []
         tableValues = []
@@ -207,16 +207,16 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
         table.reloadData()
     }
     
-    public func obtainNewConfigurationSettings() -> [String: Any] {
+    open func obtainNewConfigurationSettings() -> [String: Any] {
         var result: [String: Any] = [:]
         result["name"] = configName
         for tableValue in tableValues {
             switch tableValue.type {
             case .TextEntry:
                 if tableValue.limitUsage {
-                    let formatter = NSNumberFormatter()
-                    formatter.numberStyle = .DecimalStyle
-                    result[tableValue.configSetting!] = formatter.numberFromString(tableValue.labelString)
+                    let formatter = NumberFormatter()
+                    formatter.numberStyle = .decimal
+                    result[tableValue.configSetting!] = formatter.number(from: tableValue.labelString)
                 } else {
                     result[tableValue.configSetting!] = tableValue.labelString
                 }
@@ -239,15 +239,15 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
     // MARK: UITableViewDataSource
     // --
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableValues.count
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Create cell (if needed)
-        let tableValue = tableValues[indexPath.row]
-        let nextType = indexPath.row + 1 < tableValues.count ? tableValues[indexPath.row + 1].type : AppConfigEditTableValueType.Unknown
-        var cell: AppConfigTableCell? = tableView.dequeueReusableCellWithIdentifier(tableValue.type.rawValue) as? AppConfigTableCell
+        let tableValue = tableValues[(indexPath as NSIndexPath).row]
+        let nextType = (indexPath as NSIndexPath).row + 1 < tableValues.count ? tableValues[(indexPath as NSIndexPath).row + 1].type : AppConfigEditTableValueType.Unknown
+        var cell: AppConfigTableCell? = tableView.dequeueReusableCell(withIdentifier: tableValue.type.rawValue) as? AppConfigTableCell
         if cell == nil {
             cell = AppConfigTableCell()
         }
@@ -264,7 +264,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
             }
 
             // Supply data
-            cell?.selectionStyle = .None
+            cell?.selectionStyle = .none
             cell?.shouldHideDivider = !nextType.isCellType()
             cellView!.label = tableValue.labelString
         }
@@ -281,8 +281,8 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
             }
             
             // Supply data
-            cell?.selectionStyle = .Default
-            cell?.accessoryType = .DisclosureIndicator
+            cell?.selectionStyle = .default
+            cell?.accessoryType = .disclosureIndicator
             cell?.shouldHideDivider = !nextType.isCellType()
             cellView!.label = tableValue.labelString
         }
@@ -299,7 +299,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
             }
 
             // Supply data
-            cell?.selectionStyle = .Default
+            cell?.selectionStyle = .default
             cell?.shouldHideDivider = !nextType.isCellType()
             cellView!.delegate = self
             cellView!.label = tableValue.configSetting
@@ -319,7 +319,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
             }
 
             // Supply data
-            cell?.selectionStyle = .Default
+            cell?.selectionStyle = .default
             cell?.shouldHideDivider = !nextType.isCellType()
             cellView!.delegate = self
             cellView!.label = tableValue.configSetting
@@ -338,8 +338,8 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
             }
             
             // Supply data
-            cell?.selectionStyle = .Default
-            cell?.accessoryType = .DisclosureIndicator
+            cell?.selectionStyle = .default
+            cell?.accessoryType = .disclosureIndicator
             cell?.shouldHideDivider = !nextType.isCellType()
             cellView!.label = "\(tableValue.configSetting ?? ""): \(tableValue.labelString)"
         }
@@ -356,7 +356,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
             }
             
             // Supply data
-            cell?.selectionStyle = .None
+            cell?.selectionStyle = .none
             cell?.shouldHideDivider = true
             cellView!.label = tableValue.labelString
         }
@@ -377,7 +377,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
             }
             
             // Supply data
-            cell?.selectionStyle = .None
+            cell?.selectionStyle = .none
             cell?.shouldHideDivider = true
         }
 
@@ -390,9 +390,9 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
     // MARK: UITableViewDelegate
     // --
     
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let tableValue = tableValues[indexPath.row]
-        UIApplication.sharedApplication().sendAction(#selector(resignFirstResponder), to: nil, from: nil, forEvent: nil)
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let tableValue = tableValues[(indexPath as NSIndexPath).row]
+        UIApplication.shared.sendAction(#selector(resignFirstResponder), to: nil, from: nil, for: nil)
         if tableValue.type == .Action && delegate != nil {
             switch tableValue.action {
             case .Save:
@@ -416,19 +416,19 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
             choicePopup.addToSuperview(self)
             AppConfigViewUtility.addPinSuperViewEdgesConstraints(choicePopup, parentView: self)
         } else if tableValue.type == .SwitchValue {
-            if let cell = tableView.cellForRowAtIndexPath(indexPath) as? AppConfigTableCell {
+            if let cell = tableView.cellForRow(at: indexPath) as? AppConfigTableCell {
                 if let switchCellView = cell.cellView as? AppConfigEditSwitchCellView {
                     switchCellView.toggleState()
                 }
             }
         } else if tableValue.type == .TextEntry {
-            if let cell = tableView.cellForRowAtIndexPath(indexPath) as? AppConfigTableCell {
+            if let cell = tableView.cellForRow(at: indexPath) as? AppConfigTableCell {
                 if let editTextCellView = cell.cellView as? AppConfigEditTextCellView {
                     editTextCellView.startEditing()
                 }
             }
         }
-        table.deselectRowAtIndexPath(indexPath, animated: false)
+        table.deselectRow(at: indexPath, animated: false)
     }
     
 
@@ -436,7 +436,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
     // MARK: AppConfigEditTextCellViewDelegate
     // --
     
-    func changedEditText(newText: String, forConfigSetting: String) {
+    func changedEditText(_ newText: String, forConfigSetting: String) {
         for i in 0..<tableValues.count {
             let tableValue = tableValues[i]
             if tableValue.configSetting == forConfigSetting {
@@ -451,7 +451,7 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
     // MARK: AppConfigEditSwitchCellViewDelegate
     // --
     
-    func changedSwitchState(on: Bool, forConfigSetting: String) {
+    func changedSwitchState(_ on: Bool, forConfigSetting: String) {
         for i in 0..<tableValues.count {
             let tableValue = tableValues[i]
             if tableValue.configSetting == forConfigSetting {
@@ -466,14 +466,14 @@ public class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDele
     // MARK: AppConfigSelectionPopupViewDelegate
     // --
     
-    func selectedItem(item: String, token: String?) {
+    func selectedItem(_ item: String, token: String?) {
         for i in 0..<tableValues.count {
             let tableValue = tableValues[i]
             if tableValue.configSetting == token {
-                let totalIndexPath = NSIndexPath.init(forRow: i, inSection: 0)
+                let totalIndexPath = IndexPath.init(row: i, section: 0)
                 tableValues[i] = AppConfigEditTableValue.valueForSelection(tableValue.configSetting!, andValue: item, andChoices: tableValue.selectionItems!)
                 table.beginUpdates()
-                table.reloadRowsAtIndexPaths([totalIndexPath], withRowAnimation: .None)
+                table.reloadRows(at: [totalIndexPath], with: .none)
                 table.endUpdates()
                 break
             }

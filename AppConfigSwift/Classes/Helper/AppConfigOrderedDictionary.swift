@@ -48,7 +48,7 @@ public struct AppConfigOrderedDictionary<Tk: Hashable, Tv> {
         set (newValue) {
             //Remove value if key is nil
             if newValue == nil {
-                self.values.removeValueForKey(key)
+                self.values.removeValue(forKey: key)
                 self.keys = self.keys.filter {$0 != key}
                 return
             }

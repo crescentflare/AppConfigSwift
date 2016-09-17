@@ -25,7 +25,7 @@ public enum AppConfigManageTableValueType: String {
     
 }
 
-public class AppConfigManageTableValue {
+open class AppConfigManageTableValue {
     
     // --
     // MARK: Members
@@ -55,23 +55,23 @@ public class AppConfigManageTableValue {
     // MARK: Factory methods
     // --
     
-    public static func valueForLoading(loadingText: String) -> AppConfigManageTableValue {
+    open static func valueForLoading(_ loadingText: String) -> AppConfigManageTableValue {
         return AppConfigManageTableValue(config: nil, labelString: loadingText, type: .Loading, lastSelected: false, edited: false)
     }
     
-    public static func valueForConfig(configName: String?, andText: String, lastSelected: Bool, edited: Bool) -> AppConfigManageTableValue {
+    open static func valueForConfig(_ configName: String?, andText: String, lastSelected: Bool, edited: Bool) -> AppConfigManageTableValue {
         return AppConfigManageTableValue(config: configName, labelString: andText, type: .Config, lastSelected: lastSelected, edited: edited)
     }
     
-    public static func valueForInfo(infoText: String) -> AppConfigManageTableValue {
+    open static func valueForInfo(_ infoText: String) -> AppConfigManageTableValue {
         return AppConfigManageTableValue(config: nil, labelString: infoText, type: .Info, lastSelected: false, edited: false)
     }
     
-    public static func valueForSection(sectionText: String) -> AppConfigManageTableValue {
+    open static func valueForSection(_ sectionText: String) -> AppConfigManageTableValue {
         return AppConfigManageTableValue(config: nil, labelString: sectionText, type: .Section, lastSelected: false, edited: false)
     }
     
-    public static func valueForDivider(type: AppConfigManageTableValueType) -> AppConfigManageTableValue {
+    open static func valueForDivider(_ type: AppConfigManageTableValueType) -> AppConfigManageTableValue {
         return AppConfigManageTableValue(config: nil, labelString: "", type: type, lastSelected: false, edited: false)
     }
     

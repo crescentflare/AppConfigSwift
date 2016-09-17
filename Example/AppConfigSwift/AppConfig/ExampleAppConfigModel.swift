@@ -25,7 +25,7 @@ class ExampleAppConfigModel : AppConfigBaseModel {
     // --
     // MARK: Field grouping and serialization
     // --
-    override func map(mapper: AppConfigModelMapper) {
+    override func map(_ mapper: AppConfigModelMapper) {
         mapper.map("name", value: &name)
         mapper.map("apiUrl", value: &apiUrl, category: "API related")
         mapper.map("networkTimeoutSec", value: &networkTimeoutSec, category: "API related")

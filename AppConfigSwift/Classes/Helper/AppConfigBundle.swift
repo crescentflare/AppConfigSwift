@@ -6,7 +6,7 @@
 //  Provides helper functions to acquire resources from the Pod bundle (like images and strings)
 //
 
-public class AppConfigBundle {
+open class AppConfigBundle {
     
     // --
     // MARK: Initialization
@@ -19,15 +19,15 @@ public class AppConfigBundle {
     // MARK: Implementation
     // --
     
-    public static func imageNamed(image: String) -> UIImage? {
-        return UIImage.init(named: image, inBundle: AppConfigBundle.podBundle(), compatibleWithTraitCollection: nil)
+    open static func imageNamed(_ image: String) -> UIImage? {
+        return UIImage.init(named: image, in: AppConfigBundle.podBundle(), compatibleWith: nil)
     }
     
-    public static func loadNibNamed(name: String!, owner: AnyObject!, options: [NSObject: AnyObject]!) -> UINib! {
+    open static func loadNibNamed(_ name: String!, owner: AnyObject!, options: [AnyHashable: Any]!) -> UINib! {
         return UINib(nibName: name, bundle: AppConfigBundle.podBundle())
     }
 
-    public static func localizedString(key: String) -> String {
+    open static func localizedString(_ key: String) -> String {
         return NSLocalizedString(key, tableName: "Localizable", bundle: AppConfigBundle.podBundle()!, value: key, comment: "")
     }
 
@@ -35,9 +35,9 @@ public class AppConfigBundle {
     // --
     // MARK: Internal helper
     // --
-    private static func podBundle() -> NSBundle? {
-        if let url = NSBundle.init(forClass: AppConfigBundle.self).URLForResource("AppConfigSwift", withExtension: "bundle") {
-            return NSBundle.init(URL: url)
+    fileprivate static func podBundle() -> Bundle? {
+        if let url = Bundle.init(for: AppConfigBundle.self).url(forResource: "AppConfigSwift", withExtension: "bundle") {
+            return Bundle.init(url: url)
         }
         return nil
     }

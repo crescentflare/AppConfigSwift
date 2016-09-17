@@ -6,7 +6,7 @@
 //  Derive your custom config manager from this class for integration
 //
 
-public class AppConfigBaseManager {
+open class AppConfigBaseManager {
 
     // --
     // MARK: Members
@@ -28,19 +28,19 @@ public class AppConfigBaseManager {
 
     //Obtain a new instance of the configuration model
     //Override in your derived manager (check the example for details)
-    public func obtainBaseModelInstance() -> AppConfigBaseModel {
+    open func obtainBaseModelInstance() -> AppConfigBaseModel {
         return AppConfigBaseModel()
     }
     
     //Used by the derived manager to return the selected configuration instance
     //Will usually be typecasted to the specific model class for the app
-    public func currentConfigInstance() -> AppConfigBaseModel {
+    open func currentConfigInstance() -> AppConfigBaseModel {
         currentConfig = currentConfig ?? obtainBaseModelInstance()
         return currentConfig!
     }
     
     //Internal method to apply a new configuration selection to the model
-    public func applyConfigToModel(config: [String: Any], name: String?) {
+    open func applyConfigToModel(_ config: [String: Any], name: String?) {
         currentConfig = obtainBaseModelInstance()
         currentConfig?.applyOverrides(config, name: name)
     }
