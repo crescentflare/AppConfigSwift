@@ -12,15 +12,15 @@ import UIKit
 // Delegate protocol
 protocol AppConfigManageTableDelegate: class {
 
-    func selectedConfig(_ configName: String)
-    func editConfig(_ configName: String)
-    func newCustomConfigFrom(_ configName: String)
+    func selectedConfig(configName: String)
+    func editConfig(configName: String)
+    func newCustomConfigFrom(configName: String)
 
 }
 
 
 // Class
-open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigSelectionPopupViewDelegate {
+class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigSelectionPopupViewDelegate {
     
     // --
     // MARK: Members
@@ -44,7 +44,7 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
         self.init(frame: CGRect.zero)
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initialize()
     }
@@ -66,7 +66,7 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
         table.separatorStyle = .none
         
         // Show loading indicator by default
-        tableValues.append(AppConfigManageTableValue.valueForLoading(AppConfigBundle.localizedString(key: "CFLAC_SHARED_LOADING_CONFIGS")))
+        tableValues.append(AppConfigManageTableValue.valueForLoading(text: AppConfigBundle.localizedString(key: "CFLAC_SHARED_LOADING_CONFIGS")))
     }
 
     
@@ -74,51 +74,51 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
     // MARK: Implementation
     // --
     
-    open func setConfigurations(_ configurations: [String], customConfigurations: [String], lastSelected: String?) {
+    func setConfigurations(_ configurations: [String], customConfigurations: [String], lastSelected: String?) {
         // Start with an empty table values list
         var rawTableValues: [AppConfigManageTableValue] = []
         tableValues = []
         
         // Add predefined configurations (if present)
         if configurations.count > 0 {
-            rawTableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_PREDEFINED")))
+            rawTableValues.append(AppConfigManageTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_PREDEFINED")))
             for configuration: String in configurations {
-                rawTableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: AppConfigStorage.shared.isConfigOverride(config: configuration)))
+                rawTableValues.append(AppConfigManageTableValue.valueForConfig(name: configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: AppConfigStorage.shared.isConfigOverride(config: configuration)))
             }
         }
         
         // Add custom configurations (if present)
         if configurations.count > 0 {
-            rawTableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_CUSTOM")))
+            rawTableValues.append(AppConfigManageTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_CUSTOM")))
             for configuration: String in customConfigurations {
-                rawTableValues.append(AppConfigManageTableValue.valueForConfig(configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: false))
+                rawTableValues.append(AppConfigManageTableValue.valueForConfig(name: configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: false))
             }
-            rawTableValues.append(AppConfigManageTableValue.valueForConfig(nil, andText: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_ADD_NEW"), lastSelected: false, edited: false))
+            rawTableValues.append(AppConfigManageTableValue.valueForConfig(name: nil, andText: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_ADD_NEW"), lastSelected: false, edited: false))
         }
         
         // Add build information
         let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-        rawTableValues.append(AppConfigManageTableValue.valueForSection(AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_BUILD_INFO")))
-        rawTableValues.append(AppConfigManageTableValue.valueForInfo(AppConfigBundle.localizedString(key: "CFLAC_MANAGE_BUILD_NR") + ": " + bundleVersion))
-        rawTableValues.append(AppConfigManageTableValue.valueForInfo(AppConfigBundle.localizedString(key: "CFLAC_MANAGE_BUILD_IOS_VERSION") + ": " + UIDevice.current.systemVersion))
+        rawTableValues.append(AppConfigManageTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_BUILD_INFO")))
+        rawTableValues.append(AppConfigManageTableValue.valueForInfo(text: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_BUILD_NR") + ": " + bundleVersion))
+        rawTableValues.append(AppConfigManageTableValue.valueForInfo(text: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_BUILD_IOS_VERSION") + ": " + UIDevice.current.systemVersion))
         
         // Style table by adding dividers and reload
         var prevType: AppConfigManageTableValueType = .Unknown
         for tableValue in rawTableValues {
             if !prevType.isCellType() && tableValue.type.isCellType() {
-                tableValues.append(AppConfigManageTableValue.valueForDivider(.TopDivider))
+                tableValues.append(AppConfigManageTableValue.valueForDivider(type: .TopDivider))
             } else if prevType.isCellType() && !tableValue.type.isCellType() {
-                tableValues.append(AppConfigManageTableValue.valueForDivider(.BottomDivider))
+                tableValues.append(AppConfigManageTableValue.valueForDivider(type: .BottomDivider))
             } else if !prevType.isCellType() && !tableValue.type.isCellType() {
-                tableValues.append(AppConfigManageTableValue.valueForDivider(.BetweenDivider))
+                tableValues.append(AppConfigManageTableValue.valueForDivider(type: .BetweenDivider))
             }
             tableValues.append(tableValue)
             prevType = tableValue.type
         }
         if prevType.isCellType() {
-            tableValues.append(AppConfigManageTableValue.valueForDivider(.BottomDivider))
+            tableValues.append(AppConfigManageTableValue.valueForDivider(type: .BottomDivider))
         } else {
-            tableValues.append(AppConfigManageTableValue.valueForDivider(.BetweenDivider))
+            tableValues.append(AppConfigManageTableValue.valueForDivider(type: .BetweenDivider))
         }
         table.reloadData()
     }
@@ -128,11 +128,11 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
     // MARK: UITableViewDataSource
     // --
     
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableValues.count
     }
     
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Create cell (if needed)
         let tableValue = tableValues[(indexPath as NSIndexPath).row]
         let nextType = (indexPath as NSIndexPath).row + 1 < tableValues.count ? tableValues[(indexPath as NSIndexPath).row + 1].type : AppConfigManageTableValueType.Unknown
@@ -236,17 +236,17 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
         return cell!
     }
     
-    open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let tableValue = tableValues[(indexPath as NSIndexPath).row]
         return tableValue.type == .Config && tableValue.config != nil
     }
     
-    open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let editAction = UITableViewRowAction.init(style: .normal, title: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SWIPE_EDIT"), handler: { action, indexPath in
             let tableValue = self.tableValues[(indexPath as NSIndexPath).row]
             tableView.setEditing(false, animated: true)
             if tableValue.config != nil {
-                self.delegate?.editConfig(tableValue.config!)
+                self.delegate?.editConfig(configName: tableValue.config!)
             }
         })
         editAction.backgroundColor = UIColor.blue
@@ -258,11 +258,11 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
     // MARK: UITableViewDelegate
     // --
     
-    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tableValue = tableValues[(indexPath as NSIndexPath).row]
         if delegate != nil {
             if tableValue.config != nil {
-                delegate?.selectedConfig(tableValue.config!)
+                delegate?.selectedConfig(configName: tableValue.config!)
             } else if tableValue.type == .Config {
                 let choicePopup = AppConfigSelectionPopupView()
                 choicePopup.label = AppConfigBundle.localizedString(key: "CFLAC_SHARED_SELECT_MENU")
@@ -281,7 +281,7 @@ open class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDele
     // --
     
     func selectedItem(_ item: String, token: String?) {
-        delegate?.newCustomConfigFrom(item)
+        delegate?.newCustomConfigFrom(configName: item)
     }
 
 }

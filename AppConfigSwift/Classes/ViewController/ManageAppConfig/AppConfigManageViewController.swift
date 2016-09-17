@@ -8,26 +8,26 @@
 
 import UIKit
 
-open class AppConfigManageViewController : UIViewController, AppConfigManageTableDelegate {
+public class AppConfigManageViewController : UIViewController, AppConfigManageTableDelegate {
     
     // --
     // MARK: Members
     // --
     
     static var isOpenCounter = 0
-    var isPresentedController: Bool = false
-    var isLoaded: Bool = false
-    var manageConfigTable: AppConfigManageTable = AppConfigManageTable()
+    var isPresentedController = false
+    var isLoaded = false
+    var manageConfigTable = AppConfigManageTable()
 
     
     // --
     // MARK: Launching
     // --
     
-    open static func launchFromShake() {
+    public static func launchFromShake() {
         if AppConfigManageViewController.isOpenCounter == 0 {
-            let viewController: AppConfigManageViewController = AppConfigManageViewController()
-            let navigationController: UINavigationController = UINavigationController.init(rootViewController: viewController)
+            let viewController = AppConfigManageViewController()
+            let navigationController = UINavigationController.init(rootViewController: viewController)
             UIApplication.shared.keyWindow?.rootViewController?.present(navigationController, animated: true, completion: nil)
         }
     }
@@ -37,7 +37,7 @@ open class AppConfigManageViewController : UIViewController, AppConfigManageTabl
     // MARK: Lifecycle
     // --
     
-    open override func viewDidLoad() {
+    public override func viewDidLoad() {
         //Set title
         super.viewDidLoad()
         navigationItem.title = AppConfigBundle.localizedString(key: "CFLAC_MANAGE_TITLE")
@@ -49,20 +49,20 @@ open class AppConfigManageViewController : UIViewController, AppConfigManageTabl
             let tintColor = view.tintColor
             var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
             tintColor?.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-            let highlightColor: UIColor = UIColor.init(red: red, green: green, blue: blue, alpha: 0.25)
+            let highlightColor = UIColor.init(red: red, green: green, blue: blue, alpha: 0.25)
             
             //Create button
-            let doneButton: UIButton = UIButton()
+            let doneButton = UIButton()
             doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
             doneButton.setTitle(AppConfigBundle.localizedString(key: "CFLAC_SHARED_DONE"), for: UIControlState())
             doneButton.setTitleColor(tintColor, for: UIControlState())
             doneButton.setTitleColor(highlightColor, for: UIControlState.highlighted)
-            let size: CGSize = doneButton.sizeThatFits(CGSize.zero)
+            let size = doneButton.sizeThatFits(CGSize.zero)
             doneButton.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
             doneButton.addTarget(self, action: #selector(doneButtonPressed), for: UIControlEvents.touchUpInside)
             
             //Wrap in bar button item
-            let doneButtonWrapper: UIBarButtonItem = UIBarButtonItem.init(customView: doneButton)
+            let doneButtonWrapper = UIBarButtonItem.init(customView: doneButton)
             navigationItem.leftBarButtonItem = doneButtonWrapper
         }
         
@@ -73,7 +73,7 @@ open class AppConfigManageViewController : UIViewController, AppConfigManageTabl
         })
     }
     
-    open override func loadView() {
+    public override func loadView() {
         if navigationController != nil {
             isPresentedController = navigationController!.isBeingPresented
         } else {
@@ -83,13 +83,13 @@ open class AppConfigManageViewController : UIViewController, AppConfigManageTabl
         view = manageConfigTable
     }
     
-    open override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         if isLoaded {
             self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), lastSelected: AppConfigStorage.shared.selectedConfig())
         }
     }
     
-    open override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         AppConfigManageViewController.isOpenCounter += 1
     }
     
@@ -114,22 +114,22 @@ open class AppConfigManageViewController : UIViewController, AppConfigManageTabl
     
 
     // --
-    // MARK: CFLAppConfigManageTableDelegate
+    // MARK: AppConfigManageTableDelegate
     // --
     
-    func selectedConfig(_ configName: String) {
+    func selectedConfig(configName: String) {
         AppConfigStorage.shared.selectConfig(configName: configName)
         if isLoaded {
             self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), lastSelected: AppConfigStorage.shared.selectedConfig())
         }
     }
     
-    func editConfig(_ configName: String) {
+    func editConfig(configName: String) {
         let viewController = AppConfigEditViewController(configName: configName, newConfig: false)
         navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func newCustomConfigFrom(_ configName: String) {
+    func newCustomConfigFrom(configName: String) {
         let viewController = AppConfigEditViewController(configName: configName, newConfig: true)
         navigationController?.pushViewController(viewController, animated: true)
     }
