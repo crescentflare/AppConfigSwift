@@ -53,7 +53,7 @@ protocol AppConfigEditSwitchCellViewDelegate: class {
 
     var on: Bool {
         set {
-            _switchControl!.isOn = newValue ?? false
+            _switchControl!.isOn = newValue
         }
         get { return _switchControl!.isOn }
     }

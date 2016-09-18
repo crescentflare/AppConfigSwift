@@ -136,12 +136,12 @@ public class AppConfigStorage {
         var tmpRhs: [String: AnyObject] = [:]
         if lhs != nil {
             for (key, value) in lhs! {
-                tmpLhs[key] = value as? AnyObject
+                tmpLhs[key] = value as AnyObject
             }
         }
         if rhs != nil {
             for (key, value) in rhs! {
-                tmpRhs[key] = value as? AnyObject
+                tmpRhs[key] = value as AnyObject
             }
         }
         return NSDictionary(dictionary: tmpLhs).isEqual(to: tmpRhs)
@@ -153,6 +153,7 @@ public class AppConfigStorage {
     // --
     
     // Remove a configuration
+    @discardableResult
     public func removeConfig(config: String) -> Bool {
         var removed = false
         if customConfigs[config] != nil {
@@ -227,7 +228,7 @@ public class AppConfigStorage {
     
     // Load configurations, called internally by library view controllers
     public func loadFromSource(completion: @escaping () -> Void) {
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+        DispatchQueue.global().async {
             let loadedConfigs: AppConfigOrderedDictionary? = self.loadFromSourceInternal(fileName: self.loadFromAssetFile)
             DispatchQueue.main.async {
                 if loadedConfigs != nil {
@@ -318,7 +319,7 @@ public class AppConfigStorage {
             if let customConfig = customConfigs[key] as? [String: Any] {
                 var storeDictionary: [String: AnyObject] = [:]
                 for (key, value) in customConfig {
-                    storeDictionary[key] = value as? AnyObject
+                    storeDictionary[key] = value as AnyObject
                 }
                 configs.append(storeDictionary)
             }
@@ -345,7 +346,7 @@ public class AppConfigStorage {
         if let settings = customConfigs[selectedItem ?? ""] ?? storedConfigs[selectedItem ?? ""] {
             var storeDictionary: [String: AnyObject] = [:]
             for (key, value) in settings as! [String: Any] {
-                storeDictionary[key] = value as? AnyObject
+                storeDictionary[key] = value as AnyObject
             }
             UserDefaults.standard.setValue(selectedItem, forKey: AppConfigStorage.defaultsSelectedConfigName)
             UserDefaults.standard.setValue(storeDictionary, forKey: AppConfigStorage.defaultsSelectedConfigDictionary)
