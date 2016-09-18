@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AppConfigSwift'
-  s.version          = '0.7.0'
+  s.version          = '0.7.1'
   s.summary          = 'A useful library to support multiple build configurations in one application build.'
 
 # This description is used to generate tags and improve search results.
