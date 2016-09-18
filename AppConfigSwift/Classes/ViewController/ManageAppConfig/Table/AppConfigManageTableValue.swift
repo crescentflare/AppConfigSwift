@@ -7,25 +7,26 @@
 //  Used internally
 //
 
-//Value type enum
-public enum AppConfigManageTableValueType: String {
+// Value type enum
+enum AppConfigManageTableValueType: String {
     
-    case Unknown = "unknown"
-    case Loading = "loading"
-    case Config = "config"
-    case Info = "info"
-    case Section = "section"
-    case TopDivider = "topDivider"
-    case BottomDivider = "bottomDivider"
-    case BetweenDivider = "betweenDivider"
+    case unknown = "unknown"
+    case loading = "loading"
+    case config = "config"
+    case info = "info"
+    case section = "section"
+    case topDivider = "topDivider"
+    case bottomDivider = "bottomDivider"
+    case betweenDivider = "betweenDivider"
     
     public func isCellType() -> Bool {
-        return self == .Config || self == .Info || self == .Loading
+        return self == .config || self == .info || self == .loading
     }
     
 }
 
-public class AppConfigManageTableValue {
+// Table value
+class AppConfigManageTableValue {
     
     // --
     // MARK: Members
@@ -42,7 +43,7 @@ public class AppConfigManageTableValue {
     // MARK: Initialization
     // --
     
-    public init(config: String?, labelString: String, type: AppConfigManageTableValueType, lastSelected: Bool, edited: Bool) {
+    init(config: String?, labelString: String, type: AppConfigManageTableValueType, lastSelected: Bool, edited: Bool) {
         self.config = config
         self.labelString = labelString
         self.type = type
@@ -55,23 +56,23 @@ public class AppConfigManageTableValue {
     // MARK: Factory methods
     // --
     
-    public static func valueForLoading(loadingText: String) -> AppConfigManageTableValue {
-        return AppConfigManageTableValue(config: nil, labelString: loadingText, type: .Loading, lastSelected: false, edited: false)
+    static func valueForLoading(text: String) -> AppConfigManageTableValue {
+        return AppConfigManageTableValue(config: nil, labelString: text, type: .loading, lastSelected: false, edited: false)
     }
     
-    public static func valueForConfig(configName: String?, andText: String, lastSelected: Bool, edited: Bool) -> AppConfigManageTableValue {
-        return AppConfigManageTableValue(config: configName, labelString: andText, type: .Config, lastSelected: lastSelected, edited: edited)
+    static func valueForConfig(name: String?, andText: String, lastSelected: Bool, edited: Bool) -> AppConfigManageTableValue {
+        return AppConfigManageTableValue(config: name, labelString: andText, type: .config, lastSelected: lastSelected, edited: edited)
     }
     
-    public static func valueForInfo(infoText: String) -> AppConfigManageTableValue {
-        return AppConfigManageTableValue(config: nil, labelString: infoText, type: .Info, lastSelected: false, edited: false)
+    static func valueForInfo(text: String) -> AppConfigManageTableValue {
+        return AppConfigManageTableValue(config: nil, labelString: text, type: .info, lastSelected: false, edited: false)
     }
     
-    public static func valueForSection(sectionText: String) -> AppConfigManageTableValue {
-        return AppConfigManageTableValue(config: nil, labelString: sectionText, type: .Section, lastSelected: false, edited: false)
+    static func valueForSection(text: String) -> AppConfigManageTableValue {
+        return AppConfigManageTableValue(config: nil, labelString: text, type: .section, lastSelected: false, edited: false)
     }
     
-    public static func valueForDivider(type: AppConfigManageTableValueType) -> AppConfigManageTableValue {
+    static func valueForDivider(type: AppConfigManageTableValueType) -> AppConfigManageTableValue {
         return AppConfigManageTableValue(config: nil, labelString: "", type: type, lastSelected: false, edited: false)
     }
     

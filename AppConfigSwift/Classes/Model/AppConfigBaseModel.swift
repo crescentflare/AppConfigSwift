@@ -7,13 +7,13 @@
 //  Important: this moment, only flat models with primitive data types and custom enums are supported
 //
 
-public class AppConfigBaseModel {
+open class AppConfigBaseModel {
 
     // --
     // MARK: Initialization
     // --
 
-    //Initialization
+    // Initialization
     public init() { }
     
     
@@ -21,46 +21,48 @@ public class AppConfigBaseModel {
     // MARK: Model structure analysis
     // --
     
-    //Provides mapping between config selectiom, editing, also provides optional categorization
-    //Override in your derived model (check the example for details)
-    public func map(mapper: AppConfigModelMapper) { }
+    // Provides mapping between config selectiom, editing, also provides optional categorization
+    // Override in your derived model (check the example for details)
+    open func map(mapper: AppConfigModelMapper) { }
 
-    //Helper method to convert the list of defined properties in the derived model to a dictionary
+    // Helper method to convert the list of defined properties in the derived model to a dictionary
     public func obtainValues() -> [String: Any] {
-        let mapper = AppConfigModelMapper(mode: .ToDictionary)
-        map(mapper)
+        let mapper = AppConfigModelMapper(mode: .toDictionary)
+        map(mapper: mapper)
         return mapper.getDictionaryValues()
     }
     
+    // Helper method to obtain all fields in a dictionary grouped by categories
     public func obtainCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
-        let mapper = AppConfigModelMapper(mode: .CollectKeys)
-        map(mapper)
+        let mapper = AppConfigModelMapper(mode: .collectKeys)
+        map(mapper: mapper)
         return mapper.getCategorizedFields()
     }
     
-    //Helper method to determine if the value is a raw representable (like an enum)
-    public func isRawRepresentable(fieldName: String) -> Bool {
-        let mapper = AppConfigModelMapper(mode: .CollectKeys)
-        map(mapper)
-        return mapper.isRawRepresentable(fieldName)
+    // Helper method to determine if the value is a raw representable (like an enum)
+    public func isRawRepresentable(field: String) -> Bool {
+        let mapper = AppConfigModelMapper(mode: .collectKeys)
+        map(mapper: mapper)
+        return mapper.isRawRepresentable(field: field)
     }
     
-    public func getRawRepresentableValues(fieldName: String) -> [String]? {
-        let mapper = AppConfigModelMapper(mode: .CollectKeys)
-        map(mapper)
-        return mapper.getRawRepresentableValues(fieldName)
+    // Helper method to obtain all values of a raw representable for the given field
+    public func getRawRepresentableValues(forField: String) -> [String]? {
+        let mapper = AppConfigModelMapper(mode: .collectKeys)
+        map(mapper: mapper)
+        return mapper.getRawRepresentableValues(forField: forField)
     }
     
-    //Internal method to override the model with customized values
-    public func applyOverrides(overrides: [String: Any], name: String?) {
+    // Internal method to override the model with customized values
+    public func apply(overrides: [String: Any], name: String?) {
         var setValues = overrides
         if name != nil {
             setValues["name"] = name!
         } else {
-            setValues.removeValueForKey("name")
+            setValues.removeValue(forKey: "name")
         }
-        let mapper: AppConfigModelMapper = AppConfigModelMapper(dictionary: setValues, mode: .FromDictionary)
-        map(mapper)
+        let mapper = AppConfigModelMapper(dictionary: setValues, mode: .fromDictionary)
+        map(mapper: mapper)
     }
  
 }

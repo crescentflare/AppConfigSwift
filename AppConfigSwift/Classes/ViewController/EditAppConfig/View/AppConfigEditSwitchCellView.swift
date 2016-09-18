@@ -8,14 +8,15 @@
 
 import UIKit
 
-//Delegate protocol
+// Delegate protocol
 protocol AppConfigEditSwitchCellViewDelegate: class {
     
-    func changedSwitchState(on: Bool, forConfigSetting: String)
+    func changedSwitchState(_ on: Bool, forConfigSetting: String)
     
 }
 
-@IBDesignable public class AppConfigEditSwitchCellView : UIView {
+// View component
+@IBDesignable class AppConfigEditSwitchCellView : UIView {
     
     // --
     // MARK: Members
@@ -39,7 +40,7 @@ protocol AppConfigEditSwitchCellViewDelegate: class {
     
     @IBInspectable var switchOn: Bool = false {
         didSet {
-            _switchControl.on = switchOn
+            _switchControl.isOn = switchOn
         }
     }
 
@@ -52,9 +53,9 @@ protocol AppConfigEditSwitchCellViewDelegate: class {
 
     var on: Bool {
         set {
-            _switchControl!.on = newValue ?? false
+            _switchControl!.isOn = newValue
         }
-        get { return _switchControl!.on }
+        get { return _switchControl!.isOn }
     }
 
     
@@ -67,16 +68,16 @@ protocol AppConfigEditSwitchCellViewDelegate: class {
         setupView()
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
     
-    public func setupView() {
-        _contentView = AppConfigViewUtility.loadNib("EditSwitchCell", parentView: self)
+    func setupView() {
+        _contentView = AppConfigViewUtility.loadNib(named: "EditSwitchCell", parentView: self)
         _label.text = ""
-        _switchControl.addTarget(self, action: #selector(setState), forControlEvents: .ValueChanged)
-        _switchControl.on = false
+        _switchControl.addTarget(self, action: #selector(setState), for: .valueChanged)
+        _switchControl.isOn = false
     }
    
 
@@ -84,8 +85,8 @@ protocol AppConfigEditSwitchCellViewDelegate: class {
     // MARK: Selector
     // --
     
-    func setState(switchComponent: UISwitch) {
-        delegate?.changedSwitchState(switchComponent.on, forConfigSetting: label ?? "")
+    func setState(_ switchComponent: UISwitch) {
+        delegate?.changedSwitchState(switchComponent.isOn, forConfigSetting: label ?? "")
     }
 
 
@@ -93,7 +94,7 @@ protocol AppConfigEditSwitchCellViewDelegate: class {
     // MARK: Helper
     // --
     
-    public func toggleState() {
+    func toggleState() {
         let newState = !on
         _switchControl.setOn(newState, animated: true)
         delegate?.changedSwitchState(newState, forConfigSetting: label ?? "")
