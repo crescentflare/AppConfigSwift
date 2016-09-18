@@ -108,7 +108,7 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
         if isPresentedController {
             dismiss(animated: true, completion: nil)
         } else {
-            navigationController?.popViewController(animated: true)
+            _ = navigationController?.popViewController(animated: true)
         }
     }
     

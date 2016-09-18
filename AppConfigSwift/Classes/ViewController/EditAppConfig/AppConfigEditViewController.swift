@@ -137,11 +137,11 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
             AppConfigStorage.shared.selectConfig(configName: newName)
         }
         AppConfigStorage.shared.synchronizeCustomConfigsWithUserDefaults()
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
     
     func cancelEditing() {
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
     
     func revertConfig() {
@@ -153,7 +153,7 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
         if wasSelected {
             AppConfigStorage.shared.selectConfig(configName: configName)
         }
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
     
 }
