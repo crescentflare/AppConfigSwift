@@ -37,6 +37,7 @@ class AppConfigViewUtility {
     // MARK: Constraint setup
     // --
     
+    @discardableResult
     static func addPinSuperViewEdgeConstraint(view: UIView, parentView: UIView, edge: NSLayoutAttribute, constant: CGFloat = 0) -> NSLayoutConstraint? {
         if edge == .left || edge == .right || edge == .top || edge == .bottom {
             let constraint = NSLayoutConstraint(item: view,

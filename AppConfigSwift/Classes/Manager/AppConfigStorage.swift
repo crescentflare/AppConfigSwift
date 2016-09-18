@@ -153,6 +153,7 @@ public class AppConfigStorage {
     // --
     
     // Remove a configuration
+    @discardableResult
     public func removeConfig(config: String) -> Bool {
         var removed = false
         if customConfigs[config] != nil {
