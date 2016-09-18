@@ -136,104 +136,83 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
         // Create cell (if needed)
         let tableValue = tableValues[(indexPath as NSIndexPath).row]
         let nextType = (indexPath as NSIndexPath).row + 1 < tableValues.count ? tableValues[(indexPath as NSIndexPath).row + 1].type : AppConfigManageTableValueType.unknown
-        var cell: AppConfigTableCell? = tableView.dequeueReusableCell(withIdentifier: tableValue.type.rawValue) as? AppConfigTableCell
-        if cell == nil {
-            cell = AppConfigTableCell()
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableValue.type.rawValue) as? AppConfigTableCell ?? AppConfigTableCell()
         
         // Set up a loader cell
         if tableValue.type == .loading {
             // Create view
-            var cellView: AppConfigLoadingCellView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigLoadingCellView()
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigLoadingCellView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigLoadingCellView()
             }
+            let cellView = cell.cellView as? AppConfigLoadingCellView
 
             // Supply data
-            cell?.selectionStyle = .none
-            cell?.shouldHideDivider = !nextType.isCellType()
-            cellView!.label = tableValue.labelString
+            cell.selectionStyle = .none
+            cell.shouldHideDivider = !nextType.isCellType()
+            cellView?.label = tableValue.labelString
         }
         
         // Set up a config cell
         if tableValue.type == .config {
             // Create view
-            var cellView: AppConfigItemCellView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigItemCellView()
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigItemCellView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigItemCellView()
             }
+            let cellView = cell.cellView as? AppConfigItemCellView
             
             // Supply data
-            cell?.accessoryType = tableValue.lastSelected ? .checkmark : .disclosureIndicator
-            cell?.shouldHideDivider = !nextType.isCellType()
-            cellView!.label = tableValue.labelString
-            if tableValue.edited {
-                cellView!.additional = AppConfigBundle.localizedString(key: "CFLAC_MANAGE_INDICATOR_EDITED")
-            }
+            cell.accessoryType = tableValue.lastSelected ? .checkmark : .disclosureIndicator
+            cell.shouldHideDivider = !nextType.isCellType()
+            cellView?.label = tableValue.labelString
+            cellView?.additional = tableValue.edited ? AppConfigBundle.localizedString(key: "CFLAC_MANAGE_INDICATOR_EDITED") : ""
         }
         
         // Set up an info cell
         if tableValue.type == .info {
             // Create view
-            var cellView: AppConfigManageInfoCellView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigManageInfoCellView()
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigManageInfoCellView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigManageInfoCellView()
             }
+            let cellView = cell.cellView as? AppConfigManageInfoCellView
             
             // Supply data
-            cell?.selectionStyle = .none
-            cell?.shouldHideDivider = !nextType.isCellType()
-            cellView!.label = tableValue.labelString
+            cell.selectionStyle = .none
+            cell.shouldHideDivider = !nextType.isCellType()
+            cellView?.label = tableValue.labelString
         }
         
         // Set up a section cell
         if tableValue.type == .section {
             // Create view
-            var cellView: AppConfigSectionCellView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigSectionCellView()
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigSectionCellView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigSectionCellView()
             }
+            let cellView = cell.cellView as? AppConfigSectionCellView
             
             // Supply data
-            cell?.selectionStyle = .none
-            cell?.shouldHideDivider = true
-            cellView!.label = tableValue.labelString
+            cell.selectionStyle = .none
+            cell.shouldHideDivider = true
+            cellView?.label = tableValue.labelString
         }
         
         // Set up a divider cell
         if tableValue.type == .topDivider || tableValue.type == .bottomDivider || tableValue.type == .betweenDivider {
             // Create view
-            var cellView: AppConfigCellSectionDividerView? = nil
-            if cell!.cellView == nil {
+            if cell.cellView == nil {
                 if tableValue.type == .betweenDivider {
-                    cellView = AppConfigCellSectionDividerView()
+                    cell.cellView = AppConfigCellSectionDividerView()
                 } else {
-                    cellView = AppConfigCellSectionDividerView(location: tableValue.type == .topDivider ? .top : .bottom)
+                    cell.cellView = AppConfigCellSectionDividerView(location: tableValue.type == .topDivider ? .top : .bottom)
                 }
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigCellSectionDividerView
             }
 
             // Supply data
-            cell?.selectionStyle = .none
-            cell?.shouldHideDivider = true
+            cell.selectionStyle = .none
+            cell.shouldHideDivider = true
         }
         
         // Return result
-        return cell!
+        return cell
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

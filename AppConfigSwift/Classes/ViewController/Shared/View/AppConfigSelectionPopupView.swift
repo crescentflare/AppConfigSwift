@@ -41,7 +41,7 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     
     @IBInspectable var tableChoices: String = "" {
         didSet {
-            choices = tableChoices.characters.split{$0 == ","}.map(String.init)
+            choices = tableChoices.characters.split{ $0 == "," }.map(String.init)
         }
     }
 
@@ -105,7 +105,7 @@ protocol AppConfigSelectionPopupViewDelegate: class {
         dismiss()
     }
     
-    func dismiss(_ animated: Bool = true) {
+    func dismiss(animated: Bool = true) {
         if (animated) {
             UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 self.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
@@ -144,46 +144,36 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Create cell (if needed)
-        var cell: AppConfigTableCell? = tableView.dequeueReusableCell(withIdentifier: "ignored") as? AppConfigTableCell
-        if cell == nil {
-            cell = AppConfigTableCell()
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ignored") as? AppConfigTableCell ?? AppConfigTableCell()
         
         // Regular cell view
         if (indexPath as NSIndexPath).row < _tableChoices.count {
             // Create view
-            var cellView: AppConfigItemCellView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigItemCellView()
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigItemCellView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigItemCellView()
             }
+            let cellView = cell.cellView as? AppConfigItemCellView
             
             // Supply data and return the cell
-            cell?.selectionStyle = .default
-            cell?.accessoryType = .disclosureIndicator
-            cell?.shouldHideDivider = (indexPath as NSIndexPath).row + 1 >= _tableChoices.count
-            cellView!.label = _tableChoices[(indexPath as NSIndexPath).row]
+            cell.selectionStyle = .default
+            cell.accessoryType = .disclosureIndicator
+            cell.shouldHideDivider = (indexPath as NSIndexPath).row + 1 >= _tableChoices.count
+            cellView?.label = _tableChoices[(indexPath as NSIndexPath).row]
         }
         
         // Bottom divider
         if (indexPath as NSIndexPath).row >= _tableChoices.count {
             // Create view
-            var cellView: AppConfigCellSectionDividerView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigCellSectionDividerView(location: .bottom)
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigCellSectionDividerView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigCellSectionDividerView(location: .bottom)
             }
             
             // Supply data
-            cell?.selectionStyle = .none
-            cell?.shouldHideDivider = true
+            cell.selectionStyle = .none
+            cell.shouldHideDivider = true
         }
         
-        return cell!
+        return cell
     }
     
 

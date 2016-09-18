@@ -20,9 +20,7 @@ class AppConfigTableCell : UITableViewCell {
     var _cellView: UIView? = nil
     var cellView: UIView? {
         set {
-            if _cellView != nil {
-                _cellView!.removeFromSuperview()
-            }
+            _cellView?.removeFromSuperview()
             _cellView = newValue
             if _cellView != nil {
                 contentView.addSubview(_cellView!)

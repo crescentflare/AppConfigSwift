@@ -271,9 +271,9 @@
 		67ABB82DF5444D1FFC95DED7BDAA8A01 /* ManageAppConfig */ = {
 			isa = PBXGroup;
 			children = (
-				EE90EDEFF9171C5AEC925E8CD4E90607 /* AppConfigManageViewController.swift */,
 				23DC21A8CC21A7567637D91359998EB9 /* Table */,
 				DB2A70EE6D862F98C44D9B05A7ADAAFB /* View */,
+				EE90EDEFF9171C5AEC925E8CD4E90607 /* AppConfigManageViewController.swift */,
 			);
 			path = ManageAppConfig;
 			sourceTree = "<group>";
@@ -335,9 +335,9 @@
 		904EFEF8E06FC3DAAE03667A1D93DBC5 /* EditAppConfig */ = {
 			isa = PBXGroup;
 			children = (
-				F818B131CF30EAFDF7A821CB7EE8CBD5 /* AppConfigEditViewController.swift */,
 				BDE3A8D1F921E2A070223061FDBB3544 /* Table */,
 				3888081CF17798610B9124BE5B5B02EA /* View */,
+				F818B131CF30EAFDF7A821CB7EE8CBD5 /* AppConfigEditViewController.swift */,
 			);
 			path = EditAppConfig;
 			sourceTree = "<group>";

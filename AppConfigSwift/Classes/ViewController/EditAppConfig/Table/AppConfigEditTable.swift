@@ -247,142 +247,117 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
         // Create cell (if needed)
         let tableValue = tableValues[(indexPath as NSIndexPath).row]
         let nextType = (indexPath as NSIndexPath).row + 1 < tableValues.count ? tableValues[(indexPath as NSIndexPath).row + 1].type : AppConfigEditTableValueType.unknown
-        var cell = tableView.dequeueReusableCell(withIdentifier: tableValue.type.rawValue) as? AppConfigTableCell
-        if cell == nil {
-            cell = AppConfigTableCell()
-        }
+        var cell = tableView.dequeueReusableCell(withIdentifier: tableValue.type.rawValue) as? AppConfigTableCell ?? AppConfigTableCell()
         
         // Set up a loader cell
         if tableValue.type == .loading {
             // Create view
-            var cellView: AppConfigLoadingCellView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigLoadingCellView()
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigLoadingCellView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigLoadingCellView()
             }
+            let cellView = cell.cellView as? AppConfigLoadingCellView
 
             // Supply data
-            cell?.selectionStyle = .none
-            cell?.shouldHideDivider = !nextType.isCellType()
-            cellView!.label = tableValue.labelString
+            cell.selectionStyle = .none
+            cell.shouldHideDivider = !nextType.isCellType()
+            cellView?.label = tableValue.labelString
         }
 
         // Set up an action cell
         if tableValue.type == .action {
             // Create view
-            var cellView: AppConfigItemCellView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigItemCellView()
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigItemCellView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigItemCellView()
             }
+            let cellView = cell.cellView as? AppConfigItemCellView
             
             // Supply data
-            cell?.selectionStyle = .default
-            cell?.accessoryType = .disclosureIndicator
-            cell?.shouldHideDivider = !nextType.isCellType()
-            cellView!.label = tableValue.labelString
+            cell.selectionStyle = .default
+            cell.accessoryType = .disclosureIndicator
+            cell.shouldHideDivider = !nextType.isCellType()
+            cellView?.label = tableValue.labelString
         }
         
         // Set up a text entry cell
         if tableValue.type == .textEntry {
             // Create view
-            var cellView: AppConfigEditTextCellView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigEditTextCellView()
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigEditTextCellView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigEditTextCellView()
             }
+            let cellView = cell.cellView as? AppConfigEditTextCellView
 
             // Supply data
-            cell?.selectionStyle = .default
-            cell?.shouldHideDivider = !nextType.isCellType()
-            cellView!.delegate = self
-            cellView!.label = tableValue.configSetting
-            cellView!.editedText = tableValue.labelString
-            cellView!.applyNumberLimitation = tableValue.limitUsage
+            cell.selectionStyle = .default
+            cell.shouldHideDivider = !nextType.isCellType()
+            cellView?.delegate = self
+            cellView?.label = tableValue.configSetting
+            cellView?.editedText = tableValue.labelString
+            cellView?.applyNumberLimitation = tableValue.limitUsage
         }
         
         // Set up a switch value cell
         if tableValue.type == .switchValue {
             // Create view
-            var cellView: AppConfigEditSwitchCellView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigEditSwitchCellView()
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigEditSwitchCellView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigEditSwitchCellView()
             }
+            let cellView = cell.cellView as? AppConfigEditSwitchCellView
 
             // Supply data
-            cell?.selectionStyle = .default
-            cell?.shouldHideDivider = !nextType.isCellType()
-            cellView!.delegate = self
-            cellView!.label = tableValue.configSetting
-            cellView!.on = tableValue.booleanValue
+            cell.selectionStyle = .default
+            cell.shouldHideDivider = !nextType.isCellType()
+            cellView?.delegate = self
+            cellView?.label = tableValue.configSetting
+            cellView?.on = tableValue.booleanValue
         }
         
         // Set up a selection cell (for enums)
         if tableValue.type == .selection {
             // Create view
-            var cellView: AppConfigItemCellView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigItemCellView()
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigItemCellView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigItemCellView()
             }
+            let cellView = cell.cellView as? AppConfigItemCellView
             
             // Supply data
-            cell?.selectionStyle = .default
-            cell?.accessoryType = .disclosureIndicator
-            cell?.shouldHideDivider = !nextType.isCellType()
-            cellView!.label = "\(tableValue.configSetting ?? ""): \(tableValue.labelString)"
+            cell.selectionStyle = .default
+            cell.accessoryType = .disclosureIndicator
+            cell.shouldHideDivider = !nextType.isCellType()
+            cellView?.label = "\(tableValue.configSetting ?? ""): \(tableValue.labelString)"
         }
         
         // Set up a section cell
         if tableValue.type == .section {
             // Create view
-            var cellView: AppConfigSectionCellView? = nil
-            if cell!.cellView == nil {
-                cellView = AppConfigSectionCellView()
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigSectionCellView
+            if cell.cellView == nil {
+                cell.cellView = AppConfigSectionCellView()
             }
+            let cellView = cell.cellView as? AppConfigSectionCellView
             
             // Supply data
-            cell?.selectionStyle = .none
-            cell?.shouldHideDivider = true
-            cellView!.label = tableValue.labelString
+            cell.selectionStyle = .none
+            cell.shouldHideDivider = true
+            cellView?.label = tableValue.labelString
         }
         
         // Set up a divider cell
         if tableValue.type == .topDivider || tableValue.type == .bottomDivider || tableValue.type == .betweenDivider {
             // Create view
-            var cellView: AppConfigCellSectionDividerView? = nil
-            if cell!.cellView == nil {
+            if cell.cellView == nil {
                 if tableValue.type == .betweenDivider {
-                    cellView = AppConfigCellSectionDividerView()
+                    cell.cellView = AppConfigCellSectionDividerView()
                 } else {
-                    cellView = AppConfigCellSectionDividerView(location: tableValue.type == .topDivider ? .top : .bottom)
+                    cell.cellView = AppConfigCellSectionDividerView(location: tableValue.type == .topDivider ? .top : .bottom)
                 }
-                cell!.cellView = cellView
-            } else {
-                cellView = cell!.cellView as? AppConfigCellSectionDividerView
             }
             
             // Supply data
-            cell?.selectionStyle = .none
-            cell?.shouldHideDivider = true
+            cell.selectionStyle = .none
+            cell.shouldHideDivider = true
         }
 
         // Return result
-        return cell!
+        return cell
     }
     
     

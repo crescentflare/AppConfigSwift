@@ -47,7 +47,7 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
             let tintColor = view.tintColor
             var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
             tintColor?.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-            let highlightColor: UIColor = UIColor.init(red: red, green: green, blue: blue, alpha: 0.25)
+            let highlightColor = UIColor.init(red: red, green: green, blue: blue, alpha: 0.25)
             
             //Add cancel button
             let cancelButton = UIButton()
@@ -55,7 +55,7 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
             cancelButton.setTitle(AppConfigBundle.localizedString(key: "CFLAC_SHARED_CANCEL"), for: UIControlState())
             cancelButton.setTitleColor(tintColor, for: UIControlState())
             cancelButton.setTitleColor(highlightColor, for: UIControlState.highlighted)
-            let cancelButtonSize: CGSize = cancelButton.sizeThatFits(CGSize.zero)
+            let cancelButtonSize = cancelButton.sizeThatFits(CGSize.zero)
             cancelButton.frame = CGRect(x: 0, y: 0, width: cancelButtonSize.width, height: cancelButtonSize.height)
             cancelButton.addTarget(self, action: #selector(cancelButtonPressed), for: UIControlEvents.touchUpInside)
             
@@ -69,7 +69,7 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
             saveButton.setTitle(AppConfigBundle.localizedString(key: "CFLAC_SHARED_SAVE"), for: UIControlState())
             saveButton.setTitleColor(tintColor, for: UIControlState())
             saveButton.setTitleColor(highlightColor, for: UIControlState.highlighted)
-            let saveButtonSize: CGSize = saveButton.sizeThatFits(CGSize.zero)
+            let saveButtonSize = saveButton.sizeThatFits(CGSize.zero)
             saveButton.frame = CGRect(x: 0, y: 0, width: saveButtonSize.width, height: saveButtonSize.height)
             saveButton.addTarget(self, action: #selector(saveButtonPressed), for: UIControlEvents.touchUpInside)
             
