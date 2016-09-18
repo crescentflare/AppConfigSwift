@@ -8,13 +8,14 @@
 
 import UIKit
 
-//Delegate protocol
+// Delegate protocol
 protocol AppConfigEditSwitchCellViewDelegate: class {
     
     func changedSwitchState(_ on: Bool, forConfigSetting: String)
     
 }
 
+// View component
 @IBDesignable class AppConfigEditSwitchCellView : UIView {
     
     // --

@@ -36,20 +36,20 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
     }
     
     override func viewDidLoad() {
-        //Set title
+        // Set title
         super.viewDidLoad()
         navigationItem.title = AppConfigBundle.localizedString(key: newConfig ? "CFLAC_EDIT_NEW_TITLE" : "CFLAC_EDIT_TITLE")
         navigationController?.navigationBar.isTranslucent = false
         
-        //Add button to close the configuration selection
+        // Add button to close the configuration selection
         if navigationController != nil {
-            //Obtain colors
+            // Obtain colors
             let tintColor = view.tintColor
             var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
             tintColor?.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
             let highlightColor = UIColor.init(red: red, green: green, blue: blue, alpha: 0.25)
             
-            //Add cancel button
+            // Add cancel button
             let cancelButton = UIButton()
             cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
             cancelButton.setTitle(AppConfigBundle.localizedString(key: "CFLAC_SHARED_CANCEL"), for: UIControlState())
@@ -59,11 +59,11 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
             cancelButton.frame = CGRect(x: 0, y: 0, width: cancelButtonSize.width, height: cancelButtonSize.height)
             cancelButton.addTarget(self, action: #selector(cancelButtonPressed), for: UIControlEvents.touchUpInside)
             
-            //Wrap in bar button item
+            // Wrap in bar button item
             let cancelButtonWrapper = UIBarButtonItem.init(customView: cancelButton)
             navigationItem.leftBarButtonItem = cancelButtonWrapper
 
-            //Create button
+            // Create button
             let saveButton = UIButton()
             saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
             saveButton.setTitle(AppConfigBundle.localizedString(key: "CFLAC_SHARED_SAVE"), for: UIControlState())
@@ -73,12 +73,12 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
             saveButton.frame = CGRect(x: 0, y: 0, width: saveButtonSize.width, height: saveButtonSize.height)
             saveButton.addTarget(self, action: #selector(saveButtonPressed), for: UIControlEvents.touchUpInside)
             
-            //Wrap in bar button item
+            // Wrap in bar button item
             let saveButtonWrapper = UIBarButtonItem.init(customView: saveButton)
             navigationItem.rightBarButtonItem = saveButtonWrapper
         }
         
-        //Update configuration list
+        // Update configuration list
         AppConfigStorage.shared.loadFromSource(completion: {
             self.editConfigTable.setConfiguration(settings: self.obtainSettings(), model: AppConfigStorage.shared.configManager()?.obtainBaseModelInstance())
         })
@@ -108,7 +108,7 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
     // --
     
     func cancelButtonPressed(_ sender: UIButton) {
-        //TODO: are you sure dialog/check?
+        // TODO: are you sure dialog/check?
         cancelEditing()
     }
     

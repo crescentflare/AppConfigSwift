@@ -7,7 +7,7 @@
 //  Used internally
 //
 
-//Value type enum
+// Value type enum
 enum AppConfigEditTableValueType: String {
     
     case unknown = "unknown"
@@ -27,7 +27,7 @@ enum AppConfigEditTableValueType: String {
 
 }
 
-//Action type enum
+// Action type enum
 enum AppConfigEditTableActionType: String {
     
     case none = "none"
@@ -37,6 +37,7 @@ enum AppConfigEditTableActionType: String {
     
 }
 
+// Table value
 class AppConfigEditTableValue {
     
     // --

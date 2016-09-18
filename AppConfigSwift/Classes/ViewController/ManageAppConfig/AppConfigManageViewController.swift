@@ -38,20 +38,20 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     // --
     
     public override func viewDidLoad() {
-        //Set title
+        // Set title
         super.viewDidLoad()
         navigationItem.title = AppConfigBundle.localizedString(key: "CFLAC_MANAGE_TITLE")
         navigationController?.navigationBar.isTranslucent = false
         
-        //Add button to close the configuration selection
+        // Add button to close the configuration selection
         if navigationController != nil {
-            //Obtain colors
+            // Obtain colors
             let tintColor = view.tintColor
             var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
             tintColor?.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
             let highlightColor = UIColor.init(red: red, green: green, blue: blue, alpha: 0.25)
             
-            //Create button
+            // Create button
             let doneButton = UIButton()
             doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
             doneButton.setTitle(AppConfigBundle.localizedString(key: "CFLAC_SHARED_DONE"), for: UIControlState())
@@ -61,12 +61,12 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
             doneButton.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
             doneButton.addTarget(self, action: #selector(doneButtonPressed), for: UIControlEvents.touchUpInside)
             
-            //Wrap in bar button item
+            // Wrap in bar button item
             let doneButtonWrapper = UIBarButtonItem.init(customView: doneButton)
             navigationItem.leftBarButtonItem = doneButtonWrapper
         }
         
-        //Update configuration list
+        // Update configuration list
         AppConfigStorage.shared.loadFromSource(completion: {
             self.isLoaded = true
             self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), lastSelected: AppConfigStorage.shared.selectedConfig())

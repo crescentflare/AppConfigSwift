@@ -7,7 +7,7 @@
 //  Also provides optional categorization
 //
 
-//Enum for mapping mode
+// Enum for mapping mode
 public enum AppConfigModelMapperMode {
     
     case collectKeys
@@ -16,7 +16,7 @@ public enum AppConfigModelMapperMode {
     
 }
 
-//Mapping class
+// Mapping class
 public class AppConfigModelMapper {
 
     // --
@@ -34,12 +34,12 @@ public class AppConfigModelMapper {
     // MARK: Initialization
     // --
     
-    //Initialization (for everything except FromDictionary mode)
+    // Initialization (for everything except FromDictionary mode)
     public init(mode: AppConfigModelMapperMode) {
         self.mode = mode
     }
 
-    //Initialization (to be used with FromDictionary mode)
+    // Initialization (to be used with FromDictionary mode)
     public init(dictionary: [String: Any], mode: AppConfigModelMapperMode) {
         self.dictionary = dictionary
         self.mode = mode
@@ -50,7 +50,7 @@ public class AppConfigModelMapper {
     // MARK: Mapping
     // --
     
-    //Map between key and value: boolean
+    // Map between key and value: boolean
     public func map(key: String, value: inout Bool, category: String = "") {
         if mode == .toDictionary {
             dictionary[key] = value
@@ -61,7 +61,7 @@ public class AppConfigModelMapper {
         }
     }
 
-    //Map between key and value: int
+    // Map between key and value: int
     public func map(key: String, value: inout Int, category: String = "") {
         if mode == .toDictionary {
             dictionary[key] = value
@@ -72,7 +72,7 @@ public class AppConfigModelMapper {
         }
     }
 
-    //Map between key and value: string
+    // Map between key and value: string
     public func map(key: String, value: inout String, category: String = "") {
         if mode == .toDictionary {
             dictionary[key] = value
@@ -83,7 +83,7 @@ public class AppConfigModelMapper {
         }
     }
     
-    //Map between key and value: an enum containing a raw value (preferably string)
+    // Map between key and value: an enum containing a raw value (preferably string)
     public func map<T: RawRepresentable>(key: String, value: inout T, fallback: T, allValues: [T], category: String = "") {
         if mode == .toDictionary {
             dictionary[key] = value.rawValue
@@ -107,7 +107,7 @@ public class AppConfigModelMapper {
         }
     }
     
-    //After calling mapping on the model with to dictionary mode, retrieve the result using this function
+    // After calling mapping on the model with to dictionary mode, retrieve the result using this function
     public func getDictionaryValues() -> [String: Any] {
         return dictionary
     }
@@ -117,22 +117,22 @@ public class AppConfigModelMapper {
     // MARK: Field grouping
     // --
 
-    //After calling mapping on the model with this object, retrieve the grouped/categorized fields
+    // After calling mapping on the model with this object, retrieve the grouped/categorized fields
     public func getCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
         return categorizedFields
     }
     
-    //After calling mapping on the model with this object, check if a given field is a raw representable class
+    // After calling mapping on the model with this object, check if a given field is a raw representable class
     public func isRawRepresentable(field: String) -> Bool {
         return rawRepresentableFields.contains(field)
     }
     
-    //After calling mapping on the model with this object, return a list of possible values (only for raw representable types)
+    // After calling mapping on the model with this object, return a list of possible values (only for raw representable types)
     public func getRawRepresentableValues(forField: String) -> [String]? {
         return rawRepresentableFieldValues[forField]
     }
     
-    //Internal method to keep track of keys and categories
+    // Internal method to keep track of keys and categories
     private func add(key: String, category: String, isRawRepresentable: Bool = false) {
         if categorizedFields[category] == nil {
             categorizedFields[category] = []

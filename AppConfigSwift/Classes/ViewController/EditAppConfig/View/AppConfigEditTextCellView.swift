@@ -8,13 +8,14 @@
 
 import UIKit
 
-//Delegate protocol
+// Delegate protocol
 protocol AppConfigEditTextCellViewDelegate: class {
     
     func changedEditText(_ newText: String, forConfigSetting: String)
     
 }
 
+// View component
 @IBDesignable class AppConfigEditTextCellView : UIView, UITextFieldDelegate {
     
     // --
@@ -111,17 +112,17 @@ protocol AppConfigEditTextCellViewDelegate: class {
     // --
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        //Only use limitation code if applied
+        // Only use limitation code if applied
         if !applyNumberLimitation {
             return true
         }
         
-        //Allow backspace
+        // Allow backspace
         if string.characters.count == 0 {
             return true
         }
         
-        //Prevent invalid character input, if keyboard is set to a number-like input form
+        // Prevent invalid character input, if keyboard is set to a number-like input form
         if textField.keyboardType == .numbersAndPunctuation || textField.keyboardType == .numberPad {
             var checkString = string
             if textField.text?.characters.count == 0 {

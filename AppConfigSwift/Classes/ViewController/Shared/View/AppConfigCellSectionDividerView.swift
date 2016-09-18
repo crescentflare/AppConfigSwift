@@ -17,7 +17,7 @@ enum AppConfigCellSectionLocation: String {
     
 }
 
-// View
+// View component
 @IBDesignable class AppConfigCellSectionDividerView : UIView {
     
     // --

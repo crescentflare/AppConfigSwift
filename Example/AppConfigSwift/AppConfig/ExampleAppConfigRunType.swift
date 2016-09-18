@@ -9,7 +9,7 @@
 import UIKit
 import AppConfigSwift
 
-//Enum definition using string raw values for storage
+// Enum definition using string raw values for storage
 enum ExampleAppConfigRunType: String {
     
     case runNormally = "runNormally"

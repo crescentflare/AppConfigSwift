@@ -7,7 +7,7 @@
 //  Used internally
 //
 
-//Value type enum
+// Value type enum
 enum AppConfigManageTableValueType: String {
     
     case unknown = "unknown"
@@ -25,6 +25,7 @@ enum AppConfigManageTableValueType: String {
     
 }
 
+// Table value
 class AppConfigManageTableValue {
     
     // --

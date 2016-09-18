@@ -15,6 +15,7 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     
 }
 
+// View component
 @IBDesignable class AppConfigSelectionPopupView : UIView, UITableViewDataSource, UITableViewDelegate {
     
     // --
