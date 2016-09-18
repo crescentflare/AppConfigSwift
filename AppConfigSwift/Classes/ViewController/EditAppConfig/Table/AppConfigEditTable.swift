@@ -82,7 +82,7 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
         tableValues = []
         if settings.count > 0 {
             // First add the name section + field for custom configurations
-            let customizedCopy = newConfig || (AppConfigStorage.shared.isCustomConfig(config: configName ?? "") && !AppConfigStorage.shared.isConfigOverride(config: configName ?? ""))
+            let customizedCopy = newConfig || (AppConfigStorage.shared.isCustomConfig(config: configName) && !AppConfigStorage.shared.isConfigOverride(config: configName))
             if customizedCopy {
                 for (key, value) in settings {
                     if key == "name" {
@@ -247,7 +247,7 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
         // Create cell (if needed)
         let tableValue = tableValues[(indexPath as NSIndexPath).row]
         let nextType = (indexPath as NSIndexPath).row + 1 < tableValues.count ? tableValues[(indexPath as NSIndexPath).row + 1].type : AppConfigEditTableValueType.unknown
-        var cell = tableView.dequeueReusableCell(withIdentifier: tableValue.type.rawValue) as? AppConfigTableCell ?? AppConfigTableCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableValue.type.rawValue) as? AppConfigTableCell ?? AppConfigTableCell()
         
         // Set up a loader cell
         if tableValue.type == .loading {
