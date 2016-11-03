@@ -24,7 +24,7 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     // MARK: Launching
     // --
     
-    public static func launchFromShake() {
+    public static func launch() {
         if AppConfigManageViewController.isOpenCounter == 0 {
             let viewController = AppConfigManageViewController()
             let navigationController = UINavigationController.init(rootViewController: viewController)
