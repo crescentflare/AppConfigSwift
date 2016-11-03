@@ -74,7 +74,51 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
     // MARK: Implementation
     // --
     
+    private func findDefaultConfig() -> String? {
+        var foundItem: String?
+        if let values = AppConfigStorage.shared.configManager()?.currentConfig?.obtainValues() {
+            for key in AppConfigStorage.shared.storedConfigs.allKeys() {
+                if let item = AppConfigStorage.shared.storedConfigs[key] as? [String: Any] {
+                    var isEqual = true
+                    for (key, value) in item {
+                        if let compareValue = values[key] {
+                            if value is String {
+                                isEqual = value as! String == compareValue as? String
+                            } else if value is Int {
+                                isEqual = value as! Int == compareValue as? Int
+                            } else if value is Float {
+                                isEqual = value as! Float == compareValue as? Float
+                            } else if value is Double {
+                                isEqual = value as! Double == compareValue as? Double
+                            } else if value is Bool {
+                                isEqual = value as! Bool == compareValue as? Bool
+                            } else {
+                                isEqual = false
+                            }
+                            if !isEqual {
+                                break
+                            }
+                        } else {
+                            isEqual = false
+                            break
+                        }
+                    }
+                    if isEqual {
+                        return key
+                    }
+                }
+            }
+        }
+        return foundItem
+    }
+    
     func setConfigurations(_ configurations: [String], customConfigurations: [String], lastSelected: String?) {
+        // Set selected and if not set, check against default config in model
+        var selected = lastSelected
+        if selected == nil {
+            selected = findDefaultConfig()
+        }
+        
         // Start with an empty table values list
         var rawTableValues: [AppConfigManageTableValue] = []
         tableValues = []
@@ -83,7 +127,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
         if configurations.count > 0 {
             rawTableValues.append(AppConfigManageTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_PREDEFINED")))
             for configuration: String in configurations {
-                rawTableValues.append(AppConfigManageTableValue.valueForConfig(name: configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: AppConfigStorage.shared.isConfigOverride(config: configuration)))
+                rawTableValues.append(AppConfigManageTableValue.valueForConfig(name: configuration, andText: configuration, lastSelected: configuration == selected, edited: AppConfigStorage.shared.isConfigOverride(config: configuration)))
             }
         }
         
@@ -91,7 +135,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
         if configurations.count > 0 {
             rawTableValues.append(AppConfigManageTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_CUSTOM")))
             for configuration: String in customConfigurations {
-                rawTableValues.append(AppConfigManageTableValue.valueForConfig(name: configuration, andText: configuration, lastSelected: configuration == lastSelected, edited: false))
+                rawTableValues.append(AppConfigManageTableValue.valueForConfig(name: configuration, andText: configuration, lastSelected: configuration == selected, edited: false))
             }
             rawTableValues.append(AppConfigManageTableValue.valueForConfig(name: nil, andText: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_ADD_NEW"), lastSelected: false, edited: false))
         }
