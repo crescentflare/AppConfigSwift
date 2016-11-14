@@ -61,7 +61,7 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     // --
     
     public static func launch() {
-        if AppConfigManageViewController.isOpenCounter == 0 {
+        if AppConfigManageViewController.isOpenCounter == 0 && AppConfigStorage.shared.isActivated() {
             let viewController = AppConfigManageViewController()
             let navigationController = UINavigationController.init(rootViewController: viewController)
             ac_topmostViewController?.present(navigationController, animated: true, completion: nil)
