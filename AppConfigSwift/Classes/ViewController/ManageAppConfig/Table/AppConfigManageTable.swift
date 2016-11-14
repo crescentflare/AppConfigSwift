@@ -75,7 +75,6 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
     // --
     
     private func findDefaultConfig() -> String? {
-        var foundItem: String?
         if let values = AppConfigStorage.shared.configManager()?.obtainBaseModelInstance().obtainValues() {
             for key in AppConfigStorage.shared.storedConfigs.allKeys() {
                 if let item = AppConfigStorage.shared.storedConfigs[key] as? [String: Any] {
@@ -83,15 +82,15 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
                     for (key, value) in item {
                         if let compareValue = values[key] {
                             if value is String {
-                                isEqual = value as! String == compareValue as? String
+                                isEqual = value as? String == compareValue as? String
                             } else if value is Int {
-                                isEqual = value as! Int == compareValue as? Int
+                                isEqual = value as? Int == compareValue as? Int
                             } else if value is Float {
-                                isEqual = value as! Float == compareValue as? Float
+                                isEqual = value as? Float == compareValue as? Float
                             } else if value is Double {
-                                isEqual = value as! Double == compareValue as? Double
+                                isEqual = value as? Double == compareValue as? Double
                             } else if value is Bool {
-                                isEqual = value as! Bool == compareValue as? Bool
+                                isEqual = value as? Bool == compareValue as? Bool
                             } else {
                                 isEqual = false
                             }
@@ -109,7 +108,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
                 }
             }
         }
-        return foundItem
+        return nil
     }
     
     func setConfigurations(_ configurations: [String], customConfigurations: [String], lastSelected: String?) {
