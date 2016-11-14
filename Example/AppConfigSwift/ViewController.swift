@@ -59,9 +59,7 @@ class ViewController: UIViewController {
     // --
     
     @IBAction func changeConfiguration() {
-        let viewController = AppConfigManageViewController()
-        let navigationController = UINavigationController.init(rootViewController: viewController)
-        present(navigationController, animated: true, completion: nil)
+        AppConfigManageViewController.launch()
     }
     
 }

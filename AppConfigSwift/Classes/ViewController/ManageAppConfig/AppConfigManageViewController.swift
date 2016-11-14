@@ -8,6 +8,42 @@
 
 import UIKit
 
+extension UIViewController {
+    
+    static var ac_topmostViewController: UIViewController? {
+        return UIApplication.shared.keyWindow?.ac_topmostViewController
+    }
+    
+    var ac_topmostViewController: UIViewController? {
+        return presentedViewController?.ac_topmostViewController ?? self
+    }
+
+}
+
+extension UINavigationController {
+    
+    override var ac_topmostViewController: UIViewController? {
+        return visibleViewController?.ac_topmostViewController
+    }
+
+}
+
+extension UITabBarController {
+    
+    override var ac_topmostViewController: UIViewController? {
+        return selectedViewController?.ac_topmostViewController
+    }
+
+}
+
+extension UIWindow {
+    
+    var ac_topmostViewController: UIViewController? {
+        return rootViewController?.ac_topmostViewController
+    }
+
+}
+
 public class AppConfigManageViewController : UIViewController, AppConfigManageTableDelegate {
     
     // --
@@ -24,11 +60,11 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     // MARK: Launching
     // --
     
-    public static func launchFromShake() {
-        if AppConfigManageViewController.isOpenCounter == 0 {
+    public static func launch() {
+        if AppConfigManageViewController.isOpenCounter == 0 && AppConfigStorage.shared.isActivated() {
             let viewController = AppConfigManageViewController()
             let navigationController = UINavigationController.init(rootViewController: viewController)
-            UIApplication.shared.keyWindow?.rootViewController?.present(navigationController, animated: true, completion: nil)
+            ac_topmostViewController?.present(navigationController, animated: true, completion: nil)
         }
     }
 
@@ -36,6 +72,16 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     // --
     // MARK: Lifecycle
     // --
+    
+    public init() {
+        super.init(nibName: nil, bundle: nil)
+        AppConfigManageViewController.isOpenCounter += 1
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        AppConfigManageViewController.isOpenCounter += 1
+    }
     
     public override func viewDidLoad() {
         // Set title
@@ -87,10 +133,6 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
         if isLoaded {
             self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), lastSelected: AppConfigStorage.shared.selectedConfig())
         }
-    }
-    
-    public override func viewWillAppear(_ animated: Bool) {
-        AppConfigManageViewController.isOpenCounter += 1
     }
     
     deinit {
