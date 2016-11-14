@@ -76,7 +76,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
     
     private func findDefaultConfig() -> String? {
         var foundItem: String?
-        if let values = AppConfigStorage.shared.configManager()?.currentConfig?.obtainValues() {
+        if let values = AppConfigStorage.shared.configManager()?.obtainBaseModelInstance().obtainValues() {
             for key in AppConfigStorage.shared.storedConfigs.allKeys() {
                 if let item = AppConfigStorage.shared.storedConfigs[key] as? [String: Any] {
                     var isEqual = true
