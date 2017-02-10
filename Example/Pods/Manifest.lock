@@ -1,16 +1,16 @@
 PODS:
-  - AppConfigSwift (0.5.1)
+  - AppConfigSwift (0.7.2)
 
 DEPENDENCIES:
   - AppConfigSwift (from `../`)
 
 EXTERNAL SOURCES:
   AppConfigSwift:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
-  AppConfigSwift: 0c9f588665f1193b3570fbd1b6b10be3657ebe68
+  AppConfigSwift: 58363c7df8c3515593ce0f97e64a7132bacf82af
 
 PODFILE CHECKSUM: f0a547fff3a4ae5fd906e01ead29b3e533cab5bf
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1
