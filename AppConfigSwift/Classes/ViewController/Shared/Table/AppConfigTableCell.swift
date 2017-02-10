@@ -9,23 +9,22 @@
 
 import UIKit
 
-public class AppConfigTableCell : UITableViewCell {
+class AppConfigTableCell : UITableViewCell {
     
     // --
     // MARK: Members
     // --
     
     var shouldHideDivider: Bool = false
+    var _dividerLine: UIView? = nil
     var _cellView: UIView? = nil
     var cellView: UIView? {
         set {
-            if _cellView != nil {
-                _cellView!.removeFromSuperview()
-            }
+            _cellView?.removeFromSuperview()
             _cellView = newValue
             if _cellView != nil {
                 contentView.addSubview(_cellView!)
-                AppConfigViewUtility.addPinSuperViewEdgesConstraints(_cellView!, parentView: contentView)
+                AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: _cellView!, parentView: contentView)
             }
         }
         get { return _cellView }
@@ -33,16 +32,37 @@ public class AppConfigTableCell : UITableViewCell {
 
     
     // --
+    // MARK: Initialize
+    // --
+
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupView()
+    }
+    
+    func setupView() {
+        _dividerLine = UIView()
+        _dividerLine?.backgroundColor = UIColor.init(white: 0.8, alpha: 1)
+        addSubview(_dividerLine!)
+        AppConfigViewUtility.addHeightConstraint(view: _dividerLine!, height: 1 / UIScreen.main.scale)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(view: _dividerLine!, parentView: self, edge: .left, constant: 16)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(view: _dividerLine!, parentView: self, edge: .right)
+        AppConfigViewUtility.addPinSuperViewEdgeConstraint(view: _dividerLine!, parentView: self, edge: .bottom)
+    }
+
+    
+    // --
     // MARK: Layout
     // --
     
-    public override func layoutSubviews() {
+    override func layoutSubviews() {
         super.layoutSubviews()
-        if shouldHideDivider {
-            self.separatorInset = UIEdgeInsetsMake(0, frame.size.width * 2, 0, 0)
-        } else {
-            self.separatorInset = UIEdgeInsetsMake(0, 16, 0, 0)
-        }
+        _dividerLine?.isHidden = shouldHideDivider
     }
     
 }

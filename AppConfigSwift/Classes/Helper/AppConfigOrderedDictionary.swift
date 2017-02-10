@@ -46,14 +46,14 @@ public struct AppConfigOrderedDictionary<Tk: Hashable, Tv> {
             return self.values[key]
         }
         set (newValue) {
-            //Remove value if key is nil
+            // Remove value if key is nil
             if newValue == nil {
-                self.values.removeValueForKey(key)
+                self.values.removeValue(forKey: key)
                 self.keys = self.keys.filter {$0 != key}
                 return
             }
             
-            //Add or replace value
+            // Add or replace value
             let oldValue = self.values.updateValue(newValue!, forKey: key)
             if oldValue == nil {
                 self.keys.append(key)

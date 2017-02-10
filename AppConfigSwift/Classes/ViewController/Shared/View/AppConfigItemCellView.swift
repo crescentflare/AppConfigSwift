@@ -8,7 +8,7 @@
 
 import UIKit
 
-@IBDesignable public class AppConfigItemCellView : UIView {
+@IBDesignable class AppConfigItemCellView : UIView {
     
     // --
     // MARK: Members
@@ -59,13 +59,13 @@ import UIKit
         setupView()
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
     
-    public func setupView() {
-        _contentView = AppConfigViewUtility.loadNib("ItemCell", parentView: self)
+    func setupView() {
+        _contentView = AppConfigViewUtility.loadNib(named: "ItemCell", parentView: self)
         _label.text = ""
         _additional.text = ""
     }

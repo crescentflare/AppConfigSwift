@@ -13,11 +13,18 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-AppConfigSwift is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+The library is available through [CocoaPods](http://cocoapods.org). To install it, simply add one of the following lines to your Podfile.
+
+Swift 3:
 
 ```ruby
-pod "AppConfigSwift"
+pod "AppConfigSwift", '~> 0.7.2'
+```
+
+Swift 2.2:
+
+```ruby
+pod "AppConfigSwift", '0.7.0'
 ```
 
 ## Author

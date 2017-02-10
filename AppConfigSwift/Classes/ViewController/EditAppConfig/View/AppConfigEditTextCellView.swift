@@ -8,14 +8,15 @@
 
 import UIKit
 
-//Delegate protocol
+// Delegate protocol
 protocol AppConfigEditTextCellViewDelegate: class {
     
-    func changedEditText(newText: String, forConfigSetting: String)
+    func changedEditText(_ newText: String, forConfigSetting: String)
     
 }
 
-@IBDesignable public class AppConfigEditTextCellView : UIView, UITextFieldDelegate {
+// View component
+@IBDesignable class AppConfigEditTextCellView : UIView, UITextFieldDelegate {
     
     // --
     // MARK: Members
@@ -67,7 +68,7 @@ protocol AppConfigEditTextCellViewDelegate: class {
     var applyNumberLimitation: Bool {
         set {
             _applyNumberLimitation = newValue
-            _editedText.keyboardType = _applyNumberLimitation ? .NumbersAndPunctuation : .Alphabet
+            _editedText.keyboardType = _applyNumberLimitation ? .numbersAndPunctuation : .alphabet
         }
         get { return _applyNumberLimitation }
     }
@@ -82,16 +83,16 @@ protocol AppConfigEditTextCellViewDelegate: class {
         setupView()
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
     
-    public func setupView() {
-        _contentView = AppConfigViewUtility.loadNib("EditTextCell", parentView: self)
+    func setupView() {
+        _contentView = AppConfigViewUtility.loadNib(named: "EditTextCell", parentView: self)
         _label.textColor = tintColor
         _label.text = ""
-        _editedText.addTarget(self, action: #selector(textFieldDidChange), forControlEvents: .AllEvents)
+        _editedText.addTarget(self, action: #selector(textFieldDidChange), for: .allEvents)
         _editedText.delegate = self
         _editedText.text = ""
     }
@@ -101,7 +102,7 @@ protocol AppConfigEditTextCellViewDelegate: class {
     // MARK: Selector
     // --
     
-    func textFieldDidChange(textField: UITextField) {
+    func textFieldDidChange(_ textField: UITextField) {
         delegate?.changedEditText(textField.text ?? "", forConfigSetting: label ?? "")
     }
     
@@ -110,26 +111,26 @@ protocol AppConfigEditTextCellViewDelegate: class {
     // MARK: UITextFieldDelegate
     // --
 
-    public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        //Only use limitation code if applied
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // Only use limitation code if applied
         if !applyNumberLimitation {
             return true
         }
         
-        //Allow backspace
+        // Allow backspace
         if string.characters.count == 0 {
             return true
         }
         
-        //Prevent invalid character input, if keyboard is set to a number-like input form
-        if textField.keyboardType == .NumbersAndPunctuation || textField.keyboardType == .NumberPad {
+        // Prevent invalid character input, if keyboard is set to a number-like input form
+        if textField.keyboardType == .numbersAndPunctuation || textField.keyboardType == .numberPad {
             var checkString = string
             if textField.text?.characters.count == 0 {
-                if string.rangeOfString("-")?.startIndex == string.startIndex {
-                    checkString = string.substringFromIndex(string.startIndex.advancedBy(1))
+                if string.range(of: "-")?.lowerBound == string.startIndex {
+                    checkString = string.substring(from: string.characters.index(string.startIndex, offsetBy: 1))
                 }
             }
-            if checkString.rangeOfCharacterFromSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet) != nil {
+            if checkString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) != nil {
                 return false
             }
         }
@@ -141,7 +142,7 @@ protocol AppConfigEditTextCellViewDelegate: class {
     // MARK: Helpers
     // --
    
-    public func startEditing() {
+    func startEditing() {
         _editedText.becomeFirstResponder()
     }
     

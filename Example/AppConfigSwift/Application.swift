@@ -10,12 +10,11 @@ import AppConfigSwift
 
 class Application: UIApplication {
 
-    override func sendEvent(event: UIEvent) {
+    override func sendEvent(_ event: UIEvent) {
         super.sendEvent(event)
-        if event.subtype == .MotionShake {
-            AppConfigManageViewController.launchFromShake()
+        if event.subtype == .motionShake {
+            AppConfigManageViewController.launch()
         }
     }
 
 }
-
