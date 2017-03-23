@@ -5,6 +5,9 @@
 [![License](https://img.shields.io/cocoapods/l/AppConfigSwift.svg?style=flat)](http://cocoapods.org/pods/AppConfigSwift)
 [![Platform](https://img.shields.io/cocoapods/p/AppConfigSwift.svg?style=flat)](http://cocoapods.org/pods/AppConfigSwift)
 
+![alt tag](https://raw.githubusercontent.com/wwe-johndpope/AppConfigSwift/master/Images/AppConfigSwift.gif)
+
+
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
