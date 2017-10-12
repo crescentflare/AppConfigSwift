@@ -69,7 +69,7 @@
 /* Begin PBXFileReference section */
 		071BF98B2961718685023D90EB9D034F /* AppConfigEditTextCellView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigEditTextCellView.swift; sourceTree = "<group>"; };
 		076A8F3B8751F42D254ACB19F29C96A0 /* ManageInfoCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = ManageInfoCell.xib; sourceTree = "<group>"; };
-		0FCF9DFAAB3EA630C40B2C26430C77D7 /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; path = en.lproj; sourceTree = "<group>"; };
+		0FCF9DFAAB3EA630C40B2C26430C77D7 /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
 		139F6DAE74C2A1113E82C67FA6CF6D1F /* Pods-AppConfigSwift_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AppConfigSwift_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		142869E3E56D50997040F81022C60E17 /* AppConfigTableCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigTableCell.swift; sourceTree = "<group>"; };
 		21624415B2FCDF4623A4677983ADA912 /* Pods-AppConfigSwift_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AppConfigSwift_Tests-resources.sh"; sourceTree = "<group>"; };
@@ -85,7 +85,7 @@
 		452530B187880C6E81B6667ECD8FF3CA /* AppConfigOrderedDictionary.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigOrderedDictionary.swift; sourceTree = "<group>"; };
 		45E295240453C0D1B19E9C37F2C5123C /* AppConfigBaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigBaseModel.swift; sourceTree = "<group>"; };
 		4712ED90B96B4995863DC713A4D83ED0 /* AppConfigManageInfoCellView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigManageInfoCellView.swift; sourceTree = "<group>"; };
-		4B34B4EF22D826884CF663A69939163F /* AppConfigSwift.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = AppConfigSwift.bundle; path = AppConfigSwift.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B34B4EF22D826884CF663A69939163F /* AppConfigSwift.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppConfigSwift.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C6F121FDD7E0EE0CB6BAD57E8021D60 /* Pods-AppConfigSwift_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AppConfigSwift_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		4CBE406EA7D8AB4BAA8E77CA8EB30244 /* Pods-AppConfigSwift_Tests.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AppConfigSwift_Tests.qa.xcconfig"; sourceTree = "<group>"; };
 		4DCC66BC5C71C6173952AC688B2482E6 /* LoadingCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
@@ -94,9 +94,9 @@
 		51C75709283B80E08CEC27BF080F7E91 /* AppConfigManageTable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigManageTable.swift; sourceTree = "<group>"; };
 		562DC0AFACD92E0708DDCCD51E27640B /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59D861E2236982E99F769565D8CB8C63 /* Pods-AppConfigSwift_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AppConfigSwift_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		5F8D6D93B8FB1A5D08B2DDDDD17F967A /* AppConfigSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AppConfigSwift.framework; path = AppConfigSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F8D6D93B8FB1A5D08B2DDDDD17F967A /* AppConfigSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppConfigSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		693A654C3259CDF408173218B8BD771A /* AppConfigViewUtility.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigViewUtility.swift; sourceTree = "<group>"; };
-		6B1E0B6187A2C727EF928AC329A3A297 /* AppConfigSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = AppConfigSwift.modulemap; sourceTree = "<group>"; };
+		6B1E0B6187A2C727EF928AC329A3A297 /* AppConfigSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = AppConfigSwift.modulemap; sourceTree = "<group>"; };
 		6B5FCEC784269FF63E8EACC82501927B /* Pods-AppConfigSwift_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AppConfigSwift_Example-dummy.m"; sourceTree = "<group>"; };
 		6C0BA943364379969B557A18BC6E25C9 /* AppConfigCellSectionDividerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigCellSectionDividerView.swift; sourceTree = "<group>"; };
 		711851F62B3F61F2D2BF6C4E4EDDD914 /* AppConfigSelectionPopupView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigSelectionPopupView.swift; sourceTree = "<group>"; };
@@ -107,24 +107,24 @@
 		87E657C37DCE369E8A61BFF8008B2FAB /* Pods-AppConfigSwift_Example.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AppConfigSwift_Example.qa.xcconfig"; sourceTree = "<group>"; };
 		8D410AF8A4E385B5D2A71178117E046D /* EditSwitchCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = EditSwitchCell.xib; sourceTree = "<group>"; };
 		931D4A2186C9071FA1D7AB9E5C05A596 /* SelectionPopup.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = SelectionPopup.xib; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		98231D4F334036C785F0436398AF7B81 /* Pods-AppConfigSwift_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AppConfigSwift_Tests-dummy.m"; sourceTree = "<group>"; };
 		9C02AD230BA4089C1F9EDBDCD2E1F480 /* AppConfigSwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AppConfigSwift-umbrella.h"; sourceTree = "<group>"; };
 		9C26BB6F34740A270B35410C555FD4F7 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ABCC53D7FF4B0501A8AC1961D155EBCE /* AppConfigBaseManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigBaseManager.swift; sourceTree = "<group>"; };
 		AD9ECE2287B96E6107B0AA21F2D43A86 /* EditTextCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = EditTextCell.xib; sourceTree = "<group>"; };
 		B088C10D58DDB44FE5B662321A57B32E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B1100DC64AF4DC12099FE06557F72183 /* Pods_AppConfigSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_AppConfigSwift_Tests.framework; path = "Pods-AppConfigSwift_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1100DC64AF4DC12099FE06557F72183 /* Pods_AppConfigSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppConfigSwift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B740911DE8A50DF36950D0EC51A13BF6 /* Pods-AppConfigSwift_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AppConfigSwift_Example-acknowledgements.plist"; sourceTree = "<group>"; };
-		BB6828FF31841D1851B6734B00DBE176 /* Pods-AppConfigSwift_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-AppConfigSwift_Tests.modulemap"; sourceTree = "<group>"; };
-		BD45BCC3EC2D1466E610E1EA75DE85B3 /* Pods-AppConfigSwift_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-AppConfigSwift_Example.modulemap"; sourceTree = "<group>"; };
+		BB6828FF31841D1851B6734B00DBE176 /* Pods-AppConfigSwift_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-AppConfigSwift_Tests.modulemap"; sourceTree = "<group>"; };
+		BD45BCC3EC2D1466E610E1EA75DE85B3 /* Pods-AppConfigSwift_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-AppConfigSwift_Example.modulemap"; sourceTree = "<group>"; };
 		BF799E18465A7B14B82E922B373BB91A /* Pods-AppConfigSwift_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AppConfigSwift_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		D1CED17A5C7CB5F63877C928C90702A9 /* AppConfigSectionCellView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigSectionCellView.swift; sourceTree = "<group>"; };
 		D4D20B0F8E34FFBCC9C1AFE7F1FD53F4 /* ResourceBundle-AppConfigSwift-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-AppConfigSwift-Info.plist"; sourceTree = "<group>"; };
 		D9672B26189469BD5687D50D4FA60A61 /* Pods-AppConfigSwift_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AppConfigSwift_Tests-umbrella.h"; sourceTree = "<group>"; };
 		DBFDD6469ACCD277B888A8B33B20BCD6 /* ItemCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = ItemCell.xib; sourceTree = "<group>"; };
-		E873AB1610208B61D48F680B1080A967 /* Pods_AppConfigSwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_AppConfigSwift_Example.framework; path = "Pods-AppConfigSwift_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E873AB1610208B61D48F680B1080A967 /* Pods_AppConfigSwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppConfigSwift_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8B00C355AD44F3A2866D159883C396D /* Pods-AppConfigSwift_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AppConfigSwift_Example-umbrella.h"; sourceTree = "<group>"; };
 		EBC12CFF64C5A428C191CD6BB0ADC9A6 /* Pods-AppConfigSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AppConfigSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		EE90EDEFF9171C5AEC925E8CD4E90607 /* AppConfigManageViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigManageViewController.swift; sourceTree = "<group>"; };
@@ -175,7 +175,6 @@
 				E2B50202FAEE32E67E53045C46259DFD /* Table */,
 				1B3C7E27BB87DEC09ABC8DBDBEA9EEE5 /* View */,
 			);
-			name = Shared;
 			path = Shared;
 			sourceTree = "<group>";
 		};
@@ -196,7 +195,6 @@
 				D1CED17A5C7CB5F63877C928C90702A9 /* AppConfigSectionCellView.swift */,
 				711851F62B3F61F2D2BF6C4E4EDDD914 /* AppConfigSelectionPopupView.swift */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -206,7 +204,6 @@
 				51C75709283B80E08CEC27BF080F7E91 /* AppConfigManageTable.swift */,
 				4E1881AB66E3762DE4B5C38095EC973E /* AppConfigManageTableValue.swift */,
 			);
-			name = Table;
 			path = Table;
 			sourceTree = "<group>";
 		};
@@ -217,7 +214,6 @@
 				67ABB82DF5444D1FFC95DED7BDAA8A01 /* ManageAppConfig */,
 				009925C90BADB00375FE35CE96DFF8EA /* Shared */,
 			);
-			name = ViewController;
 			path = ViewController;
 			sourceTree = "<group>";
 		};
@@ -227,7 +223,6 @@
 				31893E7BD040DA0EA94F59B8061DE33E /* AppConfigEditSwitchCellView.swift */,
 				071BF98B2961718685023D90EB9D034F /* AppConfigEditTextCellView.swift */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -242,7 +237,6 @@
 				F18DE44F0FC3979211B3D139FE33C80A /* SectionCell.xib */,
 				931D4A2186C9071FA1D7AB9E5C05A596 /* SelectionPopup.xib */,
 			);
-			name = Layout;
 			path = Layout;
 			sourceTree = "<group>";
 		};
@@ -273,7 +267,6 @@
 				23DC21A8CC21A7567637D91359998EB9 /* Table */,
 				DB2A70EE6D862F98C44D9B05A7ADAAFB /* View */,
 			);
-			name = ManageAppConfig;
 			path = ManageAppConfig;
 			sourceTree = "<group>";
 		};
@@ -283,7 +276,6 @@
 				45E295240453C0D1B19E9C37F2C5123C /* AppConfigBaseModel.swift */,
 				762B0ADE8F6EBEF6BDF079E69A58A078 /* AppConfigModelMapper.swift */,
 			);
-			name = Model;
 			path = Model;
 			sourceTree = "<group>";
 		};
@@ -347,7 +339,6 @@
 				BDE3A8D1F921E2A070223061FDBB3544 /* Table */,
 				3888081CF17798610B9124BE5B5B02EA /* View */,
 			);
-			name = EditAppConfig;
 			path = EditAppConfig;
 			sourceTree = "<group>";
 		};
@@ -358,7 +349,6 @@
 				452530B187880C6E81B6667ECD8FF3CA /* AppConfigOrderedDictionary.swift */,
 				693A654C3259CDF408173218B8BD771A /* AppConfigViewUtility.swift */,
 			);
-			name = Helper;
 			path = Helper;
 			sourceTree = "<group>";
 		};
@@ -367,7 +357,6 @@
 			children = (
 				FBB8C09F2A0D4112433A6636CC23D68E /* Classes */,
 			);
-			name = AppConfigSwift;
 			path = AppConfigSwift;
 			sourceTree = "<group>";
 		};
@@ -396,7 +385,6 @@
 				4CCC97580C7F0687B160AC40BE3ADDCF /* Layout */,
 				BB225AC3F4E9ADE4D4868C78B7D465C4 /* Localization */,
 			);
-			name = AppConfigSwift;
 			path = AppConfigSwift;
 			sourceTree = "<group>";
 		};
@@ -405,7 +393,6 @@
 			children = (
 				0FCF9DFAAB3EA630C40B2C26430C77D7 /* en.lproj */,
 			);
-			name = Localization;
 			path = Localization;
 			sourceTree = "<group>";
 		};
@@ -423,7 +410,6 @@
 				41FDD511EA6F6BFD34C57D72324FD12C /* AppConfigEditTable.swift */,
 				78BEEEBC65F0EE632DCD32E5A1BB3F13 /* AppConfigEditTableValue.swift */,
 			);
-			name = Table;
 			path = Table;
 			sourceTree = "<group>";
 		};
@@ -432,7 +418,6 @@
 			children = (
 				4712ED90B96B4995863DC713A4D83ED0 /* AppConfigManageInfoCellView.swift */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -460,7 +445,6 @@
 			children = (
 				142869E3E56D50997040F81022C60E17 /* AppConfigTableCell.swift */,
 			);
-			name = Table;
 			path = Table;
 			sourceTree = "<group>";
 		};
@@ -470,7 +454,6 @@
 				ABCC53D7FF4B0501A8AC1961D155EBCE /* AppConfigBaseManager.swift */,
 				8038651A56465A6355911FF0F234787B /* AppConfigStorage.swift */,
 			);
-			name = Manager;
 			path = Manager;
 			sourceTree = "<group>";
 		};
@@ -482,7 +465,6 @@
 				6B57AD86DE06CF57B662BBB9E637522D /* Model */,
 				33B054FE25A862C5B3985AFD038F2D8B /* ViewController */,
 			);
-			name = Classes;
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -595,6 +577,11 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0700;
+				TargetAttributes = {
+					46547269BA15CC6F02D2FD97B216403B = {
+						LastSwiftMigration = 0900;
+					};
+				};
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -774,7 +761,8 @@
 				PRODUCT_NAME = AppConfigSwift;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -876,7 +864,8 @@
 				PRODUCT_NAME = AppConfigSwift;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -909,7 +898,8 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";

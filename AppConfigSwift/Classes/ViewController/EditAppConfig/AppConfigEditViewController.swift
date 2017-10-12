@@ -107,12 +107,12 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
     // MARK: Selectors
     // --
     
-    func cancelButtonPressed(_ sender: UIButton) {
+    @objc func cancelButtonPressed(_ sender: UIButton) {
         // TODO: are you sure dialog/check?
         cancelEditing()
     }
     
-    func saveButtonPressed(_ sender: UIButton) {
+    @objc func saveButtonPressed(_ sender: UIButton) {
         saveConfig(newSettings: editConfigTable.obtainNewConfigurationSettings())
     }
     

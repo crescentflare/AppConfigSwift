@@ -45,7 +45,7 @@ class ViewController: UIViewController {
     // MARK: Helper
     // --
 
-    func updateConfigurationValues() {
+    @objc func updateConfigurationValues() {
         self.selectedConfigValue.text = ExampleAppConfigManager.currentConfig().name
         self.apiUrlValue.text = ExampleAppConfigManager.currentConfig().apiUrl
         self.runTypeValue.text = ExampleAppConfigManager.currentConfig().runType.rawValue

@@ -70,7 +70,9 @@ public struct AppConfigOrderedDictionary<Tk: Hashable, Tv> {
         var result = "{\n"
         for i in 0..<self.keys.count {
             let key = self.keys[i]
-            result += "[\(i)]: \(key) => \(self[key])\n"
+            if let item = self[key] {
+                result += "[\(i)]: \(key) => \(item)\n"
+            }
         }
         result += "}"
         return result

@@ -14,7 +14,7 @@ extension UIViewController {
         return UIApplication.shared.keyWindow?.ac_topmostViewController
     }
     
-    var ac_topmostViewController: UIViewController? {
+    @objc var ac_topmostViewController: UIViewController? {
         return presentedViewController?.ac_topmostViewController ?? self
     }
 
@@ -146,7 +146,7 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     // MARK: Selectors
     // --
     
-    func doneButtonPressed(_ sender: UIButton) {
+    @objc func doneButtonPressed(_ sender: UIButton) {
         if isPresentedController {
             dismiss(animated: true, completion: nil)
         } else {

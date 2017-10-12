@@ -102,7 +102,7 @@ protocol AppConfigEditTextCellViewDelegate: class {
     // MARK: Selector
     // --
     
-    func textFieldDidChange(_ textField: UITextField) {
+    @objc func textFieldDidChange(_ textField: UITextField) {
         delegate?.changedEditText(textField.text ?? "", forConfigSetting: label ?? "")
     }
     
@@ -127,7 +127,7 @@ protocol AppConfigEditTextCellViewDelegate: class {
             var checkString = string
             if textField.text?.characters.count == 0 {
                 if string.range(of: "-")?.lowerBound == string.startIndex {
-                    checkString = string.substring(from: string.characters.index(string.startIndex, offsetBy: 1))
+                    checkString = String(string[string.characters.index(string.startIndex, offsetBy: 1)...])
                 }
             }
             if checkString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) != nil {
