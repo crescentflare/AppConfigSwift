@@ -137,6 +137,11 @@ protocol AppConfigEditTextCellViewDelegate: class {
         return true
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        endEditing(true)
+        return true
+    }
+
     
     // --
     // MARK: Helpers
