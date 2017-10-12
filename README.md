@@ -15,6 +15,12 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 The library is available through [CocoaPods](http://cocoapods.org). To install it, simply add one of the following lines to your Podfile.
 
+Swift 4:
+
+```ruby
+pod "AppConfigSwift", '~> 0.7.3'
+```
+
 Swift 3:
 
 ```ruby

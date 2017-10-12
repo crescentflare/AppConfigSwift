@@ -85,7 +85,7 @@ protocol AppConfigEditSwitchCellViewDelegate: class {
     // MARK: Selector
     // --
     
-    func setState(_ switchComponent: UISwitch) {
+    @objc func setState(_ switchComponent: UISwitch) {
         delegate?.changedSwitchState(switchComponent.isOn, forConfigSetting: label ?? "")
     }
 
