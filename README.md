@@ -18,7 +18,7 @@ The library is available through [CocoaPods](http://cocoapods.org). To install i
 Swift 4:
 
 ```ruby
-pod "AppConfigSwift", '~> 0.7.3'
+pod "AppConfigSwift", '~> 0.7.4'
 ```
 
 Swift 3:
