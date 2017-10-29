@@ -15,6 +15,7 @@ protocol AppConfigEditTableDelegate: class {
     func saveConfig(newSettings: [String: Any])
     func cancelEditing()
     func revertConfig()
+    func configChanged(newSettings: [String: Any])
 
 }
 
@@ -416,6 +417,7 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
             let tableValue = tableValues[i]
             if tableValue.configSetting == forConfigSetting {
                 tableValues[i] = AppConfigEditTableValue.valueForTextEntry(configSetting: tableValue.configSetting!, andValue: newText, numberOnly: tableValue.limitUsage)
+                delegate?.configChanged(newSettings: obtainNewConfigurationSettings())
                 break
             }
         }
@@ -431,6 +433,7 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
             let tableValue = tableValues[i]
             if tableValue.configSetting == forConfigSetting {
                 tableValues[i] = AppConfigEditTableValue.valueForSwitchValue(configSetting: tableValue.configSetting!, andSwitchedOn: on)
+                delegate?.configChanged(newSettings: obtainNewConfigurationSettings())
                 break
             }
         }
@@ -450,6 +453,7 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
                 table.beginUpdates()
                 table.reloadRows(at: [totalIndexPath], with: .none)
                 table.endUpdates()
+                delegate?.configChanged(newSettings: obtainNewConfigurationSettings())
                 break
             }
         }
