@@ -25,20 +25,34 @@ open class AppConfigBaseModel {
     // Override in your derived model (check the example for details)
     open func map(mapper: AppConfigModelMapper) { }
 
-    // Helper method to convert the list of defined properties in the derived model to a dictionary
-    public func obtainValues() -> [String: Any] {
+    // Helper method to convert the list of defined configuration properties in the derived model to a dictionary
+    public func obtainConfigurationValues() -> [String: Any] {
         let mapper = AppConfigModelMapper(mode: .toDictionary)
         map(mapper: mapper)
         return mapper.getDictionaryValues()
     }
     
-    // Helper method to obtain all fields in a dictionary grouped by categories
-    public func obtainCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
+    // Helper method to convert the list of defined global properties in the derived model to a dictionary
+    public func obtainGlobalValues() -> [String: Any] {
+        let mapper = AppConfigModelMapper(mode: .toDictionary)
+        map(mapper: mapper)
+        return mapper.getGlobalDictionaryValues()
+    }
+
+    // Helper method to obtain all configuration fields in a dictionary grouped by categories
+    public func obtainConfigurationCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
         let mapper = AppConfigModelMapper(mode: .collectKeys)
         map(mapper: mapper)
         return mapper.getCategorizedFields()
     }
     
+    // Helper method to obtain all global fields in a dictionary grouped by categories
+    public func obtainGlobalCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
+        let mapper = AppConfigModelMapper(mode: .collectKeys)
+        map(mapper: mapper)
+        return mapper.getGlobalCategorizedFields()
+    }
+
     // Helper method to determine if the value is a raw representable (like an enum)
     public func isRawRepresentable(field: String) -> Bool {
         let mapper = AppConfigModelMapper(mode: .collectKeys)

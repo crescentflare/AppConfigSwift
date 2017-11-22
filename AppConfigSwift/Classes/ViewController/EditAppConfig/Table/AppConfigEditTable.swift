@@ -95,9 +95,9 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
             }
 
             // Add configuration values
-            if let categorizedFields = model?.obtainCategorizedFields() {
+            if let categorizedFields = model?.obtainConfigurationCategorizedFields() {
                 // Using model and optional categories
-                let modelValues = model?.obtainValues() ?? [:]
+                let modelValues = model?.obtainConfigurationValues() ?? [:]
                 let hasMultipleCategories = categorizedFields.allKeys().count > 1
                 var sortedCategories: [String] = []
                 for category in categorizedFields.allKeys() {

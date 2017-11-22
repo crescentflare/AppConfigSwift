@@ -265,7 +265,7 @@ public class AppConfigStorage {
             if loadedArray != nil && loadedArray!.count > 0 {
                 // Obtain default item with values from manager model (if applicable)
                 var defaultItem: [String: Any]? = nil
-                defaultItem = configManagerInstance?.obtainBaseModelInstance().obtainValues()
+                defaultItem = configManagerInstance?.obtainBaseModelInstance().obtainConfigurationValues()
 
                 // Add items (can be recursive for sub configs)
                 let loadedItems = loadedArray! as [AnyObject]
