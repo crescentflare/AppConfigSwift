@@ -54,14 +54,14 @@ open class AppConfigBaseModel {
     }
     
     // Internal method to override the model with customized values
-    public func apply(overrides: [String: Any], name: String?) {
+    public func apply(overrides: [String: Any], globalOverrides: [String: Any], name: String?) {
         var setValues = overrides
         if name != nil {
             setValues["name"] = name!
         } else {
             setValues.removeValue(forKey: "name")
         }
-        let mapper = AppConfigModelMapper(dictionary: setValues, mode: .fromDictionary)
+        let mapper = AppConfigModelMapper(dictionary: setValues, globalDictionary: globalOverrides, mode: .fromDictionary)
         map(mapper: mapper)
     }
  

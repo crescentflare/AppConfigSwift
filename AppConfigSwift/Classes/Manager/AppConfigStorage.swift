@@ -38,6 +38,7 @@ public class AppConfigStorage {
     var configManagerInstance: AppConfigBaseManager?
     var storedConfigs: AppConfigOrderedDictionary<String, Any> = AppConfigOrderedDictionary()
     var customConfigs: AppConfigOrderedDictionary<String, Any> = AppConfigOrderedDictionary()
+    var globalConfig: [String: Any] = [:]
     var loadFromAssetFile: String?
     var selectedItem: String?
     var customConfigLoaded = false
@@ -57,7 +58,7 @@ public class AppConfigStorage {
         configManagerInstance = manager
         loadSelectedItemFromUserDefaults()
         if selectedItem != nil && storedConfigs[selectedItem!] != nil {
-            manager?.applyConfigToModel(config: storedConfigs[selectedItem!] as! [String: Any], name: selectedItem)
+            manager?.applyConfigToModel(config: storedConfigs[selectedItem!] as! [String: Any], globalConfig: globalConfig, name: selectedItem)
         }
         activated = true
     }
@@ -165,7 +166,7 @@ public class AppConfigStorage {
         }
         if removed && config == selectedItem {
             selectedItem = nil
-            configManagerInstance?.applyConfigToModel(config: [:], name: selectedItem)
+            configManagerInstance?.applyConfigToModel(config: [:], globalConfig: globalConfig, name: selectedItem)
             NotificationCenter.default.post(name: Notification.Name(rawValue: AppConfigStorage.configurationChanged), object: self)
         }
         return removed
@@ -199,7 +200,7 @@ public class AppConfigStorage {
                     config = storedConfigs[selectedItem!] as? [String: Any]
                 }
             }
-            configManagerInstance?.applyConfigToModel(config: config ?? [:], name: selectedItem)
+            configManagerInstance?.applyConfigToModel(config: config ?? [:], globalConfig: globalConfig, name: selectedItem)
         }
         NotificationCenter.default.post(name: Notification.Name(rawValue: AppConfigStorage.configurationChanged), object: self)
     }
