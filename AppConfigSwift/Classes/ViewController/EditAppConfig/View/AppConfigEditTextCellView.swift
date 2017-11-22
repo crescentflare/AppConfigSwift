@@ -118,16 +118,16 @@ protocol AppConfigEditTextCellViewDelegate: class {
         }
         
         // Allow backspace
-        if string.characters.count == 0 {
+        if string.count == 0 {
             return true
         }
         
         // Prevent invalid character input, if keyboard is set to a number-like input form
         if textField.keyboardType == .numbersAndPunctuation || textField.keyboardType == .numberPad {
             var checkString = string
-            if textField.text?.characters.count == 0 {
+            if textField.text?.count == 0 {
                 if string.range(of: "-")?.lowerBound == string.startIndex {
-                    checkString = String(string[string.characters.index(string.startIndex, offsetBy: 1)...])
+                    checkString = String(string[string.index(string.startIndex, offsetBy: 1)...])
                 }
             }
             if checkString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) != nil {

@@ -101,18 +101,18 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
                 let hasMultipleCategories = categorizedFields.allKeys().count > 1
                 var sortedCategories: [String] = []
                 for category in categorizedFields.allKeys() {
-                    if category.characters.count > 0 {
+                    if category.count > 0 {
                         sortedCategories.append(category)
                     }
                 }
                 for category in categorizedFields.allKeys() {
-                    if category.characters.count == 0 {
+                    if category.count == 0 {
                         sortedCategories.append("")
                         break
                     }
                 }
                 for category in sortedCategories {
-                    let categoryName = category.characters.count > 0 ? category : AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_UNCATEGORIZED")
+                    let categoryName = category.count > 0 ? category : AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_UNCATEGORIZED")
                     var configSectionAdded = false
                     for field in categorizedFields[category] ?? [] {
                         if field == "name" {

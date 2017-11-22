@@ -42,7 +42,7 @@ protocol AppConfigSelectionPopupViewDelegate: class {
     
     @IBInspectable var tableChoices: String = "" {
         didSet {
-            choices = tableChoices.characters.split{ $0 == "," }.map(String.init)
+            choices = tableChoices.split{ $0 == "," }.map(String.init)
         }
     }
 
