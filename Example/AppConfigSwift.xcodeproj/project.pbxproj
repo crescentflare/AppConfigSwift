@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		046559B61D50C15E00B020D6 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046559B51D50C15E00B020D6 /* Application.swift */; };
 		046559B81D50C44200B020D6 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046559B71D50C44200B020D6 /* main.swift */; };
+		04C660481FC62A550051C5B4 /* ExampleAppConfigLogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C660471FC62A540051C5B4 /* ExampleAppConfigLogLevel.swift */; };
 		04EB15511D0DA9A300D5E380 /* ExampleAppConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB154E1D0DA9A300D5E380 /* ExampleAppConfigManager.swift */; };
 		04EB15521D0DA9A300D5E380 /* ExampleAppConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB154F1D0DA9A300D5E380 /* ExampleAppConfigModel.swift */; };
 		04EB15531D0DA9A300D5E380 /* ExampleAppConfigRunType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB15501D0DA9A300D5E380 /* ExampleAppConfigRunType.swift */; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		046559B51D50C15E00B020D6 /* Application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		046559B71D50C44200B020D6 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		04C660471FC62A540051C5B4 /* ExampleAppConfigLogLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleAppConfigLogLevel.swift; sourceTree = "<group>"; };
 		04EB154E1D0DA9A300D5E380 /* ExampleAppConfigManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleAppConfigManager.swift; sourceTree = "<group>"; };
 		04EB154F1D0DA9A300D5E380 /* ExampleAppConfigModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleAppConfigModel.swift; sourceTree = "<group>"; };
 		04EB15501D0DA9A300D5E380 /* ExampleAppConfigRunType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleAppConfigRunType.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 		04EB154D1D0DA9A300D5E380 /* AppConfig */ = {
 			isa = PBXGroup;
 			children = (
+				04C660471FC62A540051C5B4 /* ExampleAppConfigLogLevel.swift */,
 				04EB154E1D0DA9A300D5E380 /* ExampleAppConfigManager.swift */,
 				04EB154F1D0DA9A300D5E380 /* ExampleAppConfigModel.swift */,
 				04EB15501D0DA9A300D5E380 /* ExampleAppConfigRunType.swift */,
@@ -407,6 +410,7 @@
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				04EB15531D0DA9A300D5E380 /* ExampleAppConfigRunType.swift in Sources */,
 				04EB15521D0DA9A300D5E380 /* ExampleAppConfigModel.swift in Sources */,
+				04C660481FC62A550051C5B4 /* ExampleAppConfigLogLevel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
