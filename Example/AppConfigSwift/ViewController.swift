@@ -21,7 +21,11 @@ class ViewController: UIViewController {
     @IBOutlet var runTypeValue: UILabel!
     @IBOutlet var acceptAllSslValue: UILabel!
     @IBOutlet var networkTimeoutValue: UILabel!
-    
+    @IBOutlet var consoleUrlValue: UILabel!
+    @IBOutlet var consoleTimeoutValue: UILabel!
+    @IBOutlet var enableConsoleValue: UILabel!
+    @IBOutlet var logLevelValue: UILabel!
+
     
     // --
     // MARK: Lifecycle
@@ -51,6 +55,10 @@ class ViewController: UIViewController {
         self.runTypeValue.text = ExampleAppConfigManager.currentConfig().runType.rawValue
         self.acceptAllSslValue.text = ExampleAppConfigManager.currentConfig().acceptAllSSL ? "true" : "false"
         self.networkTimeoutValue.text = String(ExampleAppConfigManager.currentConfig().networkTimeoutSec)
+        self.consoleUrlValue.text = ExampleAppConfigManager.currentConfig().consoleUrl
+        self.consoleTimeoutValue.text = String(ExampleAppConfigManager.currentConfig().consoleTimeoutSec)
+        self.enableConsoleValue.text = ExampleAppConfigManager.currentConfig().consoleEnabled ? "true" : "false"
+        self.logLevelValue.text = ExampleAppConfigManager.currentConfig().logLevel.rawValue
     }
     
     

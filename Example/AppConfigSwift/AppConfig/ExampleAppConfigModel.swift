@@ -27,8 +27,8 @@ class ExampleAppConfigModel : AppConfigBaseModel {
     // MARK: Global fields
     // --
     
-    var consoleUrl = "https://production.example.com/"
-    var consoleTimeoutSec = 20
+    var consoleUrl = "https://console.example.com/"
+    var consoleTimeoutSec = 10
     var consoleEnabled = false
     var logLevel = ExampleAppConfigLogLevel.logDisabled
 
