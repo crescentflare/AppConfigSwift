@@ -40,9 +40,9 @@ open class AppConfigBaseManager {
     }
     
     // Internal method to apply a new configuration selection to the model
-    public func applyConfigToModel(config: [String: Any], name: String?) {
+    public func applyConfigToModel(config: [String: Any], globalConfig: [String: Any], name: String?) {
         currentConfig = obtainBaseModelInstance()
-        currentConfig?.apply(overrides: config, name: name)
+        currentConfig?.apply(overrides: config, globalOverrides: globalConfig, name: name)
     }
     
 }

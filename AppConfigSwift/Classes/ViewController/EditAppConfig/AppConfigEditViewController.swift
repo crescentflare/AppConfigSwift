@@ -168,7 +168,7 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
         }
         var storeSettings = newSettings
         var newName = storeSettings["name"] as? String ?? ""
-        if newName.trimmingCharacters(in: CharacterSet.whitespaces).characters.count == 0 {
+        if newName.trimmingCharacters(in: CharacterSet.whitespaces).count == 0 {
             newName = AppConfigBundle.localizedString(key: "CFLAC_EDIT_COPY_NONAME")
             storeSettings["name"] = newName
         }

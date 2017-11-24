@@ -147,6 +147,7 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     // --
     
     @objc func doneButtonPressed(_ sender: UIButton) {
+        AppConfigStorage.shared.updateGlobalConfig(settings: self.manageConfigTable.obtainNewGlobalSettings())
         if isPresentedController {
             dismiss(animated: true, completion: nil)
         } else {
