@@ -29,6 +29,7 @@ public class AppConfigStorage {
     private static let defaultsSelectedConfigName = "AppConfig_SelectedConfigName"
     private static let defaultsSelectedConfigDictionary = "AppConfig_SelectedConfigDictionary"
     private static let defaultsCustomConfigs = "AppConfig_CustomConfigs"
+    private static let defaultsGlobalConfig = "AppConfig_GlobalConfig"
 
     
     // --
@@ -57,6 +58,7 @@ public class AppConfigStorage {
     public func activate(manager: AppConfigBaseManager? = nil) {
         configManagerInstance = manager
         loadSelectedItemFromUserDefaults()
+        loadGlobalConfigFromUserDefaults()
         if selectedItem != nil && storedConfigs[selectedItem!] != nil {
             manager?.applyConfigToModel(config: storedConfigs[selectedItem!] as! [String: Any], globalConfig: globalConfig, name: selectedItem)
         }
@@ -90,6 +92,11 @@ public class AppConfigStorage {
             return customConfig
         }
         return storedConfigs[config] as? [String: Any]
+    }
+    
+    // Return global settings
+    public func obtainGlobalConfig() -> [String: Any] {
+        return globalConfig
     }
 
     // Return the current selected configuration, or nil if none are selected
@@ -202,6 +209,14 @@ public class AppConfigStorage {
             }
             configManagerInstance?.applyConfigToModel(config: config ?? [:], globalConfig: globalConfig, name: selectedItem)
         }
+        NotificationCenter.default.post(name: Notification.Name(rawValue: AppConfigStorage.configurationChanged), object: self)
+    }
+    
+    // Update global config settings
+    public func updateGlobalConfig(settings: [String: Any]) {
+        globalConfig = settings
+        storeGlobalConfigInUserDefaults()
+        configManagerInstance?.applyConfigToModel(config: configSettings(config: selectedItem ?? "") ?? [:], globalConfig: globalConfig, name: selectedItem)
         NotificationCenter.default.post(name: Notification.Name(rawValue: AppConfigStorage.configurationChanged), object: self)
     }
 
@@ -370,6 +385,26 @@ public class AppConfigStorage {
                 }
             }
         }
+    }
+
+    private func loadGlobalConfigFromUserDefaults() {
+        if let values = UserDefaults.standard.value(forKey: AppConfigStorage.defaultsGlobalConfig) as? [String: AnyObject] {
+            var loadDictionary: [String: Any] = [:]
+            for (key, value) in values {
+                loadDictionary[key] = value as Any
+            }
+            globalConfig = loadDictionary
+        } else {
+            globalConfig = [:]
+        }
+    }
+    
+    private func storeGlobalConfigInUserDefaults() {
+        var storeDictionary: [String: AnyObject] = [:]
+        for (key, value) in globalConfig {
+            storeDictionary[key] = value as AnyObject
+        }
+        UserDefaults.standard.setValue(storeDictionary, forKey: AppConfigStorage.defaultsGlobalConfig)
     }
 
     
