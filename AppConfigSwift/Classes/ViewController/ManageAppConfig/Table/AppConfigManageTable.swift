@@ -20,7 +20,7 @@ protocol AppConfigManageTableDelegate: class {
 
 
 // Class
-class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigSelectionPopupViewDelegate {
+class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate, AppConfigEditTextCellViewDelegate, AppConfigEditSwitchCellViewDelegate, AppConfigSelectionPopupViewDelegate {
     
     // --
     // MARK: Members
@@ -139,6 +139,73 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
             rawTableValues.append(AppConfigManageTableValue.valueForConfig(name: nil, andText: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_ADD_NEW"), lastSelected: false, edited: false))
         }
         
+        // Add global settings
+        let settings = AppConfigStorage.shared.globalConfig
+        let model = AppConfigStorage.shared.configManager()?.obtainBaseModelInstance()
+        model?.apply(overrides: [:], globalOverrides: settings, name: "Global")
+        if settings.count > 0 || (model?.obtainGlobalValues().count ?? 0) > 0 {
+            if let categorizedFields = model?.obtainGlobalCategorizedFields() {
+                // Using model and optional categories
+                let modelValues = model?.obtainGlobalValues() ?? [:]
+                let hasMultipleCategories = categorizedFields.allKeys().count > 1
+                var sortedCategories: [String] = []
+                for category in categorizedFields.allKeys() {
+                    if category.count > 0 {
+                        sortedCategories.append(category)
+                    }
+                }
+                for category in categorizedFields.allKeys() {
+                    if category.count == 0 {
+                        sortedCategories.append("")
+                        break
+                    }
+                }
+                for category in sortedCategories {
+                    let categoryName = category.count > 0 ? category : AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_GLOBALS_UNCATEGORIZED")
+                    var configSectionAdded = false
+                    for field in categorizedFields[category] ?? [] {
+                        if !configSectionAdded {
+                            var baseCategoryName = ""
+                            baseCategoryName = AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_GLOBALS")
+                            if hasMultipleCategories {
+                                baseCategoryName += ": " + categoryName
+                            }
+                            rawTableValues.append(AppConfigManageTableValue.valueForSection(text: baseCategoryName))
+                            configSectionAdded = true
+                        }
+                        if modelValues[field] is Bool {
+                            rawTableValues.append(AppConfigManageTableValue.valueForSwitchValue(configSetting: field, andSwitchedOn: modelValues[field] as? Bool ?? false))
+                            continue
+                        }
+                        if model?.isRawRepresentable(field: field) ?? false {
+                            let choices: [String] = model?.getRawRepresentableValues(forField: field) ?? []
+                            rawTableValues.append(AppConfigManageTableValue.valueForSelection(configSetting: field, andValue: modelValues[field] as? String ?? "", andChoices: choices))
+                            continue
+                        }
+                        if modelValues[field] is Int {
+                            rawTableValues.append(AppConfigManageTableValue.valueForTextEntry(configSetting: field, andValue: "\(modelValues[field] as? Int ?? 0)", numberOnly: true))
+                        } else {
+                            rawTableValues.append(AppConfigManageTableValue.valueForTextEntry(configSetting: field, andValue: "\(modelValues[field] as? String ?? "")", numberOnly: false))
+                        }
+                    }
+                }
+            } else {
+                // Using raw dictionary
+                var configSectionAdded = false
+                for (key, value) in settings {
+                    if !configSectionAdded {
+                        rawTableValues.append(AppConfigManageTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_GLOBALS")))
+                        configSectionAdded = true
+                    }
+                    if value is Bool {
+                        rawTableValues.append(AppConfigManageTableValue.valueForSwitchValue(configSetting: key, andSwitchedOn: value as? Bool ?? false))
+                        continue
+                    }
+                    rawTableValues.append(AppConfigManageTableValue.valueForTextEntry(configSetting: key, andValue: "\(value)", numberOnly: value is Int))
+                }
+            }
+        }
+
         // Add build information
         let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
         rawTableValues.append(AppConfigManageTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_BUILD_INFO")))
@@ -166,7 +233,35 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
         table.reloadData()
     }
     
+    func obtainNewGlobalSettings() -> [String: Any] {
+        var result: [String: Any] = [:]
+        for tableValue in tableValues {
+            switch tableValue.type {
+            case .textEntry:
+                if tableValue.limitUsage {
+                    let formatter = NumberFormatter()
+                    formatter.numberStyle = .decimal
+                    result[tableValue.configSetting!] = formatter.number(from: tableValue.labelString)
+                } else {
+                    result[tableValue.configSetting!] = tableValue.labelString
+                }
+                break
+            case .switchValue:
+                result[tableValue.configSetting!] = tableValue.booleanValue
+                break
+            case .selection:
+                if tableValue.configSetting != nil { // Can be nil, in case of a new custom configuration
+                    result[tableValue.configSetting!] = tableValue.labelString
+                }
+                break
+            default:
+                break // Others are not editable cells
+            }
+        }
+        return result
+    }
 
+    
     // --
     // MARK: UITableViewDataSource
     // --
@@ -224,6 +319,54 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
             cellView?.label = tableValue.labelString
         }
         
+        // Set up a text entry cell
+        if tableValue.type == .textEntry {
+            // Create view
+            if cell.cellView == nil {
+                cell.cellView = AppConfigEditTextCellView()
+            }
+            let cellView = cell.cellView as? AppConfigEditTextCellView
+            
+            // Supply data
+            cell.selectionStyle = .default
+            cell.shouldHideDivider = !nextType.isCellType()
+            cellView?.delegate = self
+            cellView?.label = tableValue.configSetting
+            cellView?.editedText = tableValue.labelString
+            cellView?.applyNumberLimitation = tableValue.limitUsage
+        }
+        
+        // Set up a switch value cell
+        if tableValue.type == .switchValue {
+            // Create view
+            if cell.cellView == nil {
+                cell.cellView = AppConfigEditSwitchCellView()
+            }
+            let cellView = cell.cellView as? AppConfigEditSwitchCellView
+            
+            // Supply data
+            cell.selectionStyle = .default
+            cell.shouldHideDivider = !nextType.isCellType()
+            cellView?.delegate = self
+            cellView?.label = tableValue.configSetting
+            cellView?.on = tableValue.booleanValue
+        }
+        
+        // Set up a selection cell (for enums)
+        if tableValue.type == .selection {
+            // Create view
+            if cell.cellView == nil {
+                cell.cellView = AppConfigItemCellView()
+            }
+            let cellView = cell.cellView as? AppConfigItemCellView
+            
+            // Supply data
+            cell.selectionStyle = .default
+            cell.accessoryType = .disclosureIndicator
+            cell.shouldHideDivider = !nextType.isCellType()
+            cellView?.label = "\(tableValue.configSetting ?? ""): \(tableValue.labelString)"
+        }
+
         // Set up a section cell
         if tableValue.type == .section {
             // Create view
@@ -292,9 +435,59 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
                 choicePopup.delegate = self
                 choicePopup.addToSuperview(self)
                 AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: choicePopup, parentView: self)
+            } else if tableValue.type == .selection {
+                let choicePopup = AppConfigSelectionPopupView()
+                choicePopup.label = tableValue.configSetting
+                choicePopup.choices = tableValue.selectionItems ?? []
+                choicePopup.delegate = self
+                choicePopup.token = tableValue.configSetting
+                choicePopup.addToSuperview(self)
+                AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: choicePopup, parentView: self)
+            } else if tableValue.type == .switchValue {
+                if let cell = tableView.cellForRow(at: indexPath) as? AppConfigTableCell {
+                    if let switchCellView = cell.cellView as? AppConfigEditSwitchCellView {
+                        switchCellView.toggleState()
+                    }
+                }
+            } else if tableValue.type == .textEntry {
+                if let cell = tableView.cellForRow(at: indexPath) as? AppConfigTableCell {
+                    if let editTextCellView = cell.cellView as? AppConfigEditTextCellView {
+                        editTextCellView.startEditing()
+                    }
+                }
             }
         }
         table.deselectRow(at: indexPath, animated: false)
+    }
+    
+    
+    // --
+    // MARK: AppConfigEditTextCellViewDelegate
+    // --
+    
+    func changedEditText(_ newText: String, forConfigSetting: String) {
+        for i in 0..<tableValues.count {
+            let tableValue = tableValues[i]
+            if tableValue.configSetting == forConfigSetting {
+                tableValues[i] = AppConfigManageTableValue.valueForTextEntry(configSetting: tableValue.configSetting!, andValue: newText, numberOnly: tableValue.limitUsage)
+                break
+            }
+        }
+    }
+    
+    
+    // --
+    // MARK: AppConfigEditSwitchCellViewDelegate
+    // --
+    
+    func changedSwitchState(_ on: Bool, forConfigSetting: String) {
+        for i in 0..<tableValues.count {
+            let tableValue = tableValues[i]
+            if tableValue.configSetting == forConfigSetting {
+                tableValues[i] = AppConfigManageTableValue.valueForSwitchValue(configSetting: tableValue.configSetting!, andSwitchedOn: on)
+                break
+            }
+        }
     }
     
     
@@ -303,7 +496,22 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
     // --
     
     func selectedItem(_ item: String, token: String?) {
-        delegate?.newCustomConfigFrom(configName: item)
+        var foundConfigSetting = false
+        for i in 0..<tableValues.count {
+            let tableValue = tableValues[i]
+            if tableValue.configSetting == token {
+                let totalIndexPath = IndexPath.init(row: i, section: 0)
+                tableValues[i] = AppConfigManageTableValue.valueForSelection(configSetting: tableValue.configSetting!, andValue: item, andChoices: tableValue.selectionItems!)
+                table.beginUpdates()
+                table.reloadRows(at: [totalIndexPath], with: .none)
+                table.endUpdates()
+                foundConfigSetting = true
+                break
+            }
+        }
+        if !foundConfigSetting {
+            delegate?.newCustomConfigFrom(configName: item)
+        }
     }
 
 }
