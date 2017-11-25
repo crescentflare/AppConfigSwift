@@ -497,16 +497,18 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
     
     func selectedItem(_ item: String, token: String?) {
         var foundConfigSetting = false
-        for i in 0..<tableValues.count {
-            let tableValue = tableValues[i]
-            if tableValue.configSetting == token {
-                let totalIndexPath = IndexPath.init(row: i, section: 0)
-                tableValues[i] = AppConfigManageTableValue.valueForSelection(configSetting: tableValue.configSetting!, andValue: item, andChoices: tableValue.selectionItems!)
-                table.beginUpdates()
-                table.reloadRows(at: [totalIndexPath], with: .none)
-                table.endUpdates()
-                foundConfigSetting = true
-                break
+        if token != nil {
+            for i in 0..<tableValues.count {
+                let tableValue = tableValues[i]
+                if tableValue.configSetting == token {
+                    let totalIndexPath = IndexPath.init(row: i, section: 0)
+                    tableValues[i] = AppConfigManageTableValue.valueForSelection(configSetting: tableValue.configSetting!, andValue: item, andChoices: tableValue.selectionItems!)
+                    table.beginUpdates()
+                    table.reloadRows(at: [totalIndexPath], with: .none)
+                    table.endUpdates()
+                    foundConfigSetting = true
+                    break
+                }
             }
         }
         if !foundConfigSetting {
