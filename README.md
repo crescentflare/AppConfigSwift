@@ -43,6 +43,16 @@ pod "AppConfigSwift", '0.7.0'
 ```
 
 
+### Storage
+
+When existing configurations are edited or custom ones are being added, the changes are saved in the user defaults storage of the device. Also the last selected configuration and global settings are stored inside userdefaults. This makes sure that it remembers the correct settings, even if the app is restarted.
+
+
+### Security
+
+Because the library can give a lot of control on the product (by making its settings configurable), it's important to prevent any code (either the selection menu itself, or the plist configuration data like test servers and passwords) from being deployed to the App Store. Take a look at the example project for more information. For the release configuration it doesn't activate the app config and excludes the plist file from the build (by adding it to excluded source file names in the build settings).
+
+
 ### Example
 
 The provided example shows how to set up a configuration model, define configuration settings and launch the configuration tool. It also includes a demo of using global settings.
