@@ -214,10 +214,12 @@ public class AppConfigStorage {
     
     // Update global config settings
     public func updateGlobalConfig(settings: [String: Any]) {
-        globalConfig = settings
-        storeGlobalConfigInUserDefaults()
-        configManagerInstance?.applyConfigToModel(config: configSettings(config: selectedItem ?? "") ?? [:], globalConfig: globalConfig, name: selectedItem)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: AppConfigStorage.configurationChanged), object: self)
+        if settings.count > 0 || globalConfig.count > 0 {
+            globalConfig = settings
+            storeGlobalConfigInUserDefaults()
+            configManagerInstance?.applyConfigToModel(config: configSettings(config: selectedItem ?? "") ?? [:], globalConfig: globalConfig, name: selectedItem)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: AppConfigStorage.configurationChanged), object: self)
+        }
     }
 
     // Return if the given configuration is an extra custom configuration
