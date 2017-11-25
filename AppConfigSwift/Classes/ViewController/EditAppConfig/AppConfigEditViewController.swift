@@ -16,6 +16,7 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
     
     var newConfig = false
     var configName = ""
+    var saveBarButton: UIBarButtonItem?
     let editConfigTable = AppConfigEditTable()
 
     
@@ -55,6 +56,7 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
             cancelButton.setTitle(AppConfigBundle.localizedString(key: "CFLAC_SHARED_CANCEL"), for: UIControlState())
             cancelButton.setTitleColor(tintColor, for: UIControlState())
             cancelButton.setTitleColor(highlightColor, for: UIControlState.highlighted)
+            cancelButton.setTitleColor(highlightColor, for: UIControlState.disabled)
             let cancelButtonSize = cancelButton.sizeThatFits(CGSize.zero)
             cancelButton.frame = CGRect(x: 0, y: 0, width: cancelButtonSize.width, height: cancelButtonSize.height)
             cancelButton.addTarget(self, action: #selector(cancelButtonPressed), for: UIControlEvents.touchUpInside)
@@ -69,6 +71,7 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
             saveButton.setTitle(AppConfigBundle.localizedString(key: "CFLAC_SHARED_SAVE"), for: UIControlState())
             saveButton.setTitleColor(tintColor, for: UIControlState())
             saveButton.setTitleColor(highlightColor, for: UIControlState.highlighted)
+            saveButton.setTitleColor(highlightColor, for: UIControlState.disabled)
             let saveButtonSize = saveButton.sizeThatFits(CGSize.zero)
             saveButton.frame = CGRect(x: 0, y: 0, width: saveButtonSize.width, height: saveButtonSize.height)
             saveButton.addTarget(self, action: #selector(saveButtonPressed), for: UIControlEvents.touchUpInside)
@@ -76,6 +79,8 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
             // Wrap in bar button item
             let saveButtonWrapper = UIBarButtonItem.init(customView: saveButton)
             navigationItem.rightBarButtonItem = saveButtonWrapper
+            saveBarButton = saveButtonWrapper
+            saveBarButton?.isEnabled = newConfig
         }
         
         // Update configuration list
@@ -102,14 +107,49 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
         return settings
     }
     
+    func settingsEqual(currentSettings: [String: Any], newSettings: [String: Any]) -> Bool {
+        for (key, value) in currentSettings {
+            if let compareValue = newSettings[key] {
+                var isEqual = false
+                if value is String {
+                    isEqual = value as? String == compareValue as? String
+                } else if value is Int {
+                    isEqual = value as? Int == compareValue as? Int
+                } else if value is Float {
+                    isEqual = value as? Float == compareValue as? Float
+                } else if value is Double {
+                    isEqual = value as? Double == compareValue as? Double
+                } else if value is Bool {
+                    isEqual = value as? Bool == compareValue as? Bool
+                }
+                if !isEqual {
+                    return false
+                }
+            } else {
+                return false
+            }
+        }
+        return true
+    }
+    
 
     // --
     // MARK: Selectors
     // --
     
     @objc func cancelButtonPressed(_ sender: UIButton) {
-        // TODO: are you sure dialog/check?
-        cancelEditing()
+        if newConfig || !settingsEqual(currentSettings: obtainSettings(), newSettings: editConfigTable.obtainNewConfigurationSettings()) {
+            let alertBox = UIAlertController(title: AppConfigBundle.localizedString(key: "CFLAG_EDIT_CONFIRM_SAVE_CHANGES"), message: nil, preferredStyle: .alert)
+            alertBox.addAction(UIAlertAction(title: AppConfigBundle.localizedString(key: "CFLAC_SHARED_CONFIRM"), style: .default, handler: { alertAction in
+                self.saveConfig(newSettings: self.editConfigTable.obtainNewConfigurationSettings())
+            }))
+            alertBox.addAction(UIAlertAction(title: AppConfigBundle.localizedString(key: "CFLAC_SHARED_DENY"), style: .cancel, handler: { alertAction in
+                self.cancelEditing()
+            }))
+            present(alertBox, animated: true, completion: nil)
+        } else {
+            cancelEditing()
+        }
     }
     
     @objc func saveButtonPressed(_ sender: UIButton) {
@@ -128,7 +168,7 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
         }
         var storeSettings = newSettings
         var newName = storeSettings["name"] as? String ?? ""
-        if newName.trimmingCharacters(in: CharacterSet.whitespaces).characters.count == 0 {
+        if newName.trimmingCharacters(in: CharacterSet.whitespaces).count == 0 {
             newName = AppConfigBundle.localizedString(key: "CFLAC_EDIT_COPY_NONAME")
             storeSettings["name"] = newName
         }
@@ -154,6 +194,12 @@ class AppConfigEditViewController : UIViewController, AppConfigEditTableDelegate
             AppConfigStorage.shared.selectConfig(configName: configName)
         }
         _ = navigationController?.popViewController(animated: true)
+    }
+    
+    func configChanged(newSettings: [String : Any]) {
+        if !newConfig {
+            saveBarButton?.isEnabled = !settingsEqual(currentSettings: obtainSettings(), newSettings: newSettings)
+        }
     }
     
 }

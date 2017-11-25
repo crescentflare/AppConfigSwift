@@ -147,6 +147,7 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     // --
     
     @objc func doneButtonPressed(_ sender: UIButton) {
+        AppConfigStorage.shared.updateGlobalConfig(settings: self.manageConfigTable.obtainNewGlobalSettings())
         if isPresentedController {
             dismiss(animated: true, completion: nil)
         } else {
@@ -160,6 +161,7 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     // --
     
     func selectedConfig(configName: String) {
+        AppConfigStorage.shared.updateGlobalConfig(settings: self.manageConfigTable.obtainNewGlobalSettings())
         AppConfigStorage.shared.selectConfig(configName: configName)
         if isLoaded {
             self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), lastSelected: AppConfigStorage.shared.selectedConfig())
@@ -167,11 +169,13 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
     }
     
     func editConfig(configName: String) {
+        AppConfigStorage.shared.updateGlobalConfig(settings: self.manageConfigTable.obtainNewGlobalSettings())
         let viewController = AppConfigEditViewController(configName: configName, newConfig: false)
         navigationController?.pushViewController(viewController, animated: true)
     }
     
     func newCustomConfigFrom(configName: String) {
+        AppConfigStorage.shared.updateGlobalConfig(settings: self.manageConfigTable.obtainNewGlobalSettings())
         let viewController = AppConfigEditViewController(configName: configName, newConfig: true)
         navigationController?.pushViewController(viewController, animated: true)
     }

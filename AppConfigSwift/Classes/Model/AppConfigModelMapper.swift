@@ -24,9 +24,11 @@ public class AppConfigModelMapper {
     // --
 
     var categorizedFields: AppConfigOrderedDictionary<String, [String]> = AppConfigOrderedDictionary()
+    var globalCategorizedFields: AppConfigOrderedDictionary<String, [String]> = AppConfigOrderedDictionary()
     var rawRepresentableFields: [String] = []
     var rawRepresentableFieldValues: [String: [String]] = [:]
     var dictionary: [String: Any] = [:]
+    var globalDictionary: [String: Any] = [:]
     var mode: AppConfigModelMapperMode
 
     
@@ -40,8 +42,9 @@ public class AppConfigModelMapper {
     }
 
     // Initialization (to be used with FromDictionary mode)
-    public init(dictionary: [String: Any], mode: AppConfigModelMapperMode) {
+    public init(dictionary: [String: Any], globalDictionary: [String: Any], mode: AppConfigModelMapperMode) {
         self.dictionary = dictionary
+        self.globalDictionary = globalDictionary
         self.mode = mode
     }
     
@@ -51,43 +54,71 @@ public class AppConfigModelMapper {
     // --
     
     // Map between key and value: boolean
-    public func map(key: String, value: inout Bool, category: String = "") {
+    public func map(key: String, value: inout Bool, category: String = "", global: Bool = false) {
         if mode == .toDictionary {
-            dictionary[key] = value
-        } else if mode == .fromDictionary && dictionary[key] != nil {
+            if global {
+                globalDictionary[key] = value
+            } else {
+                dictionary[key] = value
+            }
+        } else if mode == .fromDictionary && global && globalDictionary[key] != nil {
+            value = globalDictionary[key] as! Bool
+        } else if mode == .fromDictionary && !global && dictionary[key] != nil {
             value = dictionary[key] as! Bool
         } else if mode == .collectKeys {
-            add(key: key, category: category)
+            add(key: key, category: category, global: global)
         }
     }
 
     // Map between key and value: int
-    public func map(key: String, value: inout Int, category: String = "") {
+    public func map(key: String, value: inout Int, category: String = "", global: Bool = false) {
         if mode == .toDictionary {
-            dictionary[key] = value
-        } else if mode == .fromDictionary && dictionary[key] != nil {
+            if global {
+                globalDictionary[key] = value
+            } else {
+                dictionary[key] = value
+            }
+        } else if mode == .fromDictionary && global && globalDictionary[key] != nil {
+            value = globalDictionary[key] as! Int
+        } else if mode == .fromDictionary && !global && dictionary[key] != nil {
             value = dictionary[key] as! Int
         } else if mode == .collectKeys {
-            add(key: key, category: category)
+            add(key: key, category: category, global: global)
         }
     }
 
     // Map between key and value: string
-    public func map(key: String, value: inout String, category: String = "") {
+    public func map(key: String, value: inout String, category: String = "", global: Bool = false) {
         if mode == .toDictionary {
-            dictionary[key] = value
-        } else if mode == .fromDictionary && dictionary[key] != nil {
+            if global {
+                globalDictionary[key] = value
+            } else {
+                dictionary[key] = value
+            }
+        } else if mode == .fromDictionary && global && globalDictionary[key] != nil {
+            value = globalDictionary[key] as! String
+        } else if mode == .fromDictionary && !global && dictionary[key] != nil {
             value = dictionary[key] as! String
         } else if mode == .collectKeys {
-            add(key: key, category: category)
+            add(key: key, category: category, global: global)
         }
     }
     
     // Map between key and value: an enum containing a raw value (preferably string)
-    public func map<T: RawRepresentable>(key: String, value: inout T, fallback: T, allValues: [T], category: String = "") {
+    public func map<T: RawRepresentable>(key: String, value: inout T, fallback: T, allValues: [T], category: String = "", global: Bool = false) {
         if mode == .toDictionary {
-            dictionary[key] = value.rawValue
-        } else if mode == .fromDictionary && dictionary[key] != nil {
+            if global {
+                globalDictionary[key] = value.rawValue
+            } else {
+                dictionary[key] = value.rawValue
+            }
+        } else if mode == .fromDictionary && global && globalDictionary[key] != nil {
+            if let raw = globalDictionary[key] as? T.RawValue {
+                value = T(rawValue: raw)!
+            } else {
+                value = fallback
+            }
+        } else if mode == .fromDictionary && !global && dictionary[key] != nil {
             if let raw = dictionary[key] as? T.RawValue {
                 value = T(rawValue: raw)!
             } else {
@@ -103,13 +134,18 @@ public class AppConfigModelMapper {
             if stringValues.count > 0 {
                 rawRepresentableFieldValues[key] = stringValues
             }
-            add(key: key, category: category, isRawRepresentable: true)
+            add(key: key, category: category, global: global, isRawRepresentable: true)
         }
     }
     
-    // After calling mapping on the model with to dictionary mode, retrieve the result using this function
+    // After calling mapping on the model with to dictionary mode, retrieve the result using this function, for configuration settings
     public func getDictionaryValues() -> [String: Any] {
         return dictionary
+    }
+
+    // After calling mapping on the model with to dictionary mode, retrieve the result using this function, for global settings
+    public func getGlobalDictionaryValues() -> [String: Any] {
+        return globalDictionary
     }
 
     
@@ -117,11 +153,16 @@ public class AppConfigModelMapper {
     // MARK: Field grouping
     // --
 
-    // After calling mapping on the model with this object, retrieve the grouped/categorized fields
+    // After calling mapping on the model with this object, retrieve the grouped/categorized fields, for configuration settings
     public func getCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
         return categorizedFields
     }
     
+    // After calling mapping on the model with this object, retrieve the grouped/categorized fields, for global settings
+    public func getGlobalCategorizedFields() -> AppConfigOrderedDictionary<String, [String]> {
+        return globalCategorizedFields
+    }
+
     // After calling mapping on the model with this object, check if a given field is a raw representable class
     public func isRawRepresentable(field: String) -> Bool {
         return rawRepresentableFields.contains(field)
@@ -133,11 +174,18 @@ public class AppConfigModelMapper {
     }
     
     // Internal method to keep track of keys and categories
-    private func add(key: String, category: String, isRawRepresentable: Bool = false) {
-        if categorizedFields[category] == nil {
-            categorizedFields[category] = []
+    private func add(key: String, category: String, global: Bool, isRawRepresentable: Bool = false) {
+        if global {
+            if globalCategorizedFields[category] == nil {
+                globalCategorizedFields[category] = []
+            }
+            globalCategorizedFields[category]!.append(key)
+        } else {
+            if categorizedFields[category] == nil {
+                categorizedFields[category] = []
+            }
+            categorizedFields[category]!.append(key)
         }
-        categorizedFields[category]!.append(key)
         if isRawRepresentable && !rawRepresentableFields.contains(key) {
             rawRepresentableFields.append(key)
         }

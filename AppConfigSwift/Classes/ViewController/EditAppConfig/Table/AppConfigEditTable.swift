@@ -15,6 +15,7 @@ protocol AppConfigEditTableDelegate: class {
     func saveConfig(newSettings: [String: Any])
     func cancelEditing()
     func revertConfig()
+    func configChanged(newSettings: [String: Any])
 
 }
 
@@ -94,24 +95,24 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
             }
 
             // Add configuration values
-            if let categorizedFields = model?.obtainCategorizedFields() {
+            if let categorizedFields = model?.obtainConfigurationCategorizedFields() {
                 // Using model and optional categories
-                let modelValues = model?.obtainValues() ?? [:]
+                let modelValues = model?.obtainConfigurationValues() ?? [:]
                 let hasMultipleCategories = categorizedFields.allKeys().count > 1
                 var sortedCategories: [String] = []
                 for category in categorizedFields.allKeys() {
-                    if category.characters.count > 0 {
+                    if category.count > 0 {
                         sortedCategories.append(category)
                     }
                 }
                 for category in categorizedFields.allKeys() {
-                    if category.characters.count == 0 {
+                    if category.count == 0 {
                         sortedCategories.append("")
                         break
                     }
                 }
                 for category in sortedCategories {
-                    let categoryName = category.characters.count > 0 ? category : AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_UNCATEGORIZED")
+                    let categoryName = category.count > 0 ? category : AppConfigBundle.localizedString(key: "CFLAC_EDIT_SECTION_UNCATEGORIZED")
                     var configSectionAdded = false
                     for field in categorizedFields[category] ?? [] {
                         if field == "name" {
@@ -416,6 +417,7 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
             let tableValue = tableValues[i]
             if tableValue.configSetting == forConfigSetting {
                 tableValues[i] = AppConfigEditTableValue.valueForTextEntry(configSetting: tableValue.configSetting!, andValue: newText, numberOnly: tableValue.limitUsage)
+                delegate?.configChanged(newSettings: obtainNewConfigurationSettings())
                 break
             }
         }
@@ -431,6 +433,7 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
             let tableValue = tableValues[i]
             if tableValue.configSetting == forConfigSetting {
                 tableValues[i] = AppConfigEditTableValue.valueForSwitchValue(configSetting: tableValue.configSetting!, andSwitchedOn: on)
+                delegate?.configChanged(newSettings: obtainNewConfigurationSettings())
                 break
             }
         }
@@ -450,6 +453,7 @@ class AppConfigEditTable : UIView, UITableViewDataSource, UITableViewDelegate, A
                 table.beginUpdates()
                 table.reloadRows(at: [totalIndexPath], with: .none)
                 table.endUpdates()
+                delegate?.configChanged(newSettings: obtainNewConfigurationSettings())
                 break
             }
         }
