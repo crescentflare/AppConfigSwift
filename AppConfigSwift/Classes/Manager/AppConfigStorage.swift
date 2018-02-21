@@ -6,6 +6,8 @@
 //  Contains app config storage and provides the main interface
 //
 
+public typealias AppConfigCustomViewController = (title: String, viewControllerClass: UIViewController.Type)
+
 public class AppConfigStorage {
 
     // --
@@ -39,6 +41,7 @@ public class AppConfigStorage {
     var configManagerInstance: AppConfigBaseManager?
     var storedConfigs: AppConfigOrderedDictionary<String, Any> = AppConfigOrderedDictionary()
     var customConfigs: AppConfigOrderedDictionary<String, Any> = AppConfigOrderedDictionary()
+    var customViewControllers: [AppConfigCustomViewController] = []
     var globalConfig: [String: Any] = [:]
     var loadFromAssetFile: String?
     var selectedItem: String?
@@ -98,6 +101,10 @@ public class AppConfigStorage {
     public func obtainGlobalConfig() -> [String: Any] {
         return globalConfig
     }
+    
+    public func obtainCustomViewControllers() -> [AppConfigCustomViewController] {
+        return customViewControllers
+    }
 
     // Return the current selected configuration, or nil if none are selected
     public func selectedConfig() -> String? {
@@ -128,6 +135,10 @@ public class AppConfigStorage {
     // --
     // MARK: Add to storage
     // --
+    
+    public func register(customViewControllers: [AppConfigCustomViewController]) {
+        self.customViewControllers += customViewControllers
+    }
     
     // Set custom values for an existing or new configuration
     public func putCustomConfig(settings: [String: Any], forConfig: String) {

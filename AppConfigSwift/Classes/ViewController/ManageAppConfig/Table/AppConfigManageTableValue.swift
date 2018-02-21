@@ -5,27 +5,59 @@
 //  Library table value: managing configurations
 //  A table model with different table cell types for the manage config viewcontroller
 //  Used internally
-//
+
+import UIKit
 
 // Value type enum
-enum AppConfigManageTableValueType: String {
-    
-    case unknown = "unknown"
-    case loading = "loading"
-    case config = "config"
-    case info = "info"
-    case textEntry = "textEntry"
-    case switchValue = "switchValue"
-    case selection = "selection"
-    case section = "section"
-    case topDivider = "topDivider"
-    case bottomDivider = "bottomDivider"
-    case betweenDivider = "betweenDivider"
-    
-    public func isCellType() -> Bool {
-        return self == .config || self == .info || self == .loading || self == .textEntry || self == .switchValue || self == .selection
+public enum AppConfigManageTableValueType {
+    public enum DividerType {
+        case top, bottom, between
     }
     
+    case unknown
+    case loading
+    case config
+    case info
+    case textEntry
+    case switchValue
+    case selection
+    case section
+    case divider(type: DividerType)
+    case viewController(title: String, viewControllerClass: UIViewController.Type)
+    
+    public func isCellType() -> Bool {
+        let isCellType: Bool
+        switch self {
+        case .unknown: isCellType = false
+        case .loading: isCellType = true
+        case .config: isCellType = true
+        case .info: isCellType = true
+        case .textEntry: isCellType = true
+        case .switchValue: isCellType = true
+        case .selection: isCellType = true
+        case .section: isCellType = false
+        case .divider: isCellType = false
+        case .viewController: isCellType = true
+        }
+        return isCellType
+    }
+    
+    public var identifier: String {
+        let identifier: String
+        switch self {
+        case .unknown: identifier = "unknown"
+        case .loading: identifier = "loading"
+        case .config: identifier = "config"
+        case .info: identifier = "info"
+        case .textEntry: identifier = "textEntry"
+        case .switchValue: identifier = "switchValue"
+        case .selection: identifier = "selection"
+        case .section: identifier = "section"
+        case .divider: identifier = "divider"
+        case .viewController: identifier = "viewController"
+        }
+        return identifier
+    }
 }
 
 // Table value
@@ -97,6 +129,10 @@ class AppConfigManageTableValue {
     
     static func valueForDivider(type: AppConfigManageTableValueType) -> AppConfigManageTableValue {
         return AppConfigManageTableValue(config: nil, configSetting: nil, labelString: "", booleanValue: false, limitUsage: false, selectionItems: nil, type: type, lastSelected: false, edited: false)
+    }
+
+    static func valueForCustomViewController(title: String, viewControllerClass: UIViewController.Type) -> AppConfigManageTableValue {
+        return AppConfigManageTableValue(config: nil, configSetting: nil, labelString: title, booleanValue: false, limitUsage: false, selectionItems: nil, type: .viewController(title: title, viewControllerClass: viewControllerClass), lastSelected: false, edited: false)
     }
     
 }

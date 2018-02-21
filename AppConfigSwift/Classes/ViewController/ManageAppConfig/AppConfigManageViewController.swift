@@ -115,7 +115,7 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
         // Update configuration list
         AppConfigStorage.shared.loadFromSource(completion: {
             self.isLoaded = true
-            self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), lastSelected: AppConfigStorage.shared.selectedConfig())
+            self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), customViewControllers: AppConfigStorage.shared.obtainCustomViewControllers(), lastSelected: AppConfigStorage.shared.selectedConfig())
         })
     }
     
@@ -128,10 +128,11 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
         manageConfigTable.delegate = self
         view = manageConfigTable
     }
+
     
     public override func viewDidAppear(_ animated: Bool) {
         if isLoaded {
-            self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), lastSelected: AppConfigStorage.shared.selectedConfig())
+            self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), customViewControllers: AppConfigStorage.shared.obtainCustomViewControllers(), lastSelected: AppConfigStorage.shared.selectedConfig())
         }
     }
     
@@ -164,20 +165,25 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
         AppConfigStorage.shared.updateGlobalConfig(settings: self.manageConfigTable.obtainNewGlobalSettings())
         AppConfigStorage.shared.selectConfig(configName: configName)
         if isLoaded {
-            self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), lastSelected: AppConfigStorage.shared.selectedConfig())
+            self.manageConfigTable.setConfigurations(AppConfigStorage.shared.obtainConfigList(), customConfigurations: AppConfigStorage.shared.obtainCustomConfigList(), customViewControllers: AppConfigStorage.shared.obtainCustomViewControllers(), lastSelected: AppConfigStorage.shared.selectedConfig())
         }
     }
     
     func editConfig(configName: String) {
         AppConfigStorage.shared.updateGlobalConfig(settings: self.manageConfigTable.obtainNewGlobalSettings())
         let viewController = AppConfigEditViewController(configName: configName, newConfig: false)
-        navigationController?.pushViewController(viewController, animated: true)
+        show(viewController, sender: self)
     }
     
     func newCustomConfigFrom(configName: String) {
         AppConfigStorage.shared.updateGlobalConfig(settings: self.manageConfigTable.obtainNewGlobalSettings())
         let viewController = AppConfigEditViewController(configName: configName, newConfig: true)
-        navigationController?.pushViewController(viewController, animated: true)
+        show(viewController, sender: self)
+    }
+
+    func displayCustomViewController(viewControllerClass: UIViewController.Type) {
+        let viewController = viewControllerClass.init()
+        show(viewController, sender: self)
     }
     
 }

@@ -15,6 +15,7 @@ protocol AppConfigManageTableDelegate: class {
     func selectedConfig(configName: String)
     func editConfig(configName: String)
     func newCustomConfigFrom(configName: String)
+    func displayCustomViewController(viewControllerClass: UIViewController.Type)
 
 }
 
@@ -111,7 +112,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
         return nil
     }
     
-    func setConfigurations(_ configurations: [String], customConfigurations: [String], lastSelected: String?) {
+    func setConfigurations(_ configurations: [String], customConfigurations: [String], customViewControllers: [AppConfigCustomViewController], lastSelected: String?) {
         // Set selected and if not set, check against default config in model
         var selected = lastSelected
         if selected == nil {
@@ -205,6 +206,17 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
                 }
             }
         }
+        
+        // Add custom view controllers (if present)
+        if !customViewControllers.isEmpty {
+            rawTableValues.append(AppConfigManageTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_CUSTOM_SECTION")))
+            
+            customViewControllers.forEach {
+                (title, viewControllerClass) in
+                
+                rawTableValues.append(AppConfigManageTableValue.valueForCustomViewController(title: title, viewControllerClass: viewControllerClass))
+            }
+        }
 
         // Add build information
         let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
@@ -216,19 +228,19 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
         var prevType: AppConfigManageTableValueType = .unknown
         for tableValue in rawTableValues {
             if !prevType.isCellType() && tableValue.type.isCellType() {
-                tableValues.append(AppConfigManageTableValue.valueForDivider(type: .topDivider))
+                tableValues.append(AppConfigManageTableValue.valueForDivider(type: .divider(type: .top)))
             } else if prevType.isCellType() && !tableValue.type.isCellType() {
-                tableValues.append(AppConfigManageTableValue.valueForDivider(type: .bottomDivider))
+                tableValues.append(AppConfigManageTableValue.valueForDivider(type: .divider(type: .bottom)))
             } else if !prevType.isCellType() && !tableValue.type.isCellType() {
-                tableValues.append(AppConfigManageTableValue.valueForDivider(type: .betweenDivider))
+                tableValues.append(AppConfigManageTableValue.valueForDivider(type: .divider(type: .between)))
             }
             tableValues.append(tableValue)
             prevType = tableValue.type
         }
         if prevType.isCellType() {
-            tableValues.append(AppConfigManageTableValue.valueForDivider(type: .bottomDivider))
+            tableValues.append(AppConfigManageTableValue.valueForDivider(type: .divider(type: .bottom)))
         } else {
-            tableValues.append(AppConfigManageTableValue.valueForDivider(type: .betweenDivider))
+            tableValues.append(AppConfigManageTableValue.valueForDivider(type: .divider(type: .between)))
         }
         table.reloadData()
     }
@@ -274,10 +286,11 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
         // Create cell (if needed)
         let tableValue = tableValues[(indexPath as NSIndexPath).row]
         let nextType = (indexPath as NSIndexPath).row + 1 < tableValues.count ? tableValues[(indexPath as NSIndexPath).row + 1].type : AppConfigManageTableValueType.unknown
-        let cell = tableView.dequeueReusableCell(withIdentifier: tableValue.type.rawValue) as? AppConfigTableCell ?? AppConfigTableCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableValue.type.identifier) as? AppConfigTableCell ?? AppConfigTableCell()
         
-        // Set up a loader cell
-        if tableValue.type == .loading {
+        switch tableValue.type {
+        case .unknown: break
+        case .loading:
             // Create view
             if cell.cellView == nil {
                 cell.cellView = AppConfigLoadingCellView()
@@ -288,10 +301,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
             cell.selectionStyle = .none
             cell.shouldHideDivider = !nextType.isCellType()
             cellView?.label = tableValue.labelString
-        }
-        
-        // Set up a config cell
-        if tableValue.type == .config {
+        case .config:
             // Create view
             if cell.cellView == nil {
                 cell.cellView = AppConfigItemCellView()
@@ -303,10 +313,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
             cell.shouldHideDivider = !nextType.isCellType()
             cellView?.label = tableValue.labelString
             cellView?.additional = tableValue.edited ? AppConfigBundle.localizedString(key: "CFLAC_MANAGE_INDICATOR_EDITED") : ""
-        }
-        
-        // Set up an info cell
-        if tableValue.type == .info {
+        case .info:
             // Create view
             if cell.cellView == nil {
                 cell.cellView = AppConfigManageInfoCellView()
@@ -317,10 +324,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
             cell.selectionStyle = .none
             cell.shouldHideDivider = !nextType.isCellType()
             cellView?.label = tableValue.labelString
-        }
-        
-        // Set up a text entry cell
-        if tableValue.type == .textEntry {
+        case .textEntry:
             // Create view
             if cell.cellView == nil {
                 cell.cellView = AppConfigEditTextCellView()
@@ -334,10 +338,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
             cellView?.label = tableValue.configSetting
             cellView?.editedText = tableValue.labelString
             cellView?.applyNumberLimitation = tableValue.limitUsage
-        }
-        
-        // Set up a switch value cell
-        if tableValue.type == .switchValue {
+        case .switchValue:
             // Create view
             if cell.cellView == nil {
                 cell.cellView = AppConfigEditSwitchCellView()
@@ -350,10 +351,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
             cellView?.delegate = self
             cellView?.label = tableValue.configSetting
             cellView?.on = tableValue.booleanValue
-        }
-        
-        // Set up a selection cell (for enums)
-        if tableValue.type == .selection {
+        case .selection:
             // Create view
             if cell.cellView == nil {
                 cell.cellView = AppConfigItemCellView()
@@ -365,10 +363,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
             cell.accessoryType = .disclosureIndicator
             cell.shouldHideDivider = !nextType.isCellType()
             cellView?.label = "\(tableValue.configSetting ?? ""): \(tableValue.labelString)"
-        }
-
-        // Set up a section cell
-        if tableValue.type == .section {
+        case .section:
             // Create view
             if cell.cellView == nil {
                 cell.cellView = AppConfigSectionCellView()
@@ -379,16 +374,26 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
             cell.selectionStyle = .none
             cell.shouldHideDivider = true
             cellView?.label = tableValue.labelString
-        }
-        
-        // Set up a divider cell
-        if tableValue.type == .topDivider || tableValue.type == .bottomDivider || tableValue.type == .betweenDivider {
+        case .viewController(let title, _):
             // Create view
             if cell.cellView == nil {
-                if tableValue.type == .betweenDivider {
+                cell.cellView = AppConfigItemCellView()
+                (cell.cellView as! AppConfigItemCellView).label = title
+            }
+            // Supply data
+            cell.selectionStyle = .default
+            cell.accessoryType = .disclosureIndicator
+            cell.shouldHideDivider = !nextType.isCellType()
+        case .divider(let type):
+            // Create view
+            if cell.cellView == nil {
+                switch type {
+                case .top:
+                    cell.cellView = AppConfigCellSectionDividerView(location: .top)
+                case .bottom:
+                    cell.cellView = AppConfigCellSectionDividerView(location: .bottom)
+                case .between:
                     cell.cellView = AppConfigCellSectionDividerView()
-                } else {
-                    cell.cellView = AppConfigCellSectionDividerView(location: tableValue.type == .topDivider ? .top : .bottom)
                 }
             }
 
@@ -402,13 +407,13 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        let tableValue = tableValues[(indexPath as NSIndexPath).row]
-        return tableValue.type == .config && tableValue.config != nil
+        let tableValue = tableValues[indexPath.row]
+        return tableValue.type.identifier == AppConfigManageTableValueType.config.identifier && tableValue.config != nil
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let editAction = UITableViewRowAction.init(style: .normal, title: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SWIPE_EDIT"), handler: { action, indexPath in
-            let tableValue = self.tableValues[(indexPath as NSIndexPath).row]
+            let tableValue = self.tableValues[indexPath.row]
             tableView.setEditing(false, animated: true)
             if tableValue.config != nil {
                 self.delegate?.editConfig(configName: tableValue.config!)
@@ -424,39 +429,56 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
     // --
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let tableValue = tableValues[(indexPath as NSIndexPath).row]
-        if delegate != nil {
-            if tableValue.config != nil {
-                delegate?.selectedConfig(configName: tableValue.config!)
-            } else if tableValue.type == .config {
-                let choicePopup = AppConfigSelectionPopupView()
-                choicePopup.label = AppConfigBundle.localizedString(key: "CFLAC_SHARED_SELECT_MENU")
-                choicePopup.choices = AppConfigStorage.shared.obtainConfigList()
-                choicePopup.delegate = self
-                choicePopup.addToSuperview(self)
-                AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: choicePopup, parentView: self)
-            } else if tableValue.type == .selection {
-                let choicePopup = AppConfigSelectionPopupView()
-                choicePopup.label = tableValue.configSetting
-                choicePopup.choices = tableValue.selectionItems ?? []
-                choicePopup.delegate = self
-                choicePopup.token = tableValue.configSetting
-                choicePopup.addToSuperview(self)
-                AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: choicePopup, parentView: self)
-            } else if tableValue.type == .switchValue {
-                if let cell = tableView.cellForRow(at: indexPath) as? AppConfigTableCell {
-                    if let switchCellView = cell.cellView as? AppConfigEditSwitchCellView {
-                        switchCellView.toggleState()
-                    }
-                }
-            } else if tableValue.type == .textEntry {
-                if let cell = tableView.cellForRow(at: indexPath) as? AppConfigTableCell {
-                    if let editTextCellView = cell.cellView as? AppConfigEditTextCellView {
-                        editTextCellView.startEditing()
-                    }
+        guard delegate != nil else {
+            table.deselectRow(at: indexPath, animated: false)
+            return
+        }
+        
+        let tableValue = tableValues[indexPath.row]
+        
+        if let config = tableValue.config {
+            delegate?.selectedConfig(configName: config)
+            table.deselectRow(at: indexPath, animated: false)
+            return
+        }
+        
+        switch tableValue.type {
+        case .unknown: break
+        case .loading: break
+        case .info: break
+        case .section: break
+        case .divider: break
+        case .config:
+            let choicePopup = AppConfigSelectionPopupView()
+            choicePopup.label = AppConfigBundle.localizedString(key: "CFLAC_SHARED_SELECT_MENU")
+            choicePopup.choices = AppConfigStorage.shared.obtainConfigList()
+            choicePopup.delegate = self
+            choicePopup.addToSuperview(self)
+            AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: choicePopup, parentView: self)
+        case .textEntry:
+            if let cell = tableView.cellForRow(at: indexPath) as? AppConfigTableCell {
+                if let editTextCellView = cell.cellView as? AppConfigEditTextCellView {
+                    editTextCellView.startEditing()
                 }
             }
+        case .switchValue:
+            if let cell = tableView.cellForRow(at: indexPath) as? AppConfigTableCell {
+                if let switchCellView = cell.cellView as? AppConfigEditSwitchCellView {
+                    switchCellView.toggleState()
+                }
+            }
+        case .selection:
+            let choicePopup = AppConfigSelectionPopupView()
+            choicePopup.label = tableValue.configSetting
+            choicePopup.choices = tableValue.selectionItems ?? []
+            choicePopup.delegate = self
+            choicePopup.token = tableValue.configSetting
+            choicePopup.addToSuperview(self)
+            AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: choicePopup, parentView: self)
+        case .viewController(_, let viewControllerClass):
+            delegate?.displayCustomViewController(viewControllerClass: viewControllerClass)
         }
+
         table.deselectRow(at: indexPath, animated: false)
     }
     
