@@ -181,7 +181,7 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
         show(viewController, sender: self)
     }
 
-    func displayCustomerViewController(viewControllerClass: UIViewController.Type) {
+    func displayCustomViewController(viewControllerClass: UIViewController.Type) {
         let viewController = viewControllerClass.init()
         show(viewController, sender: self)
     }

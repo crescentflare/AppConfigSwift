@@ -136,8 +136,8 @@ public class AppConfigStorage {
     // MARK: Add to storage
     // --
     
-    public func register(customerViewControllers: [AppConfigCustomViewController]) {
-        self.customViewControllers += customerViewControllers
+    public func register(customViewControllers: [AppConfigCustomViewController]) {
+        self.customViewControllers += customViewControllers
     }
     
     // Set custom values for an existing or new configuration

@@ -15,7 +15,7 @@ protocol AppConfigManageTableDelegate: class {
     func selectedConfig(configName: String)
     func editConfig(configName: String)
     func newCustomConfigFrom(configName: String)
-    func displayCustomerViewController(viewControllerClass: UIViewController.Type)
+    func displayCustomViewController(viewControllerClass: UIViewController.Type)
 
 }
 
@@ -476,7 +476,7 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
             choicePopup.addToSuperview(self)
             AppConfigViewUtility.addPinSuperViewEdgesConstraints(view: choicePopup, parentView: self)
         case .viewController(_, let viewControllerClass):
-            delegate?.displayCustomerViewController(viewControllerClass: viewControllerClass)
+            delegate?.displayCustomViewController(viewControllerClass: viewControllerClass)
         }
 
         table.deselectRow(at: indexPath, animated: false)
