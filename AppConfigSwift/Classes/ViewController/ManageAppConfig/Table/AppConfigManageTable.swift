@@ -15,6 +15,7 @@ protocol AppConfigManageTableDelegate: class {
     func selectedConfig(configName: String)
     func editConfig(configName: String)
     func newCustomConfigFrom(configName: String)
+    func interactWithPlugin(plugin: AppConfigPlugin)
 
 }
 
@@ -205,6 +206,15 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
                 }
             }
         }
+        
+        // Add custom plugins (if present)
+        let plugins = AppConfigStorage.shared.configManager()?.plugins ?? []
+        if plugins.count > 0 {
+            rawTableValues.append(AppConfigManageTableValue.valueForSection(text: AppConfigBundle.localizedString(key: "CFLAC_MANAGE_SECTION_CUSTOM_PLUGINS")))
+            for plugin in plugins {
+                rawTableValues.append(AppConfigManageTableValue.valueForPlugin(plugin))
+            }
+        }
 
         // Add build information
         let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
@@ -366,6 +376,25 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
             cell.shouldHideDivider = !nextType.isCellType()
             cellView?.label = "\(tableValue.configSetting ?? ""): \(tableValue.labelString)"
         }
+        
+        // Set up a plugin cell
+        if tableValue.type == .plugin {
+            // Create view
+            if cell.cellView == nil {
+                cell.cellView = AppConfigItemCellView()
+            }
+            let cellView = cell.cellView as? AppConfigItemCellView
+
+            // Supply data
+            cell.selectionStyle = .default
+            cell.accessoryType = .disclosureIndicator
+            cell.shouldHideDivider = !nextType.isCellType()
+            if let displayValue = tableValue.plugin?.displayValue() {
+                cellView?.label = "\(tableValue.plugin?.displayName() ?? ""): \(displayValue)"
+            } else {
+                cellView?.label = tableValue.plugin?.displayName()
+            }
+        }
 
         // Set up a section cell
         if tableValue.type == .section {
@@ -454,6 +483,10 @@ class AppConfigManageTable : UIView, UITableViewDataSource, UITableViewDelegate,
                     if let editTextCellView = cell.cellView as? AppConfigEditTextCellView {
                         editTextCellView.startEditing()
                     }
+                }
+            } else if tableValue.type == .plugin {
+                if let plugin = tableValue.plugin {
+                    delegate?.interactWithPlugin(plugin: plugin)
                 }
             }
         }

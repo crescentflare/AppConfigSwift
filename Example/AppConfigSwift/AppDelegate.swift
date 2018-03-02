@@ -25,9 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if RELEASE
             // Disable library
         #else
+            ExampleAppConfigManager.shared.addPlugin(ExampleAppConfigLogPlugin())
             AppConfigStorage.shared.activate(manager: ExampleAppConfigManager.shared)
             AppConfigStorage.shared.setLoadingSourceAsset(filePath: Bundle.main.path(forResource: "AppConfig", ofType: "plist"))
         #endif
+        Logger.clear()
+        Logger.log(text: "Application started")
         return true
     }
     
@@ -35,12 +38,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        Logger.log(text: "Application suspended to the background")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+        Logger.log(text: "Application resumed")
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

@@ -34,7 +34,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateConfigurationValues()
-        AppConfigStorage.shared.addDataObserver(self, selector: #selector(updateConfigurationValues), name: AppConfigStorage.configurationChanged)
+        AppConfigStorage.shared.addDataObserver(self, selector: #selector(configurationDidUpdate), name: AppConfigStorage.configurationChanged)
         if !AppConfigStorage.shared.isActivated() {
             changeButton.isHidden = true
         }
@@ -49,7 +49,19 @@ class ViewController: UIViewController {
     // MARK: Helper
     // --
 
-    @objc func updateConfigurationValues() {
+    @objc func configurationDidUpdate() {
+        Logger.log(text: "Configuration changed")
+        updateConfigurationValues()
+    }
+    
+    func updateConfigurationValues() {
+        // Log settings
+        Logger.logVerbose(text: "apiUrl set to: " + ExampleAppConfigManager.currentConfig().apiUrl)
+        Logger.logVerbose(text: "runType set to: " + ExampleAppConfigManager.currentConfig().runType.rawValue)
+        Logger.logVerbose(text: "acceptAllSsl set to: " + (ExampleAppConfigManager.currentConfig().acceptAllSSL ? "true" : "false"))
+        Logger.logVerbose(text: "networkTimeout set to: " + String(ExampleAppConfigManager.currentConfig().networkTimeoutSec))
+
+        // Update UI
         self.selectedConfigValue.text = ExampleAppConfigManager.currentConfig().name
         self.apiUrlValue.text = ExampleAppConfigManager.currentConfig().apiUrl
         self.runTypeValue.text = ExampleAppConfigManager.currentConfig().runType.rawValue
