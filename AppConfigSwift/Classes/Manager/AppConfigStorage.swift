@@ -61,6 +61,8 @@ public class AppConfigStorage {
         loadGlobalConfigFromUserDefaults()
         if selectedItem != nil && storedConfigs[selectedItem!] != nil {
             manager?.applyConfigToModel(config: storedConfigs[selectedItem!] as! [String: Any], globalConfig: globalConfig, name: selectedItem)
+        } else {
+            manager?.applyConfigToModel(config: [:], globalConfig: globalConfig, name: nil)
         }
         activated = true
     }
