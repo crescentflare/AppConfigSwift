@@ -13,10 +13,11 @@ For example: be able to make one build with a build selector that contains devel
 ### Features
 
 - Be able to configure several app configurations using a plist file
-- A built-in app configuration selection activity
+- A built-in app configuration selection menu
 - Edit app configurations to customize them from within the app
 - Easily access the currently selected configuration (or last stored selection) everywhere
 - Separate global settings which work across different configurations
+- Be able to write custom plugins, like development tools, making them accessible through the selection menu
 - Dynamic configurations can be disabled to prevent them from being available on distribution (App Store) builds
 
 
@@ -55,7 +56,7 @@ Because the library can give a lot of control on the product (by making its sett
 
 ### Example
 
-The provided example shows how to set up a configuration model, define configuration settings and launch the configuration tool. It also includes a demo of using global settings.
+The provided example shows how to set up a configuration model, define configuration settings and launch the configuration tool. It also includes a demo of using global settings and a custom logging tool.
 
 
 ### Status
