@@ -13,6 +13,7 @@ open class AppConfigBaseManager {
     // --
     
     var currentConfig: AppConfigBaseModel?
+    var plugins: [AppConfigPlugin] = []
 
     
     // --
@@ -43,6 +44,26 @@ open class AppConfigBaseManager {
     public func applyConfigToModel(config: [String: Any], globalConfig: [String: Any], name: String?) {
         currentConfig = obtainBaseModelInstance()
         currentConfig?.apply(overrides: config, globalOverrides: globalConfig, name: name)
+    }
+    
+
+    // --
+    // MARK: Plugins
+    // --
+    
+    // Append the list of custom plugins
+    public func addPlugin(_ plugin: AppConfigPlugin) {
+        plugins.append(plugin)
+    }
+    
+    // Manually set all custom plugins
+    public func setPlugins(_ plugins: [AppConfigPlugin]) {
+        self.plugins = plugins
+    }
+    
+    // Remove all custom plugins
+    public func removeAllPlugins() {
+        plugins = []
     }
     
 }

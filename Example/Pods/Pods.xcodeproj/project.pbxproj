@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04327A3D2049D70A00D5E29D /* AppConfigPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04327A3C2049D70A00D5E29D /* AppConfigPlugin.swift */; };
 		07A0F0E0808A2DB12D8D4A4D74F8B110 /* AppConfigEditTextCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5D30EE19DE7EDB4A85C00C34D14619 /* AppConfigEditTextCellView.swift */; };
 		0F4EABBC9F20FB89CBDFE8F10CE2B8AF /* ItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B2A3B8E363B462AB5DD02C6F85D4E6B /* ItemCell.xib */; };
 		11685D6CD2CBE33BDDE9DD745648D0C6 /* AppConfigManageTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D265EB163DCEC5942B9058BF8FE59D5 /* AppConfigManageTable.swift */; };
@@ -67,10 +68,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04327A3C2049D70A00D5E29D /* AppConfigPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfigPlugin.swift; sourceTree = "<group>"; };
 		09BF56D787339943B798F002A77344D3 /* AppConfigManageInfoCellView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigManageInfoCellView.swift; sourceTree = "<group>"; };
 		0AD8DB1FEF2C9EFC4C789EBB216642AE /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B2A3B8E363B462AB5DD02C6F85D4E6B /* ItemCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = ItemCell.xib; sourceTree = "<group>"; };
-		0E2573A1FFE0D82307F48D6606C42E29 /* AppConfigSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = AppConfigSwift.modulemap; sourceTree = "<group>"; };
+		0E2573A1FFE0D82307F48D6606C42E29 /* AppConfigSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = AppConfigSwift.modulemap; sourceTree = "<group>"; };
 		139F6DAE74C2A1113E82C67FA6CF6D1F /* Pods-AppConfigSwift_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AppConfigSwift_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		20B90CAD5F050F1AB53F823B108DF23E /* LoadingCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
 		21624415B2FCDF4623A4677983ADA912 /* Pods-AppConfigSwift_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AppConfigSwift_Tests-resources.sh"; sourceTree = "<group>"; };
@@ -83,12 +85,12 @@
 		2E5FBBA49CDE2B142EF57871B4D5511A /* EditTextCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = EditTextCell.xib; sourceTree = "<group>"; };
 		3D735A5F84672D9D3A655C1E5FD1B2C6 /* Pods-AppConfigSwift_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AppConfigSwift_Example-resources.sh"; sourceTree = "<group>"; };
 		43088E7A82910FF8D074422178339843 /* AppConfigModelMapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigModelMapper.swift; sourceTree = "<group>"; };
-		4B34B4EF22D826884CF663A69939163F /* AppConfigSwift.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = AppConfigSwift.bundle; path = AppConfigSwift.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B34B4EF22D826884CF663A69939163F /* AppConfigSwift.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppConfigSwift.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B5D30EE19DE7EDB4A85C00C34D14619 /* AppConfigEditTextCellView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigEditTextCellView.swift; sourceTree = "<group>"; };
 		4C6F121FDD7E0EE0CB6BAD57E8021D60 /* Pods-AppConfigSwift_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AppConfigSwift_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		4CBE406EA7D8AB4BAA8E77CA8EB30244 /* Pods-AppConfigSwift_Tests.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AppConfigSwift_Tests.qa.xcconfig"; sourceTree = "<group>"; };
 		59D861E2236982E99F769565D8CB8C63 /* Pods-AppConfigSwift_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AppConfigSwift_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		5F8D6D93B8FB1A5D08B2DDDDD17F967A /* AppConfigSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AppConfigSwift.framework; path = AppConfigSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F8D6D93B8FB1A5D08B2DDDDD17F967A /* AppConfigSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppConfigSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6243A3B644DD618D2B0DB80B552F8145 /* AppConfigBaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigBaseModel.swift; sourceTree = "<group>"; };
 		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		68DD3E696B36D92DAD82176121985265 /* SelectionPopup.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = SelectionPopup.xib; sourceTree = "<group>"; };
@@ -102,7 +104,7 @@
 		8B1AC6EF7149AD79103D5CAEBD669BCA /* AppConfigTableCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigTableCell.swift; sourceTree = "<group>"; };
 		8FC06875A0C7BA2AB11151A6869CFE50 /* AppConfigSectionCellView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigSectionCellView.swift; sourceTree = "<group>"; };
 		9017B3785580B0444DD1382AAE5BE647 /* AppConfigEditViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigEditViewController.swift; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		98231D4F334036C785F0436398AF7B81 /* Pods-AppConfigSwift_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AppConfigSwift_Tests-dummy.m"; sourceTree = "<group>"; };
 		9C26BB6F34740A270B35410C555FD4F7 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9EEC56447E81CC2A6FF95045412007C9 /* AppConfigOrderedDictionary.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigOrderedDictionary.swift; sourceTree = "<group>"; };
@@ -110,15 +112,15 @@
 		AA6CDA39F14C2F051476DBA84790F2D2 /* AppConfigEditSwitchCellView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigEditSwitchCellView.swift; sourceTree = "<group>"; };
 		ACA42EDE4692671BDAA5CA229DA8B74C /* AppConfigItemCellView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigItemCellView.swift; sourceTree = "<group>"; };
 		B088C10D58DDB44FE5B662321A57B32E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B1100DC64AF4DC12099FE06557F72183 /* Pods_AppConfigSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_AppConfigSwift_Tests.framework; path = "Pods-AppConfigSwift_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1100DC64AF4DC12099FE06557F72183 /* Pods_AppConfigSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppConfigSwift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B302036D84588289FB3619C1145709DE /* AppConfigEditTableValue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigEditTableValue.swift; sourceTree = "<group>"; };
 		B4CAAAC510529FBEEA3C6FD28BBAE01B /* ManageInfoCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = ManageInfoCell.xib; sourceTree = "<group>"; };
 		B530A6A2CB03D735D58A2AECAA8D85DA /* AppConfigLoadingCellView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigLoadingCellView.swift; sourceTree = "<group>"; };
 		B5523CD2D1938859953A1A18E1EC99E5 /* AppConfigManageViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigManageViewController.swift; sourceTree = "<group>"; };
 		B740911DE8A50DF36950D0EC51A13BF6 /* Pods-AppConfigSwift_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AppConfigSwift_Example-acknowledgements.plist"; sourceTree = "<group>"; };
-		BB6828FF31841D1851B6734B00DBE176 /* Pods-AppConfigSwift_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-AppConfigSwift_Tests.modulemap"; sourceTree = "<group>"; };
+		BB6828FF31841D1851B6734B00DBE176 /* Pods-AppConfigSwift_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-AppConfigSwift_Tests.modulemap"; sourceTree = "<group>"; };
 		BD04DDAE15174865AD03BA75B109EC9E /* AppConfigBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigBundle.swift; sourceTree = "<group>"; };
-		BD45BCC3EC2D1466E610E1EA75DE85B3 /* Pods-AppConfigSwift_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-AppConfigSwift_Example.modulemap"; sourceTree = "<group>"; };
+		BD45BCC3EC2D1466E610E1EA75DE85B3 /* Pods-AppConfigSwift_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-AppConfigSwift_Example.modulemap"; sourceTree = "<group>"; };
 		BF799E18465A7B14B82E922B373BB91A /* Pods-AppConfigSwift_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AppConfigSwift_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		C0B8778290D6F0363FA791F67DF99D80 /* EditSwitchCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = EditSwitchCell.xib; sourceTree = "<group>"; };
 		CEF5EE368784CAABF3010CD27D7BD039 /* AppConfigViewUtility.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfigViewUtility.swift; sourceTree = "<group>"; };
@@ -128,10 +130,10 @@
 		E2F69DB1ECDBCD8B4B027D4E8BAEBD88 /* AppConfigSwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AppConfigSwift.xcconfig; sourceTree = "<group>"; };
 		E42D114ABDDC5DE1CB75FD7D402626EA /* AppConfigSwift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AppConfigSwift-prefix.pch"; sourceTree = "<group>"; };
 		E5E33189510868F29F592064266ED576 /* AppConfigSwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AppConfigSwift-dummy.m"; sourceTree = "<group>"; };
-		E873AB1610208B61D48F680B1080A967 /* Pods_AppConfigSwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_AppConfigSwift_Example.framework; path = "Pods-AppConfigSwift_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E873AB1610208B61D48F680B1080A967 /* Pods_AppConfigSwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppConfigSwift_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8B00C355AD44F3A2866D159883C396D /* Pods-AppConfigSwift_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AppConfigSwift_Example-umbrella.h"; sourceTree = "<group>"; };
 		EBC12CFF64C5A428C191CD6BB0ADC9A6 /* Pods-AppConfigSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AppConfigSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		ED9EFAB400A0CDAC3B312A3106E69CAE /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; path = en.lproj; sourceTree = "<group>"; };
+		ED9EFAB400A0CDAC3B312A3106E69CAE /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,8 +176,16 @@
 			children = (
 				8B1AC6EF7149AD79103D5CAEBD669BCA /* AppConfigTableCell.swift */,
 			);
-			name = Table;
 			path = Table;
+			sourceTree = "<group>";
+		};
+		04327A3B2049D70A00D5E29D /* Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				04327A3C2049D70A00D5E29D /* AppConfigPlugin.swift */,
+			);
+			name = Plugin;
+			path = AppConfigSwift/Classes/Plugin;
 			sourceTree = "<group>";
 		};
 		1C0B6059348CDE0BC2217B1BFA9D59C6 /* Manager */ = {
@@ -194,7 +204,6 @@
 				01A27C5761779D3F3A342B8234CF50BC /* Table */,
 				A83001622E3F136CCE05E0BB7D39EB01 /* View */,
 			);
-			name = Shared;
 			path = Shared;
 			sourceTree = "<group>";
 		};
@@ -261,7 +270,6 @@
 			children = (
 				09BF56D787339943B798F002A77344D3 /* AppConfigManageInfoCellView.swift */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -282,7 +290,6 @@
 				A652195BCDB616C38A4319F58A935AF4 /* AppConfigEditTable.swift */,
 				B302036D84588289FB3619C1145709DE /* AppConfigEditTableValue.swift */,
 			);
-			name = Table;
 			path = Table;
 			sourceTree = "<group>";
 		};
@@ -291,7 +298,6 @@
 			children = (
 				ED9EFAB400A0CDAC3B312A3106E69CAE /* en.lproj */,
 			);
-			name = Localization;
 			path = Localization;
 			sourceTree = "<group>";
 		};
@@ -311,7 +317,6 @@
 				AA6CDA39F14C2F051476DBA84790F2D2 /* AppConfigEditSwitchCellView.swift */,
 				4B5D30EE19DE7EDB4A85C00C34D14619 /* AppConfigEditTextCellView.swift */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -324,7 +329,6 @@
 				8FC06875A0C7BA2AB11151A6869CFE50 /* AppConfigSectionCellView.swift */,
 				8313914BF4AFFEB00542436A4A92391E /* AppConfigSelectionPopupView.swift */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -334,6 +338,7 @@
 				733B9601A022522C2BCE82786237B532 /* Helper */,
 				1C0B6059348CDE0BC2217B1BFA9D59C6 /* Manager */,
 				9D81DC47E1BF85203D5A4F608AC62D03 /* Model */,
+				04327A3B2049D70A00D5E29D /* Plugin */,
 				66A193B70AC3C21C21943808233FCB5D /* Resources */,
 				AF71DC4EE9D5E614A5BB3436AC854549 /* Support Files */,
 				B6145B173C2DD0105B98A5ECF9B19C7D /* ViewController */,
@@ -364,7 +369,6 @@
 				C3106928B6463F82F5CCB20AC27612FE /* Table */,
 				76FEA57A74E6672DF233B3C7139DCBA4 /* View */,
 			);
-			name = ManageAppConfig;
 			path = ManageAppConfig;
 			sourceTree = "<group>";
 		};
@@ -394,7 +398,6 @@
 				85F1D384EF28CB7B79A90A9BCA9A6447 /* Table */,
 				9DC50D597F9081AE97A1E3D5A30E5A71 /* View */,
 			);
-			name = EditAppConfig;
 			path = EditAppConfig;
 			sourceTree = "<group>";
 		};
@@ -404,7 +407,6 @@
 				6D265EB163DCEC5942B9058BF8FE59D5 /* AppConfigManageTable.swift */,
 				D09101F8AB9FE75B6DB65A4BC09B9259 /* AppConfigManageTableValue.swift */,
 			);
-			name = Table;
 			path = Table;
 			sourceTree = "<group>";
 		};
@@ -464,7 +466,6 @@
 				88A8622B2B894C79DDC2333908D0989F /* SectionCell.xib */,
 				68DD3E696B36D92DAD82176121985265 /* SelectionPopup.xib */,
 			);
-			name = Layout;
 			path = Layout;
 			sourceTree = "<group>";
 		};
@@ -658,6 +659,7 @@
 				EF610065C1C6E9032B371C4FFFEA06E8 /* AppConfigCellSectionDividerView.swift in Sources */,
 				614698E77F196275A22053FCFE93D53F /* AppConfigEditSwitchCellView.swift in Sources */,
 				EC7F86824281FCCCF9E4ED6E1D6226C1 /* AppConfigEditTable.swift in Sources */,
+				04327A3D2049D70A00D5E29D /* AppConfigPlugin.swift in Sources */,
 				CA22BD390841CA79D546F5C6B1334965 /* AppConfigEditTableValue.swift in Sources */,
 				07A0F0E0808A2DB12D8D4A4D74F8B110 /* AppConfigEditTextCellView.swift in Sources */,
 				CC97356A2DB9E3811F7AEFC8536B039E /* AppConfigEditViewController.swift in Sources */,
