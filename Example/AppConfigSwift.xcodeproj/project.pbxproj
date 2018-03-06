@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04327A402049E19200D5E29D /* ExampleAppConfigLogPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04327A3F2049E19200D5E29D /* ExampleAppConfigLogPlugin.swift */; };
+		04327A432049E6C700D5E29D /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04327A422049E6C700D5E29D /* Logger.swift */; };
+		04327A452049EF7A00D5E29D /* ShowLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04327A442049EF7A00D5E29D /* ShowLogViewController.swift */; };
+		04327A482049F48600D5E29D /* ShowLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04327A462049F48600D5E29D /* ShowLogViewController.xib */; };
 		046559B61D50C15E00B020D6 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046559B51D50C15E00B020D6 /* Application.swift */; };
 		046559B81D50C44200B020D6 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046559B71D50C44200B020D6 /* main.swift */; };
 		04C660481FC62A550051C5B4 /* ExampleAppConfigLogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C660471FC62A540051C5B4 /* ExampleAppConfigLogLevel.swift */; };
@@ -35,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04327A3F2049E19200D5E29D /* ExampleAppConfigLogPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleAppConfigLogPlugin.swift; sourceTree = "<group>"; };
+		04327A422049E6C700D5E29D /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		04327A442049EF7A00D5E29D /* ShowLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLogViewController.swift; sourceTree = "<group>"; };
+		04327A472049F48600D5E29D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ShowLogViewController.xib; sourceTree = "<group>"; };
 		046559B51D50C15E00B020D6 /* Application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		046559B71D50C44200B020D6 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		04C660471FC62A540051C5B4 /* ExampleAppConfigLogLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleAppConfigLogLevel.swift; sourceTree = "<group>"; };
@@ -85,9 +93,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04327A3E2049E19200D5E29D /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				04327A3F2049E19200D5E29D /* ExampleAppConfigLogPlugin.swift */,
+			);
+			path = Plugins;
+			sourceTree = "<group>";
+		};
+		04327A412049E6C700D5E29D /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				04327A422049E6C700D5E29D /* Logger.swift */,
+				04327A442049EF7A00D5E29D /* ShowLogViewController.swift */,
+			);
+			name = Utility;
+			path = AppConfigSwift/Utility;
+			sourceTree = SOURCE_ROOT;
+		};
 		04EB154D1D0DA9A300D5E380 /* AppConfig */ = {
 			isa = PBXGroup;
 			children = (
+				04327A3E2049E19200D5E29D /* Plugins */,
 				04C660471FC62A540051C5B4 /* ExampleAppConfigLogLevel.swift */,
 				04EB154E1D0DA9A300D5E380 /* ExampleAppConfigManager.swift */,
 				04EB154F1D0DA9A300D5E380 /* ExampleAppConfigModel.swift */,
@@ -121,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				04EB154D1D0DA9A300D5E380 /* AppConfig */,
+				04327A412049E6C700D5E29D /* Utility */,
 				046559B51D50C15E00B020D6 /* Application.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
@@ -128,6 +156,7 @@
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
+				04327A462049F48600D5E29D /* ShowLogViewController.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 			);
 			name = "Example for AppConfigSwift";
@@ -281,6 +310,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04327A482049F48600D5E29D /* ShowLogViewController.xib in Resources */,
 				04EB15551D0DAA1100D5E380 /* AppConfig.plist in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
@@ -407,8 +437,11 @@
 				046559B61D50C15E00B020D6 /* Application.swift in Sources */,
 				046559B81D50C44200B020D6 /* main.swift in Sources */,
 				04EB15511D0DA9A300D5E380 /* ExampleAppConfigManager.swift in Sources */,
+				04327A402049E19200D5E29D /* ExampleAppConfigLogPlugin.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
+				04327A432049E6C700D5E29D /* Logger.swift in Sources */,
 				04EB15531D0DA9A300D5E380 /* ExampleAppConfigRunType.swift in Sources */,
+				04327A452049EF7A00D5E29D /* ShowLogViewController.swift in Sources */,
 				04EB15521D0DA9A300D5E380 /* ExampleAppConfigModel.swift in Sources */,
 				04C660481FC62A550051C5B4 /* ExampleAppConfigLogLevel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
@@ -434,6 +467,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		04327A462049F48600D5E29D /* ShowLogViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04327A472049F48600D5E29D /* Base */,
+			);
+			name = ShowLogViewController.xib;
+			sourceTree = "<group>";
+		};
 		607FACD91AFB9204008FA782 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

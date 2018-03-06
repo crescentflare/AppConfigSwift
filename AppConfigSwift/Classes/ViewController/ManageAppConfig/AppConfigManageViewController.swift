@@ -180,4 +180,8 @@ public class AppConfigManageViewController : UIViewController, AppConfigManageTa
         navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func interactWithPlugin(plugin: AppConfigPlugin) {
+        plugin.interact(fromViewController: self)
+    }
+    
 }
