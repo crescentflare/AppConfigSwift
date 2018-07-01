@@ -25,23 +25,14 @@ For example: be able to make one build with a build selector that contains devel
 
 The library is available through [CocoaPods](http://cocoapods.org). To install it, simply add one of the following lines to your Podfile.
 
-Swift 4:
-
 ```ruby
-pod "AppConfigSwift", '~> 1.1.0'
+pod "AppConfigSwift", '~> 1.1.1'
 ```
 
-Swift 3:
-
-```ruby
-pod "AppConfigSwift", '~> 0.7.2'
-```
-
-Swift 2.2:
-
-```ruby
-pod "AppConfigSwift", '0.7.0'
-```
+The above version is for Swift 4.1. For older Swift versions use the following:
+- Swift 4.0: AppConfigSwift 1.1.0
+- Swift 3: AppConfigSwift 0.7.2
+- Swift 2.2: AppConfigSwift 0.7.0
 
 
 ### Storage
